@@ -1,0 +1,69 @@
+% !TEX root = ../thesis.tex
+
+\chapter{Manifold learning techniques\label{ch:ml}}
+
+Since the advent of principal component analysis (PCA) in 1933
+\ref{hotelling}, manifold learning has been applied to a wide array of
+problems in an effort to unearth hidden structure in data. In a
+typical setting, a researcher will collect many data points
+$\{x_i\}_{i=1}^N$, often vectors in $\mathbb{R}^n$, that contain
+features relevant to the problem under investigation. For example,
+when studying collections of $k \times k$-pixel images, it is common
+to stack each column of pixel values so that the dataset becomes
+vectors $x_i \in \mathbb{R}^n$ where $n = k^2$. Alternatively, when
+studying a certain population, each $x_i$ couuld represent a
+collection of features about a particular individual such as their
+income, education level, and age: a vector in $\mathbb{R}^3$. Manifold
+learning would then be applied to this collection of points to reveal
+structure in the data that might be obscured by its
+high-dimensionality. 
+
+In the latter example, one would expect to find
+that income and education level are not indepedent variables, but are
+instead positively correlated. This is unsurprising, and hardly a good
+use-case for manifold learning. On the other hand, if we study a
+collection of images of a human face, each taken at a different angle,
+manifold learning can uncover that each image can be described by just
+two variables hidden in the dataset: the azimuthal and polar angle at
+which the photo was taken \ref{dmaps or isomap}. This example
+demonstrates the power of manifold learning as a form of
+dimensionality reduction: we can now describe each image as $y_i =
+\begin{bmatrix} \theta_i \\ \phi_i \end{bmatrix} \in \mathbb{R}^2$
+instead of $x_i \in \mathbb{R}^{4096}$ (if the image contains
+$64 \times 64 = 4096$ pixels).  Equivalently, we could say that
+$x \in \mathbb{R}^{4096}$ is parameterized by $y = \begin{bmatrix}
+  \theta \\ \phi \end{bmatrix} \in \mathbb{R}^2$.
+
+Many approaches have been proposed to address this problem, each
+exploiting a different aspect of the dataset. Some are designed to
+find linear relationships among input variables \ref{PCA}, others use
+the smoothness of the manifold as a basis for a new parameterization
+\ref{hessiang eigenmaps}. Below, we detail the mathematical
+underpinnings of two particular methods: PCA and Diffusion Maps
+(DMAPS). As the most widely used manifold learning technique, PCA is
+conceptually simple and provides easily-understandable
+results. However, we will see that it is incapable of efficiently
+embedding nonlinear manifolds. For this, we turn to DMAPS, a method
+that will return a better embedding of the data at the cost of
+interpretability. Both are used throughout subsequent sections of this
+paper.
+
+\section{Principal component analysis\label{sec:ml:pca}}
+
+In brief, PCA returns a ranking of the important linear relationships
+in data. This importance is determined by the amount of the data's
+variability a particular linear relationship is able to capture. These
+statements are made precise below.
+
+As usual we begin with a collection of $N$ vectors $x_i \in \mathbb{R}^n$,
+which we stack in rows to form our input matrix
+
+\begin{align}
+  A = \begin{bmatrix} \; - \; x_1^T \; - \; \\ \; - \; x_2^T \; - \; \\ \vdots \\ \; - \; x_N^T
+    \; - \; \end{bmatrix} \in \mathbb{R}^{N \times n}
+\end{align}
+
+Note that each column represents a particular variable, e.g. age or
+income, while each row contains an individual data point. We will
+assume that each column has a mean value of zero, if not the mean can
+simply be subtracted from each column.

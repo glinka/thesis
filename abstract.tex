@@ -1,0 +1,31 @@
+% !TEX root = thesis.tex
+
+Recent decades have seen a tremendous rise in affordability and
+performance of various computational technologies, enabling
+researchers to propose and probe ever-more complicated numerical
+models. These simulations often generate incredible quantities of data
+that must be sifted through to glean useful conclusions. This thesis
+highlights our efforts to automate this process in two specific areas:
+(a) uncovering simplified descriptions of dynamic network models and
+(b) detecting important parameter combinations in general
+systems. Both advances involve modification of the Diffusion Maps to
+address the particular problem.
+
+In the first case, the challenge is quanitifying the similarity of two
+networks in a reasonable amount of computational time. We propose a
+number of possible solutions, and examine their performance when
+combined with DMAPS. We find that by combining suitable measures of
+similarity with DMAPS we are able to uncover low-dimensional structure
+in a set of networks, thus enabling us to describe the system in terms
+of one or two values instead of thousands.
+
+In the second, we must extend Diffusion Maps to operate on the graph
+of a function. In particular we consider a model that maps parameter
+values to some output. By properly accounting for both parameters and
+the resulting model output, we enable DMAPS to discover the directions
+in parameter space along which model predictions vary most
+significantly.
+
+Both result in algorithms that we hope are practically useful to
+researchers in a variety of fields who are looking for simplified
+descriptions of their complex systems.
