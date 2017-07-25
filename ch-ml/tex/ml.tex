@@ -65,5 +65,78 @@ which we stack in rows to form our input matrix
 
 Note that each column represents a particular variable, e.g. age or
 income, while each row contains an individual data point. We will
-assume that each column has a mean value of zero, if not the mean can
-simply be subtracted from each column.
+assume that each column has a mean value of zero; if not the mean can
+simply be subtracted from each column. We will also assume that we
+$N \gg n$, so one imagine can running many experiments in which only a
+few variables are measured each time. \\
+
+The problem can now be posed
+as: if we projected each $x_i$ along some $v \in \mathbb{R}^n$, which
+choice of $v$ would maximize the variance in the projection? More
+formally, we wish to solve
+
+\begin{align}
+  \max_{v \in \mathbb{R}^n} \mathrm{var}(Av) = v^TA^TAv \\
+  \mathrm{s.t.} \| v \| = 1
+\end{align}
+
+where we have added the scaling condition $\| v \| = 1$ to prevent
+infinite variances. An equivalent formulation is 
+
+\begin{align}
+  \max_{v \in \mathbb{R}^n} \frac{v^TA^TAv}{v^Tv}
+\end{align}
+
+where we notice that $\frac{v^TA^TAv}{v^Tv}$ is the Rayleigh quotient
+of $M = A^TA$. It is well known that the Rayleigh quotient is
+maximized when $v$ is the eigenvector of $M$ corresponding to the
+largest eigenvalue. Thus if we order the eigenvalues
+$\lambda_1, \lambda_2, \cdots, \lambda_n$ and corresponding
+eigenvectors $v_1, v_2, \cdots, v_n$ such that
+$\lambda_i \ge \lambda_{i+1}$, we find that $v_1$ is our desired
+vector. Note that this makes some intuitive sense as $M = A^TA$ is the
+covariance matrix of $A$, and by choosing the largest eigenvector of
+$A^TA$, we are choosing the direction along which variance is
+maximized. \\
+
+There is a clear connection between PCA and the singular value
+decomposition (SVD) of a matrix, and the two terms are often used
+interchangeably. The SVD, which exists for every
+$A \in \mathbb{R}^{N \times n}$, is given by
+
+\begin{align}
+  A = U \Sigma V^T =   
+  \begin{bmatrix}
+    & & & \\ 
+    | & | &  & |  \\
+    u_1 & u_2 & \cdots & u_n \\
+    | & | &  & |  \\
+    & & &  \\
+  \end{bmatrix}
+  \begin{bmatrix} 
+    \sigma_1^2 & & & \\
+    & \sigma_2^2 & & \\
+    & & \ddots & \\
+    & &  & \sigma_n^2 \\
+  \end{bmatrix}
+  \left[ \begin{array}{ccccc}
+           - & \multicolumn{3}{c}{v_1} & - \\
+           - & \multicolumn{3}{c}{v_2} & - \\
+             & & \vdots & & \\
+           - & \multicolumn{3}{c}{v_n} & - \\
+         \end{array} \right]
+\end{align}
+
+where $U$ and $V$ are $N \times n$ and $n \times n$ unitary matrices,
+and $\Sigma$ is an $n \times n$ diagonal matrix with non-negative
+entries. Now $A^TA$ becomes
+
+\begin{align}
+  A^T A = (V \Sigma^T U^T) U \Sigma V^T = V \Sigma^2 V^T
+\end{align}
+
+This shows that the vector $v_1$ is the very same vector we desire
+from our principal component analysis: the top eigenvector of the
+covariance matrix.
+
+
