@@ -59,7 +59,7 @@ As usual we begin with a collection of $N$ vectors $x_i \in \mathbb{R}^n$,
 which we stack in rows to form our input matrix
 
 \begin{align}
-  A = \begin{bmatrix} \; - \; x_1^T \; - \; \\ \; - \; x_2^T \; - \; \\ \vdots \\ \; - \; x_N^T
+  X = \begin{bmatrix} \; - \; x_1^T \; - \; \\ \; - \; x_2^T \; - \; \\ \vdots \\ \; - \; x_N^T
     \; - \; \end{bmatrix} \in \mathbb{R}^{N \times n}
 \end{align}
 
@@ -76,7 +76,7 @@ choice of $v$ would maximize the variance in the projection? More
 formally, we wish to solve
 
 \begin{align}
-  \max_{v \in \mathbb{R}^n} \mathrm{var}(Av) = v^TA^TAv \\
+  \max_{v \in \mathbb{R}^n} \mathrm{var}(Xv) = v^TX^TXv \\
   \mathrm{s.t.} \| v \| = 1
 \end{align}
 
@@ -84,28 +84,28 @@ where we have added the scaling condition $\| v \| = 1$ to prevent
 infinite variances. An equivalent formulation is 
 
 \begin{align}
-  \max_{v \in \mathbb{R}^n} \frac{v^TA^TAv}{v^Tv}
+  \max_{v \in \mathbb{R}^n} \frac{v^TX^TXv}{v^Tv}
 \end{align}
 
-where we notice that $\frac{v^TA^TAv}{v^Tv}$ is the Rayleigh quotient
-of $M = A^TA$. It is well known that the Rayleigh quotient is
+where we notice that $\frac{v^TX^TXv}{v^Tv}$ is the Rayleigh quotient
+of $M = X^TX$. It is well known that the Rayleigh quotient is
 maximized when $v$ is the eigenvector of $M$ corresponding to the
 largest eigenvalue. Thus if we order the eigenvalues
 $\lambda_1, \lambda_2, \cdots, \lambda_n$ and corresponding
 eigenvectors $v_1, v_2, \cdots, v_n$ such that
 $\lambda_i \ge \lambda_{i+1}$, we find that $v_1$ is our desired
-vector. Note that this makes some intuitive sense as $M = A^TA$ is the
-covariance matrix of $A$, and by choosing the largest eigenvector of
-$A^TA$, we are choosing the direction along which variance is
-maximized. \\
+vector. Note that this makes some intuitive sense as $M = X^TX$ is the
+unscaled covariance matrix of $X$, and by choosing the largest
+eigenvector of $X^TX$, we are choosing the direction along which
+variance is maximized. \\
 
 There is a clear connection between PCA and the singular value
 decomposition (SVD) of a matrix, and the two terms are often used
 interchangeably. The SVD, which exists for every
-$A \in \mathbb{R}^{N \times n}$, is given by
+$X \in \mathbb{R}^{N \times n}$, is given by
 
 \begin{align}
-  A = U \Sigma V^T =   
+  X = U D V^T =   
   \begin{bmatrix}
     & & & \\ 
     | & | &  & |  \\
@@ -128,15 +128,132 @@ $A \in \mathbb{R}^{N \times n}$, is given by
 \end{align}
 
 where $U$ and $V$ are $N \times n$ and $n \times n$ unitary matrices,
-and $\Sigma$ is an $n \times n$ diagonal matrix with non-negative
-entries. Now $A^TA$ becomes
+and $D$ is an $n \times n$ diagonal matrix with non-negative
+entries. Now $X^TX$ becomes
 
 \begin{align}
-  A^T A = (V \Sigma^T U^T) U \Sigma V^T = V \Sigma^2 V^T
+  X^T X = (V D^T U^T) U D V^T = V D^2 V^T
 \end{align}
 
 This shows that the vector $v_1$ is the very same vector we desire
 from our principal component analysis: the top eigenvector of the
-covariance matrix.
+unscaled covariance matrix.
 
+To actually affect any dimensionality reduction, we would use a subset
+of these principal components to project our data into some reduced
+number of dimensions. For instance, if $\hat{V}$ is an $n \times k$
+matrix containing the leading $k$ singular vectors of $X$, we would
+have
 
+\begin{align}
+  y_i = \hat{V}\hat{V}^T x_i
+\end{align}
+
+corresponding to a reduction in dimensionality from $n$ to $k$.
+
+As a concrete example, and to further cement the statistical aspects
+of the technique, consider drawing points $x_1$ and $x_2$ from a
+multivariate normal distribution. Let them share a mean value of zero
+and a variance of one, but let their covariance be two. Thus
+
+\begin{align}
+  \mu_1 &= \mu_2 &= 0 \\
+  \Sigma_{11} &= \Sigma_{22} &= 4.5 \\
+  &\Sigma_{12} &= 5.5
+\end{align}
+
+If $\xb = (x_1, x_2)$, $\xb \sim \mathcal{N}(\mub, \Sigma)$ with
+$\mub = (\mu_1, \mu_2)$ and $\Sigma = \begin{bmatrix} \sigma_{11}^2 &
+  \sigma_{12}^2 \\ \sigma_{12}^2 &
+  \sigma_{22}^2 \end{bmatrix}$. Taking the eigendecomposition of
+$\Sigma$ we find
+
+\begin{align}
+  V = \begin{bmatrix} 1/\sqrt{2} & 1/\sqrt{2} \\
+    1/\sqrt{2} & - 1/\sqrt{2} 
+  \end{bmatrix} \quad \mathrm{and} \quad
+                 \Sigma = \begin{bmatrix} 10 & 0 \\
+                   0 & 1 
+                 \end{bmatrix}
+\end{align}
+
+This, then, would be the expected result of our principal component
+analysis: a vector pointing in the $(1,1)$ direction with a
+corresponding singular value of $\sqrt{10 n}$, and a second vector pointing in
+$(1, -1)$ with singular value $\sqrt{1 n}$ where $n$ is the number of
+points in our sample. Fig. \ref{fig:pca-ex} shows a
+sample dataset chosen from this particular distribution, along with
+principal component vectors scaled by their singular values. The
+result is as expected. Indeed, inspecting the numerical output from
+5000 points we find
+
+\begin{align}
+  V \approx \begin{bmatrix} 1/\sqrt{2} & 1/\sqrt{2} \\
+    1/\sqrt{2} & - 1/\sqrt{2} 
+  \end{bmatrix} \quad \mathrm{and} \quad
+                 \Sigma = \begin{bmatrix} 222 \approx \sqrt{50000} & 0 \\
+                   0 & 71 \approx \sqrt{5000}
+                 \end{bmatrix}
+\end{align}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{pca-ex}
+  \caption{Principal components found through PCA on the blue point
+    cloud, scaled by singular value. \label{fig:pca-ex}}
+\end{figure}
+
+Besides its relative simplicity and ease of implementation, PCA has
+one other great strength compared to other dimensionality reduction
+methods: it provides an explicit functional form between the input
+variables and the output projection in the form of a simple, linear
+relationship. In the context of PCA, the principal vectors, which are
+some linear combination of the input variables, are precisely the
+``best'' new variables to work in. Using the output of the previous
+example, we may decide that only the value $x_1 + x_2$ is important
+enough to keep, allowing us to reduce our description of the dataset
+from $(x_1, x_2) \rightarrow (x_1 + x_2)$. As we will see in the
+following section, while more complex methods offer distinct
+advantages over PCA, they lack such easily interpretable results.
+
+\section{Diffusion Maps \label{sec:dmaps}}
+
+While PCA may be effective in uncovering linear relationships among
+input variables, most real-world problems exhibit significant
+nonlinearities. This motivates our introduction of Diffusion Maps
+(DMAPS), an algorithm designed to address such difficulties. We begin
+with a description of the DMAPS' implementation.
+
+The goal of DMAPS is identical to that of PCA: given some dataset
+$\{x_1, x_2, \hdots, x_N \}$ with $x_i \in \R^n$, we desire a mapping
+of $x_i$ into $y_i$ such that $y_i$ is a low-dimensional embedding of
+$x_i$ that captures important characteristics of the original data. We
+again stack each datapoint $x_i$ into an $N \times n$ matrix
+$X$. DMAPS begins by evaluating a Gaussian kernel between each point,
+and storing the results in an $N \times N$ matrix $W$, so that
+
+\begin{align}
+  W_{ij} = \exp \left( -\frac{\|x_i - x_j\|^2}{\epsilon^2} \right)
+\end{align}
+
+where $\epsilon$ is a parameter which will be discussed below. Note
+that $W_{ij} \rightarrow 0$ as the distance between $x_i$ and $x_j$
+increases. We then calculate the sum of each row of $W$, and use these
+values to construct a new diagonal matrix $D$ with
+$D_{ii} = \sum_j W_{ij}$. Finally, we compute $A = D^{-1} W$. As
+$A_{ij} \ge 0$ and $\sum_j A_{ij} = 1$, $A$ is a stochastic
+matrix. This lends its entries $A_{ij}$ an intuitive interpretation:
+if we are performing a random walk from point to point in our dataset,
+$A_{ij}$ is the probability that, starting from $x_i$ we will hop next
+to $x_j$. Just as $W_{ij}$ decreases when the distance between $x_i$
+and $x_j$ grows, so too will $A_{ij}$ decrease, so that the
+probability of jumping to nearby points is much greater than the
+probability of jumping to distant ones. This concept is illustrated in
+Fig.~\ref{fig:dmaps-3pts} for three points.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{dmaps-3pts}
+  \caption{Probability of transitioning from $x_1$ to points $x_2$ and
+    $x_3$ and to itself. \label{fig:dmaps-3pts}}
+\end{figure}
