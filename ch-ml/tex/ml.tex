@@ -257,3 +257,248 @@ Fig.~\ref{fig:dmaps-3pts} for three points.
   \caption{Probability of transitioning from $x_1$ to points $x_2$ and
     $x_3$ and to itself. \label{fig:dmaps-3pts}}
 \end{figure}
+
+
+Having constructed the stochastic matrix $A$, the penultimate step in
+the DMAPS algorithm is to perform an eigen-decomposition of
+$A$. Numerically, it is helpful to note that $A$ is similar to the
+symmetric matrix $\hat{A}$
+
+\begin{align}
+  \hat{A} &= D^{1/2}A D^{-1/2} \\
+  & = D^{-1/2} W D^{-1/2}
+\end{align}
+
+As specialied eigensolvers such as the Lanczos algorithm have been
+developed for symmetric matrices, it is best to transform $A$ into
+$\hat{A}$, calculate the eigendecomposition, and transform the
+eigenvectors of $\hat{A}$ into eigenvectors of $A$ by multiplying by
+$D^{-1/2}$. This results in eigenvalues
+$\la_0 \ge |\la_1| \ge \cdots \ge |\la_{n-1}|$ with $\la_0 = 1$ and
+corresponding eigenvectors $\phi_0, \phi_1, \cdots, \phi_{n-1}$. That
+all eigenvalues have absolute value no greater than one is a
+consequence of Gershgorin's circle theorem, while the existence of
+$\la_0 = 1$ is clear when one considers the eigenvector $v_0 = (1/N,
+1/N, \cdots, 1/N)^T$, so that, for any row stochastic matrix $A$, $A
+v_0 = \la_0 v_0$. Finally, the low-dimensional map is given by
+
+\begin{align}
+  \Phi_t: x_i \rightarrow \begin{bmatrix} \la_1^t \phi_1(i) \\ \la_2^t
+    \phi_2(i) \\ \vdots \\ \la_k^t \phi_k(i) \end{bmatrix} \in \R^k
+\end{align}
+
+where we have chosen the top $k \ll N$ eigenvectors to embed our data,
+and $\phi_j(i)$ represents the $i$th component of $\phi_j$. It is not
+immediately clear what the effect of such a mapping is, but there are
+two useful characterizations of the DMAPS embeddings that elucidate
+its utility. First, letting $y_i = \Phi(x_i)$, we can show that $y_i$
+provides the best $k$-dimensional approximation to the so-called
+``diffusion distance'' between points. We now detail this connection.
+
+\subsection{Diffusion distance}
+
+Returning to our stochastic matrix $A$, say we have a vector
+$\Psi_t \in \R^N$ where each entry $\Psi_t(i)$ represents the
+probability of finding a random walk at data point $i$ at step $t$ of
+the walk (so $\sum_j \Psi_t(j) = 1$ and $\Psi_t(j) \ge 0$). In other
+terms, $\Psi_t(j) = p(r_t = x_j)$ where $r_i$ is the position of the
+random walk at iteration $i$. We then have that
+
+\begin{align}
+  \Psi_t^T = \Psi_0^T A^t
+\end{align}
+
+to see this, note that
+
+\begin{align*}
+  \Psi_t^T A = \big( &\sum_i \Psi_t(i) A_{i1},\; \sum_i
+                         \Psi_t(i) A_{i2},\; \dots,\; \sum_i \Psi_t(i) A_{iN} \big) \\
+             = \bigg( &\sum_i p(r_{t+1} = x_1 | r_t = x_i)p(r_t = x_i) , \\
+             & \sum_i p(r_{t+1} = x_2 | r_t = x_i)p(r_t = x_i), \\
+             & \dots, \\
+                     & \sum_i p(r_{t+1} = x_N | r_t = x_i)p(r_t = x_i)
+                       \bigg) \\
+  = \bigg( & p(r_{t+1} = x_1), \;p(r_{t+1} = x_2), \; \dots, \;
+             p(r_{t+1} = x_N) \bigg) \\
+  = & \Psi_{t+1}
+\end{align*}
+
+so by multiplying $\Psi_0$ by $A^t$, we march our random walk forward
+$t$ steps. In the limit of infinite steps, we find that the
+probability distribution becomes stationary, so further applications
+of $A$ do not change the probability of being at a particular
+point. We will call this stationary distribution $\Psi_*$, and find
+that
+
+\begin{align}
+  \Psi_*^T &= \lim_{t \rightarrow \infty} \Psi_0^T A^t \\
+           &= \Psi_*^T A
+\end{align}
+
+Thus $\Psi_*$ is the right eigenvector of $A$ with eigenvalue one. By
+inspection, its entries will be $\Psi_*(i) = \frac{d_i}{\sum_j d_j}$
+where $d_i = \sum_i A_{ij}$.
+
+We now define the diffusion distance at time $t$ between points $x$
+and $y$ to be
+
+\begin{align}
+  D^2_t(x_i, x_j) &= \| p(r_t = x_i| \cdot) - p(r_t = x_j | \cdot) \|^2_{1/\Psi_*} \\
+                  &= \sum_k \frac{A^t_{ki} - A^t_{kj}}{\Psi_*(k)} \\
+\end{align}
+
+Now, denoting the right eigenvectors of $A$ as $\psi_i$, we have
+$A^t_{ij} = \sum_k \la_k^t \phi_k(i) \psi_k(j)$ by the spectral
+decomposition of $A$. Substituting this into the equation above gives
+
+\begin{align}
+  D^2_t(x_i, x_j) &= \sum_{k=1}^{N-1} \la_k^t \left( \phi_k(i) -
+                    \phi_k(j) \right)^2 \\
+\end{align}
+
+where we omit $k=0$ which corresponds to the constant
+eigenvector. Finally, we see that this diffusion distance between
+points is approximated by the Euclidean distance between $y_i$ and
+$y_j$. As we have chosen the largest $k$ eigenvalues to include in
+$y_i$, and assuming the magnitude of the eigenvalues decays quickly
+after $\la_k$, we see that
+
+\begin{align}
+  D^2_t(x_i, x_j) & \approx \sum_{k=1}^{k} \la_k^t \left( \phi_k(i) -
+                    \phi_k(j) \right)^2 \\
+  & = \| y_i - y_j \|^2
+\end{align}
+
+This provides an interesting probabilisitic interpretation to the
+DMAPS embedding. We now turn to a geometric view of the algorithm.
+
+\subsection{Eigenfunctions of operators}
+
+Besides embedding points based on their approximate diffusion
+distances, DMAPS also provides a parameterization of the manifold on
+which the data reside by yielding approximate eigenfunctions of
+diffusion operators defined on the manifold. We assume that our data
+have been sampled from an underlying manifold $\chi$ with some density
+$p(x)$. Essentially, as the number of points tends to infinity and our
+$\epsilon$ scaling term tends to zero, the resulting stochastic matrix
+$A$ approximates certain differential operators depending on the value
+of $\alpha$ in the algorithm. These are given below
+
+\begin{equation}
+\begin{aligned}
+  \alpha &= 0: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi + 2
+    \nabla \phi \cdot \frac{\nabla p}{p} \\
+  \alpha &= 1/2: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi +
+    \nabla \phi \cdot \frac{\nabla p}{p} \\
+  \alpha &= 1: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi
+\end{aligned}
+\end{equation}
+
+The eigenvectors of $A$ will then approximate the eigenfunctions of
+the corresponding operator. In particular, we see that with the choice
+$\alpha = 1$, we recover the Laplace-Beltrami operator on our
+manifold. As such, the resulting eigenvectors will be influenced only
+by the geometry of the manifold and not by our sampling density on
+it. However, if our data is uniformly sampled so that $p(x) = c$, all
+values of $\alpha $ yield the same result.
+
+We illustrate this result with an analytically tractable example for
+which the manifold is a simple rectangle, $\chi = [0, L_x] \times [0,
+L_y]$ where $L_x$ and $L_y$ are the lengths of the rectangle along the
+$x$ and $y$ axes. We wish to find the eigenfunctions of the Laplace
+operator over the rectangle with homogenous Neumann boundary
+conditions. That is, we want to find functions $f$ such that $\Delta f
+= \lambda f$ and $\frac{\partial f}{\partial x}\Big|_{x=0,L_x}
+=\frac{\partial f}{\partial y}\Big|_{y=0,L_y} = 0$. We solve this
+problem using separation of variables to obtain
+
+\begin{align}
+  f_{ij} = \cos\left(\frac{i \pi x}{L_x}\right) \cos\left(\frac{j \pi y}{L_y}\right) \quad
+  \mathrm{and} \quad \lambda_{ij} = -\left( \left(\frac{i \pi
+  }{L_x}\right)^2 + \left(\frac{j \pi}{L_y}\right)^2 \right)
+\end{align}
+
+Assigning $L_x = \frac{5}{2}$ and $L_y = 1$ and ordering these eigenpairs by
+increasing $|\lambda_{ij}|$, we see that the first few eigenfunctions
+will be
+
+\begin{itemize}
+\item $\lambda_{10} = -\left(\frac{2 \pi}{5}\right)^2$ with $f_{10} =
+  \cos \left(\frac{2 \pi x}{5} \right)$
+\item $\lambda_{20} = -\left(\frac{4 \pi}{5}\right)^2$ with $f_{20} =
+  \cos \left(\frac{4 \pi x}{5} \right)$
+\item $\lambda_{01} = -\pi^2$ with $f_{01} =
+  \cos \left( \pi y \right)$
+\end{itemize}
+
+The key insight is that the maps $x \rightarrow f_{10} (x)$ and
+$y \rightarrow f_{01} (y)$ are bijections from the $x$ and $y$ axes
+onto eigenfunctions of the diffusion operator. Thus, instead of
+describing points on our rectangular manifold by their $(x,y)$
+coordinates, they could equivalently be specified by values of
+$(f_{10}, f_{01})$. Although $x$ and $y$ may be a more natural way of
+parameterizing the rectangle, in high-dimensional, nonlinear datasets,
+this parameterization is unknown. In these cases, we turn to DMAPS to
+provide an approximation to these eigenfunctions which, as we have
+just seen, will parameterize the hidden manifold our data lie on. This
+is the essence of the geometric perspective of DMAPS.
+
+\subsection{Examples}
+
+We now provide numerical examples of DMAPS' behavior on simple
+datasets to help build an intuitive understanding of its
+performance. In all cases, our manifold will be the simple rectangle
+described above, with side lengths $L_x = \frac{5}{2}$ and $L_y =
+1$. We also fix the number of points to $N = 4000$. Initially we
+sample uniformly at random over the rectangle, and then apply the
+DMAPS algorithm~\ref{alg:dmaps} to the resulting set of points
+$(x_i, y_i)$ $i = 1, \dots, N$. In Fig.~\ref{fig:dmaps-comp} we
+compare the numerical results to the theoretical eigenfunctions we
+derived in the previous section. The agreement is good, and as
+expected, $\phi_1$ and $\phi_3$ parameterize $x$ and $y$
+respectively.
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dmaps-comp-x}
+    \subcaption{Comparison of numerical and analytical results for
+      $\phi_1 \approx f_{10}$ and $\phi_2 \approx f_{20}$, both of
+      which parameterize the $x$ direction.}
+  \end{subfigure}
+  % \hspace{0.5cm}
+  \begin{subfigure}[t]{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dmaps-comp-y}
+    \subcaption{Comparison of numerical and analytical results for
+      $\phi_3 \approx f_{01}$ which parameterizes the $y$ direction.}
+  \end{subfigure}
+  \caption{ \label{fig:dmaps-comp} }
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dmaps-x}
+    \subcaption{Coloring the dataset by $\phi_1$, showing that
+      $\phi_1$ changes in the $x$ direction.}
+  \end{subfigure}
+  % \hspace{0.5cm}
+  \begin{subfigure}[t]{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dmaps-y}
+    \subcaption{Coloring the dataset by $\phi_3$, showing that
+      $\phi_3$ changes in the $y$ direction.}
+  \end{subfigure}
+  \caption{ \label{fig:dmaps-xy} }
+\end{figure}
+
+However, when we sample from a multivariate Gaussian
+distribution, discarding points that fall outside the rectangle, the
+un-normalized algorithm, ~\ref{alg:dmaps-unnorm}, is affected by the
+nonuniform density of points. On the other hand, ~\ref{alg:dmaps} will
+continue to approximate eigenfunctions of $\nabla
+f$. Fig.~\ref{fig:dmaps-nonun} confirms this behavior.
+
