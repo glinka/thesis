@@ -1,6 +1,6 @@
 % !TEX root = ../thesis.tex
 
-\chapter{Manifold learning techniques\label{ch:ml}}
+\section{Manifold learning techniques\label{sec:ml}}
 
 Since the advent of principal component analysis (PCA) in 1933
 \ref{hotelling}, manifold learning has been applied to a wide array of
@@ -201,8 +201,9 @@ result is as expected. Indeed, inspecting the numerical output from
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{pca-ex}
-  \caption{Principal components found through PCA on the blue point
-    cloud, scaled by singular value. \label{fig:pca-ex}}
+  \caption[Example of principal component analysis]{Principal
+    components found through PCA on the blue point cloud, scaled by
+    singular value. \label{fig:pca-ex}}
 \end{figure}
 
 Besides its relative simplicity and ease of implementation, PCA has
@@ -256,8 +257,9 @@ Fig.~\ref{fig:dmaps-3pts} for three points.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{dmaps-3pts}
-  \caption{Probability of transitioning from $x_1$ to points $x_2$ and
-    $x_3$ and to itself. \label{fig:dmaps-3pts}}
+  \caption[Illustration of random walk on data]{Probability of
+    transitioning from $x_1$ to points $x_2$ and $x_3$ and to
+    itself. \label{fig:dmaps-3pts}}
 \end{figure}
 
 
@@ -476,7 +478,7 @@ respectively.
     \subcaption{Comparison of numerical and analytical results for
       $\phi_3 \approx f_{01}$ which parameterizes the $y$ direction.}
   \end{subfigure}
-  \caption[Illustration of DMAPS' parameterization of
+  \caption[Example of DMAPS' parameterization of
   rectangle]{ \label{fig:dmaps-comp} }
 \end{figure}
 

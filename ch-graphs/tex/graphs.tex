@@ -261,16 +261,16 @@ they approach an identical stationary state.
     \centering
     \includegraphics[width=\textwidth]{cpi-diagram}
     \caption[Schematic of multigraph's lifting and restricting
-    procedures]{Schematic of our restriction ($\mathbf{R}$) and
-      lifting ($\mathbf{L}$) procedures. The graph's sorted degree
+    procedures]{Schematic of our restriction ($\Res$) and
+      lifting ($\Li$) procedures. The graph's sorted degree
       sequence is calculated ($R_1$) and then fit to a third-order
       polynomial ($R_2$). This maps graphs ($G$) to vectors of four
       coefficients ($\mathbf{c}$). To lift, the polynomial is used to
       generate a degree sequence ($L_1$), which is then used to
       construct a consistent graph ($L_2$). This process maps vectors
       of four coefficients ($\mathbf{c}$) to graphs ($G$).
-      $\mathbf{R} = R_2 \circ R_1 $ is our restriction and
-      $\mathbf{L} = L_2 \circ L_1$ is our
+      $\Res = R_2 \circ R_1 $ is our restriction and
+      $\Li = L_2 \circ L_1$ is our
       lifting. \label{fig:cpi-diagram}}
   \end{figure}
 
@@ -339,9 +339,9 @@ they approach an identical stationary state.
   simulations through Coarse Projective Integration.
   % 
   Denoting the lifting operator by
-  $\mathbf{L} \; : \; c \rightarrow G$ where $c \in \mathbb{R}^4$ is
+  $\Li \; : \; c \rightarrow G$ where $c \in \mathbb{R}^4$ is
   the vector of polynomial coefficients, and the restriction operator
-  as $\mathbf{R} \; : G \rightarrow c$, the algorithm progresses as
+  as $\Res \; : G \rightarrow c$, the algorithm progresses as
   follows:
 
   \begin{enumerate}

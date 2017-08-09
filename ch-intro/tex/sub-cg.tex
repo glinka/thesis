@@ -1,0 +1,49 @@
+% !TEX root = ../../thesis.tex
+
+\section{Equation-free modeling\label{sec:ef}}
+
+The second key component in the work that follows is Equation Free
+(EF) modeling. This framework enables one to analyze agent-based
+simulations such as social network evolution or molecular dynamics
+using systems-level algorithms without deriving explicit, analytical
+equations governing the properties of interest. EF modeling has been
+used to accelerate simulations, to locate coarse steady states, and to
+perform bifurcation analysis, using only the sort of fine-scale
+simulations that researchers across disciplines increasingly rely on
+to model their problems~\ref{all sorts of EF and fine scale stuff}. We
+will now provide an overview of the general framework, and a particular
+application known as coarse projective integration.
+
+EF techniques rely on two complementary algorithmic elements: a
+restriction operator $\Res$ that maps fine-scale simulations to coarse
+variables, and a lifting operator $\Li$ that maps coarse variables to
+consistent fine-scale simulations. Thus lifting is the inverse of
+restriction, so $\Res \cdot \Li (x) = x$. We will denote the state of
+the fine system by $u(t)$, with $U(t)$ the corresponding coarse
+state. $u(t)$ could represent the evolving state of neurons in a
+simulation of brain activity, while $U(t)$ may track the average
+action potential. In such complex models it is difficult to derive an
+explicit formula governing the progression of $U(t)$, but by
+periodically measuring this quantity as the simulation progresses
+through $\Res: u \rightarrow U$, we can estimate its trajectory. Then,
+using an integration scheme as simple as forward Euler, we may
+approximate the value of $U(t)$ at some future time,
+$U(t + \Delta t)$. Using $\Li: U \rightarrow u$ we obtain a
+fine-scaled state $u(t + \Delta t)$. This process of alternately
+restricting and lifting can be repeated until the system has reached a
+desired state. Overall, the result is an accelerated simulation as we
+have replaced $\Delta t$ expensive, full-system steps with a single,
+cheap application of forward Euler during each iteration. This method
+is known as coarse projective integration (CPI), and it is illustrated
+in Fig.~\ref{fig:cpi-ill}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{cpi-intro}
+  \caption[Illustration of coarse projective integration]{Illustration
+    of CPI procedure in which repeated applications of the restriction
+    operator $\Res$ are used to approximate the trajectory of $U(t)$
+    and to estimate its value at some future time $U(t + \Delta
+    t)$. Subsequent application of $\Li$ allows one to iterate this
+    process, accelerating simulations. \label{fig:cpi-ill}}
+\end{figure}
