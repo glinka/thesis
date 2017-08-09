@@ -17,9 +17,14 @@ data = np.power(np.random.uniform(size=(npts,2)), 2)*np.array((2.5, 1.0))
 # data = data[data[:,0] < 2.5]
 # data = data[data[:,1] < 1]
 
+s=100
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.scatter(data[:,0], data[:,1])
+ax.scatter(data[:,0], data[:,1], s=s)
+ax.set_xlim((0,2.5))
+ax.set_ylim((0,1))
+ax.set_xlabel(r'$x$')
+ax.set_ylabel(r'$y$')
 plt.show()
 
 k = 4
@@ -45,7 +50,7 @@ ax.plot(dxs, np.cos(2*np.pi*dxs/5), linestyle='dashed', color='k', lw=lw, label=
 ax.set_xlim((0,2.5))
 ax.set_xlabel(r'$x$')
 ax.set_ylabel(r'$\phi$')
-ax.legend(loc='upper right', fontsize=48)
+ax.legend(loc='upper right')
 fig.subplots_adjust(bottom=0.18)
 
 fig = plt.figure()
@@ -57,7 +62,7 @@ ax.plot(dys, np.cos(np.pi*dys), linestyle='dashed', color='k', lw=lw, label='Ana
 ax.set_xlim((0,1))
 ax.set_xlabel(r'$y$')
 ax.set_ylabel(r'$\phi$')
-ax.legend(loc='lower left', fontsize=48)
+ax.legend(loc='lower left')
 fig.subplots_adjust(bottom=0.18)
 
 

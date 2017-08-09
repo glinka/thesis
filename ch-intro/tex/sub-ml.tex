@@ -48,7 +48,7 @@ that will return a better embedding of the data at the cost of
 interpretability. Both are used throughout subsequent sections of this
 paper.
 
-\section{Principal component analysis\label{sec:ml:pca}}
+\subsection{Principal component analysis\label{sec:ml:pca}}
 
 In brief, PCA returns a ranking of the important linear relationships
 in data. This importance is determined by the amount of the data's
@@ -151,6 +151,8 @@ have
 
 corresponding to a reduction in dimensionality from $n$ to $k$.
 
+\subsubsection{Example}
+
 As a concrete example, and to further cement the statistical aspects
 of the technique, consider drawing points $x_1$ and $x_2$ from a
 multivariate normal distribution. Let them share a mean value of zero
@@ -216,7 +218,7 @@ from $(x_1, x_2) \rightarrow (x_1 + x_2)$. As we will see in the
 following section, while more complex methods offer distinct
 advantages over PCA, they lack such easily interpretable results.
 
-\section{Diffusion Maps \label{sec:dmaps}}
+\subsection{Diffusion Maps \label{sec:dmaps}}
 
 While PCA may be effective in uncovering linear relationships among
 input variables, most real-world problems exhibit significant
@@ -295,7 +297,7 @@ its utility. First, letting $y_i = \Phi(x_i)$, we can show that $y_i$
 provides the best $k$-dimensional approximation to the so-called
 ``diffusion distance'' between points. We now detail this connection.
 
-\subsection{Diffusion distance}
+\subsubsection{Diffusion distance}
 
 Returning to our stochastic matrix $A$, say we have a vector
 $\Psi_t \in \R^N$ where each entry $\Psi_t(i)$ represents the
@@ -372,7 +374,7 @@ after $\la_k$, we see that
 This provides an interesting probabilisitic interpretation to the
 DMAPS embedding. We now turn to a geometric view of the algorithm.
 
-\subsection{Eigenfunctions of operators}
+\subsubsection{Eigenfunctions of operators}
 
 Besides embedding points based on their approximate diffusion
 distances, DMAPS also provides a parameterization of the manifold on
@@ -443,7 +445,7 @@ provide an approximation to these eigenfunctions which, as we have
 just seen, will parameterize the hidden manifold our data lie on. This
 is the essence of the geometric perspective of DMAPS.
 
-\subsection{Examples}
+\subsubsection{Examples}
 
 We now provide numerical examples of DMAPS' behavior on simple
 datasets to help build an intuitive understanding of its
@@ -474,7 +476,8 @@ respectively.
     \subcaption{Comparison of numerical and analytical results for
       $\phi_3 \approx f_{01}$ which parameterizes the $y$ direction.}
   \end{subfigure}
-  \caption{ \label{fig:dmaps-comp} }
+  \caption[Illustration of DMAPS' parameterization of
+  rectangle]{ \label{fig:dmaps-comp} }
 \end{figure}
 
 \begin{figure}
@@ -492,13 +495,48 @@ respectively.
     \subcaption{Coloring the dataset by $\phi_3$, showing that
       $\phi_3$ changes in the $y$ direction.}
   \end{subfigure}
-  \caption{ \label{fig:dmaps-xy} }
+  \caption[Comparison of analytical and numerical DMAPS results]{ \label{fig:dmaps-xy} }
 \end{figure}
 
-However, when we sample from a multivariate Gaussian
-distribution, discarding points that fall outside the rectangle, the
-un-normalized algorithm, ~\ref{alg:dmaps-unnorm}, is affected by the
-nonuniform density of points. On the other hand, ~\ref{alg:dmaps} will
+However, if the density of our points is nonuniform over the rectangle
+as shown in Fig.~\ref{fig:dmaps-nonun-data}, the output of algorithm
+~\ref{alg:dmaps-unnorm} will be affected by the particular
+distribution of points. On the other hand, ~\ref{alg:dmaps} will
 continue to approximate eigenfunctions of $\nabla
-f$. Fig.~\ref{fig:dmaps-nonun} confirms this behavior.
+f$. Fig.~\ref{fig:dmaps-nonun-phi} confirms this behavior.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{data-non-y-x}
+    \caption[Data with nonuniform density]{Data sampled nonuniformly over the
+      rectangle. \label{fig:dmaps-nonun-data} }
+\end{figure}
+
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[t]{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dmaps-non-x}
+    \subcaption{Results for $\phi_1 \approx f_{10}$.}
+  \end{subfigure}
+  % \hspace{0.5cm}
+  \begin{subfigure}[t]{0.45\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dmaps-non-y}
+    \subcaption{Results for $\phi_3 \approx f_{01}$.}
+  \end{subfigure}
+  \caption[Comparison of different DMAPS variants]{Comparison of analytical result with normalized and
+    unnormalized DMAPS variants showing that the normalized version
+    captures the eigenfunctions of the Laplace operator regardless the
+    point distribution. \label{fig:dmaps-nonun-phi} }
+\end{figure}
+
+The great benefit of DMAPS over PCA is its ability to parameterize
+nonlinear manifolds. This comes at the cost of interpretability, as we
+now lack an explicit connection between the input, $X$, and the output
+$\phi_i$. In certain numerical applications this understanding is
+unimportant. When one is interested in an intuitive physical
+interpretation of the low-dimensional description, the DMAPS output
+can be used to test hypotheses about which variable combinations are
+significant.
