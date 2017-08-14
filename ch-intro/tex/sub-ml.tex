@@ -1,5 +1,3 @@
-% !TEX root = ../thesis.tex
-
 \section{Manifold learning techniques\label{sec:ml}}
 
 Since the advent of principal component analysis (PCA) in 1933
@@ -70,10 +68,9 @@ simply be subtracted from each column. We will also assume that we
 $N \gg n$, so one imagine can running many experiments in which only a
 few variables are measured each time. \\
 
-The problem can now be posed
-as: if we projected each $x_i$ along some $v \in \mathbb{R}^n$, which
-choice of $v$ would maximize the variance in the projection? More
-formally, we wish to solve
+The problem can now be posed as: if we projected each $x_i$ along some
+$v \in \mathbb{R}^n$, which choice of $v$ would maximize the variance
+in the projection? More formally, we wish to solve
 
 \begin{align}
   \max_{v \in \mathbb{R}^n} \mathrm{var}(Xv) = v^TX^TXv \\
@@ -81,7 +78,7 @@ formally, we wish to solve
 \end{align}
 
 where we have added the scaling condition $\| v \| = 1$ to prevent
-infinite variances. An equivalent formulation is 
+infinite variances. An equivalent formulation is
 
 \begin{align}
   \max_{v \in \mathbb{R}^n} \frac{v^TX^TXv}{v^Tv}
@@ -542,3 +539,8 @@ unimportant. When one is interested in an intuitive physical
 interpretation of the low-dimensional description, the DMAPS output
 can be used to test hypotheses about which variable combinations are
 significant.
+
+%%% Local Variables: ***
+%%% mode:latex ***
+%%% TeX-master: "../../thesis.tex"  ***
+%%% End: ***

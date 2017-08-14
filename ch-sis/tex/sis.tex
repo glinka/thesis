@@ -20,12 +20,12 @@
 
 Microscopic, fine scale modeling and simulation is increasingly being
 used to explore complex systems in fields such as epidemiology
-\cite{Euba04modelling,Ferg05strategies,Long86predicting}, economics
-\cite{Iori02microsimulation,Wang05microscopic}, biology
-\cite{Levi01self-organization,Liu04stable}, and beyond.
+\cite{eubank_modelling_2004,ferguson_strategies_2005,longini_predicting_1986}, economics
+\cite{iori_microsimulation_2002,wang_microscopic_2005}, biology
+\cite{levine_self-organization_2000,liu_stable_2004}, and beyond.
 % 
 Network structures are key components of many such complex systems
-\cite{Bara02linked:,Newm03structure}.  When the sizes of the networks
+\cite{barabasi_linked:_2002,newman_structure_2003}.  When the sizes of the networks
 become large, it is important to find tools to systematically
 reduce/analyze the networks.  In this paper, we will focus on the
 issue of data mining, and the challenges involved in extending
@@ -34,7 +34,7 @@ graph.
 % 
 We also discuss the efficient estimation of various system properties
 using data mining techniques, building significantly on previous work
-\cite{rajendran2013analysis}.
+\cite{rajendran_analysis_2013}.
 % 
 
 There are numerous applications in which data mining approaches on
@@ -75,7 +75,7 @@ test more generalized algorithms for generating graphs, that sample a
 broader swath of the space of all possible graphs with a given
 size. Such an algorithm can find use in parametric optimization
 contexts, in helping to construct graphs with prescribed collective
-properties \cite{Goun11generation}.
+properties \cite{gounaris_generation_2011}.
 
 The paper is organized as follows: In Section \ref{sec:dm}, we briefly
 discuss the data mining algorithm that will be used here. In Section
@@ -95,7 +95,7 @@ Section ~\ref{sec:conc}.
 \section{\label{sec:dm}Data mining}
 
 The ``traditional" tool in data mining is principal component analysis
-(PCA) \cite{Shle03tutorial}, which is used to represent a low
+(PCA), which is used to represent a low
 dimensional dataset, embedded in high dimensional space, in terms of
 the most meaningful linear basis. It enables one to identify
 directions in which the data points have the most variance. But PCA is
@@ -106,7 +106,7 @@ dimensional subspace, making the necessary low dimensional
 \textit{linear} subspace much higher dimensional compared to the true
 dimensionality of the space in which the data lie. A number of
 non-linear data mining tools such as Diffusion Maps
-\cite{Nadl05diffusion,Nadl06diffusion} and ISOMAPs \cite{Tene00global}
+\cite{nadler_diffusion_2005,nadler_diffusion_2006} and ISOMAPs \cite{tenenbaum_global_2000}
 are available to extract the non-linear subspace.  In this work, we
 use Diffusion Maps as a representative non-linear data mining approach
 in order to enable our discussion on extending these approaches to
@@ -166,7 +166,7 @@ define a measure of similarity and closeness between pairs of graphs.
   objects}
 
 Although measures of similarity in the context of graphs have been
-discussed in the literature \cite{Dana11algorithms}, complete
+discussed in the literature \cite{koutra_algorithms_2011}, complete
 systematic classifications and definitions are still lacking.
 % 
 Firstly, one can either define similarities between nodes in a given
@@ -196,15 +196,15 @@ The first of these is the class of methods that make use of the {\em
 % 
 % 
 An obvious choice is to consider two graphs to be similar if they are
-isomorphic \cite{Peli98replicator}.
+isomorphic \cite{pelillo_replicator_1999}.
 % 
 One of the first definitions of distance between pairs of graphs using
 the idea of graph isomorphism was based on constructing the smallest
 larger graph whose subset was isomorphic to both the graphs
-\cite{Zeli75certain}.
+\cite{zelinka_certain_1975}.
 % 
 Likewise, one can define similarity measures based on the largest
-common subgraph in pairs of graphs \cite{Bunk98graph,Raym02rascal:}.
+common subgraph in pairs of graphs \cite{bunke_graph_1998,raymond_rascal:_2002}.
 % 
 The graph edit distance, which measures the number of operations on
 the nodes and edges of the graph required to transform one graph into
@@ -213,7 +213,7 @@ isomorphism.
 % 
 The graph edit distance and a list of other measures that use the
 structure of the network to quantify similarity are defined in
-\cite{Papa08web}.
+\cite{papadimitriou_web_2010}.
 
 
 % 
@@ -229,12 +229,12 @@ correspondence between the nodes in the two graphs such that the edge
 overlap is maximal.
 % 
 Methods like the similarity flooding algorithm
-\cite{Meln02similarity}, the graph similarity scoring algorithm
-\cite{Zage08graph} and the belief propagation algorithm
-\cite{Bay09message} are a few such approaches.
+\cite{melnik_similarity_2002}, the graph similarity scoring algorithm
+\cite{zager_graph_2008} and the belief propagation algorithm
+\cite{bayati_message-passing_2013} are a few such approaches.
 % 
 Graph kernels based on the idea of random walks
-\cite{Gaert03graph,Kash03marginalized,Mahe04extensions} also fall
+\cite{gartner_graph_2003,kashima_marginalized_2003,mahe_extensions_2004} also fall
 under the category of algorithms based on comparing neighborhoods.
 
 % 
@@ -279,7 +279,7 @@ $H$ with $k$ nodes in a graph $G$ with $n$ nodes:
 
 % 
 A graph can be reconstructed exactly if the densities of all possible
-subgraphs onto the graph are specified \cite{Lov06limits}.
+subgraphs onto the graph are specified \cite{lovasz_limits_2006}.
 % 
 Thus, a list of all these subgraph densities is an alternative way to
 provide complete information about a graph.
@@ -314,7 +314,7 @@ subgraphs.
 % 
 We find the frequencies of occurrence of these subgraphs in the
 original graphs by appropriately modifying the open-source RANDESU
-algorithm described in \cite{Wern06fanmod:}.
+algorithm described in \cite{wernicke_fanmod:_2006:}.
 % 
 The subgraph densities are calculated by dividing these frequencies by
 $n\choose{k}$, where $n$ and $k$ are the number of nodes in the
@@ -365,9 +365,9 @@ There are $r=9$ such graphs as shown in Fig.~\ref{fig:SGs}.
 \subsection{\label{ss:s}Spectral approach}
 
 Our second approach to defining similarities between graphs was
-initially motivated by the approach given in \cite{Vis10graph}, and we
+initially motivated by the approach given in \cite{vishwanathan_graph_2010}, and we
 based it on the notion of non-conservative diffusion on graphs
-\cite{Gho11non-conservative}.
+\cite{ghosh_non-conservative_2011}.
 % 
 It has to be noted here that there are numerous ways in which the
 spectral information of graphs (or equivalently information from
@@ -375,7 +375,7 @@ performing random walks on graphs) could be used to define similarity
 measures.
 % 
 The particular version of the similarity metric discussed here is
-inspired by the spectral decomposition algorithm in \cite{Vis10graph}.
+inspired by the spectral decomposition algorithm in \cite{vishwanathan_graph_2010}.
 % 
 The usual definition of random walks on graphs is based on the
 physical diffusion process.
@@ -417,7 +417,7 @@ evaluate statistics by weighing the density of random walkers on the
 nodes according to vector $\hat{q}$, which can also be assumed to be a
 uniform vector that takes the value $1/n$ corresponding to every node.
 % 
-As pointed out in \cite{Vis10graph}, the vectors $\hat{p}$ and
+As pointed out in \cite{vishwanathan_graph_2010}, the vectors $\hat{p}$ and
 $\hat{q}$ are ways to \emph{``embed prior knowledge into the kernel
   design"}.
 % 
@@ -547,7 +547,7 @@ dynamic network evolution problem.
 
 
 Consider, as our initial example, a dataset consisting of $m=1000$
-Erd\"{o}s-R\'{e}nyi $G(n,p)$ random graphs \cite{Erd59random} with
+Erd\"{o}s-R\'{e}nyi $G(n,p)$ random graphs \cite{erdos_random_1959} with
 $n=100$ nodes each.
 % 
 The parameter $p$ (the probability of edge existence) used to
@@ -745,7 +745,7 @@ We now consider a slightly richer dataset, where the graphs are
 constructed using two independent parameters.
 % 
 The definition of this illustrative family of graphs is based on the
-Chung-Lu algorithm \cite{Chun02connected}.
+Chung-Lu algorithm \cite{chung_connected_2002}.
 % 
 For a graph consisting of $n$ vertices (here $n=100$), following their
 original algorithm, we begin by assigning a weight $w_i$ to each
@@ -772,7 +772,7 @@ the expected value of the degree of node $i$ would be equal to the
 chosen weight values $w_i$.
 % 
 If any $Q_{ij}$ exceeds the value of $1$, this would no longer be the
-case \cite{Chun02connected}.
+case \cite{chung_connected_2002}.
 
 % 
 
@@ -825,7 +825,7 @@ these eigenvectors in the $p-r$ plane.
 % 
 However, a more careful inspection of the plots is required to
 determine independent subsets of these eigenvectors. A quantitative
-approach to this issue can be found in \cite{dsilva2015parsimonious}.
+approach to this issue can be found in \cite{dsilva_parsimonious_2015}.
 % 
 To help explore this, we plot eigenvectors $2$ and $3$ against each
 other in Fig.~\ref{fig:CL1a}.
@@ -917,7 +917,7 @@ The dynamical process could either be an empirically evolving graph
 system or a dynamic model with prescribed rules of evolution.
 % 
 We consider the latter case for illustration, making use of a simple
-model of a random evolution of networks \cite{bold2014equation}.
+model of a random evolution of networks \cite{bold_equation-free_2014}.
 % 
 A brief description of the model is given here.
 % 
@@ -934,7 +934,7 @@ operations:
 
 % 
 The details of the model behavior are discussed in
-\cite{bold2014equation}.
+\cite{bold_equation-free_2014}.
 % 
 Here, we will focus only on the characteristics of the model evolution
 necessary to explain the results of data mining.
@@ -964,7 +964,7 @@ Since the degree distribution is known to be the most significant
 variable in this model, PC $1$ and PC $2$ are good variables to track
 the evolution of the graphs over time.
 % 
-In fact, as shown in \cite{bold2014equation}, one can write explicit
+In fact, as shown in \cite{bold_equation-free_2014}, one can write explicit
 Fokker-Planck equations for the evolution of the distribution of
 (appropriately shifted and scaled) degrees.
 % 
@@ -1133,7 +1133,7 @@ By extracting the important variables governing the evolution of a
 graph-based dynamical process, we can investigate the mapping between
 these variables and temporal instances of the process. To do so, we
 turn our attention to Equation-Free (EF) modeling methods
-\cite{kevrekidis2003equation} \cite{kevrekidis2004equation} and their
+\cite{gear_equation-free_2003} \cite{kevrekidis_equation-free:_2004} and their
 applications to network-based dynamical systems. EF methods provide a
 framework for working with low-dimensional representations (``coarse
 variables") of a dynamical system, even where closed form expressions
@@ -1186,7 +1186,7 @@ the help of these operators, appropriately initialized instances of
 the dynamical system are run for short bursts of time, providing local
 information that can then be used to expedite analysis of the system's
 dynamics. This technique can be used alongside implicit methods
-\cite{marschler2014implicit} to construct an estimator that converges
+\cite{marschler_implicit_2014} to construct an estimator that converges
 to the true dynamics of the system on the slow manifold, something
 that would increase the accuracy of our algorithm.
 
@@ -1195,7 +1195,7 @@ that would increase the accuracy of our algorithm.
 
 Various methods for the implementation of EF techniques in
 network-based dynamical systems have been explored
-\cite{bold2014equation} \cite{holiday2016equation}, but they usually
+\cite{bold_equation-free_2014} \cite{holiday_equation-free_2016}, but they usually
 require an intimate understanding of the dynamical system in question
 in order to implement the coarse-graining step. As mentioned
 previously, here we will use the data mining procedure from
@@ -1205,7 +1205,7 @@ advantage of requiring no previous information about the system in
 question, and thus can be applied in a very general context. We
 illustrate the confluence of the proposed data mining technique with
 EF methods by demonstrating its application to Coarse-Projective
-Integration (CPI) \cite{gear2003projective}, an EF technique whose
+Integration (CPI) \cite{gear_projective_2003}, an EF technique whose
 primary goal is the acceleration of the dynamical system's time
 evolution by projectively integrating the coarse variables forward in
 time. In a comparative analysis, we demonstrate that the temporal
@@ -1289,7 +1289,7 @@ here that the graphs being restricted might not be in the reference
 dataset, which means that we would need a way to calculate their
 diffusion coordinates. Instead of recomputing DMAPs every time, which
 would be computationally prohibitive, this is instead achieved through
-the use of Nystr\"om extension \cite{fowlkes2004spectral}. This
+the use of Nystr\"om extension \cite{fowlkes_spectral_2004}. This
 technique deals with the problem of finding the diffusion map
 coordinates of a {\em new} graph $G$ based on the already existing
 reference dataset. Although approximate, it suffices for our current
@@ -1466,8 +1466,8 @@ will prove useful whenever the collection of networks exhibits some
 lower-dimensional structure, a situation which arises frequently in
 agent-based models where the degree sequence or some other network
 property is often found to evolve smoothly in time
-(e.g. \cite{Durr12graph} \cite{holiday2016equation}
-\cite{bold2014equation}). We believe that the lifting and restriction
+(e.g. \cite{durrett_graph_2012} \cite{holiday_equation-free_2016}
+\cite{bold_equation-free_2014}). We believe that the lifting and restriction
 operators defined here, coupled with the data mining technique above,
 can be used in dynamical systems based on networks for which we do not
 have closed form or `intuitive' expressions for the dynamics.
@@ -1497,3 +1497,8 @@ under investigation are required. This is because the reference DMAPS
 dataset only needs to be precomputed once, and thus any additional
 macroscopic simulations would not require this step - greatly
 increasing performance. \\
+
+%%% Local Variables: ***
+%%% mode:latex ***
+%%% TeX-master: "../../thesis.tex"  ***
+%%% End: ***

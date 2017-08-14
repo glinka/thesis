@@ -8,3 +8,5 @@
 *.lof
 *.zip
 python-examples/data
+/thesis.bbl
+/thesis.blg

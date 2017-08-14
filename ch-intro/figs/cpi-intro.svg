@@ -403,14 +403,15 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:20.16798401px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="468.61642"
+       x="474.59555"
        y="327.56726"
        id="text6024"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan6026"
-         x="468.61642"
-         y="327.56726">Lifting</tspan></text>
+         x="474.59555"
+         y="327.56726"
+         style="font-size:17.5px">Lifting</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#b90c0c;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#StopL);marker-end:url(#StopL)"
        d="m 208.57143,384.65759 c 291.42857,0 291.42857,0 291.42857,0"
@@ -569,5 +570,16 @@
            d="m 507.3,426.12 4.69,0 c 0.99,0 1.49,0 1.49,1 0,0.55 -0.5,0.55 -1.39,0.55 l -4.39,0 c 1.79,7.08 2.04,8.08 2.04,8.37 0,0.85 -0.59,1.35 -1.44,1.35 -0.15,0 -1.54,-0.05 -2,-1.8 l -1.93,-7.92 -4.69,0 c -1,0 -1.5,0 -1.5,-0.94 0,-0.61 0.41,-0.61 1.41,-0.61 l 4.37,0 c -3.58,-14.14 -3.78,-14.98 -3.78,-15.89 0,-2.69 1.89,-4.58 4.58,-4.58 5.08,0 7.92,7.27 7.92,7.67 0,0.5 -0.39,0.5 -0.59,0.5 -0.46,0 -0.5,-0.15 -0.75,-0.7 -2.14,-5.17 -4.79,-6.37 -6.47,-6.37 -1.05,0 -1.55,0.65 -1.55,2.29 0,1.19 0.09,1.55 0.3,2.39 z"
            inkscape:connector-curvature="0"
            style="fill:#b90c0c;fill-opacity:1;stroke-width:0" /></g>    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="398.76059"
+       y="260.45975"
+       id="text7623"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan7625"
+         x="398.76059"
+         y="260.45975"></tspan></text>
   </g>
 </svg>
