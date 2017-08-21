@@ -140,13 +140,13 @@
     \clearpage
   \fi
   }
-\DeclareOption{lot}{\renewcommand*{\makelot}{
-  \ifdefined\phantomsection
-    % makes hyperref recognize this section properly for pdf links
-    \phantomsection
-  \else
-  \fi
-  \addcontentsline{toc}{section}{List of Tables}\listoftables}}
+% \DeclareOption{lot}{\renewcommand*{\makelot}{
+%   \ifdefined\phantomsection
+%     % makes hyperref recognize this section properly for pdf links
+%     \phantomsection
+%   \else
+%   \fi
+%   \addcontentsline{toc}{section}{List of Tables}\listoftables}}
 \DeclareOption{lof}{\renewcommand*{\makelof}{
   \ifdefined\phantomsection
     % makes hyperref recognize this section properly for pdf links
