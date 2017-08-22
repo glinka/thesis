@@ -1,4 +1,5 @@
-\chapter{Dimensionality reduction of network epidiemiology model \label{ch:sis}}
+\chapter{Dimensionality reduction of network epidiemiology
+  model \label{ch:sis}}
 % Abstract The exploration of epidemic dynamics on dynamically
 % evolving (“adaptive”) networks poses nontrivial challenges to the
 % modeler, such as the determination of a small number of informative
@@ -33,7 +34,8 @@ nonlinear Ordinary Differential Equations (ODEs)) we have graduated to
 models with detailed spatial information and structure, incorporating
 not only geographical details of communities and cities but also
 information about the social interactions between the individuals
-involved \cite{colizza_modeling_2006,wang_epidemic_2011,eubank_modelling_2004}.
+involved
+\cite{colizza_modeling_2006,wang_epidemic_2011,eubank_modelling_2004}.
 From mean field ODEs the models now become large-scale, stochastic,
 individual-based simulations on networks (geographical as well as
 social).  While this framework is convenient for investigating many
@@ -62,16 +64,16 @@ moments of the distribution of susceptible or of infected individuals
 in the population) in terms of which the epidemic statistics can be
 informatively summarized.
 
-This paper considers the case where such
-informative and parsimonious system-level statistics are not a priori
-known.  In this case the Equation-Free modeling approach can still be
-carried through, as long as the right macroscopic variables can be
-discovered through the mining of (big) computational simulation
-data. This is a “doubly-data-based” modeling strategy: using data
-produced from detailed, individual level, fine scale simulation bursts
-to detect the number and identity of the macroscopic observables; and
-then, armed with this knowledge, design and execute new, informative,
-microscale simulations to systematically explore the evolution of the
+This paper considers the case where such informative and parsimonious
+system-level statistics are not a priori known.  In this case the
+Equation-Free modeling approach can still be carried through, as long
+as the right macroscopic variables can be discovered through the
+mining of (big) computational simulation data. This is a
+“doubly-data-based” modeling strategy: using data produced from
+detailed, individual level, fine scale simulation bursts to detect the
+number and identity of the macroscopic observables; and then, armed
+with this knowledge, design and execute new, informative, microscale
+simulations to systematically explore the evolution of the
 epidemic. This jointly “equation-free, variable-free” approach holds
 great promise for accurate, fast and informative systems-level
 simulation of detailed, realistic epidemic models – the “right
@@ -80,39 +82,43 @@ design of “the right simulations” to obtain useful new information.
 
 
 When the state of the fine-scale model at a given moment in time can
-be mathematically described as a (long) vector in (e.g. the state of a
-large number of agents), both linear data-mining techniques, such as
-Principal Component Analysis (PCA), as well as nonlinear data-mining
-techniques such as ISOMAP or Diffusion Maps (DMAPS) can be applied to
-simulation data ensembles to obtain “the right” macroscopic
-observables.12-14 But when the data involve evolving graphs (in our
-case, we are interested in epidemic dynamics on adaptively evolving
-networks), finding good macroscopic observables based on simulation
-databases is a nontrivial task. We present a simple
-modification/extension of the DMAPS procedure that allows us to detect
-the (small) number of these observables for epidemics on adaptive
-networks based on data mining only.  The “macro-variables” discovered
-by this process for the case of a SIS epidemic on an adaptive network
-will be presented, discussed, and contrasted to traditionally used
-macro-variables for the same problem.
+be mathematically described as a (long) vector in $\mathbb{R}^n$
+(e.g. the state of a large number of agents), both linear data-mining
+techniques, such as Principal Component Analysis (PCA), as well as
+nonlinear data-mining techniques such as ISOMAP or Diffusion Maps
+(DMAPS) can be applied to simulation data ensembles to obtain “the
+right” macroscopic observables
+\cite{jolliffe_principal_2014,coifman_diffusion_2006,tenenbaum_global_2000}. But
+when the data involve evolving graphs (in our case, we are interested
+in epidemic dynamics on adaptively evolving networks), finding good
+macroscopic observables based on simulation databases is a nontrivial
+task. We present a simple modification/extension of the DMAPS
+procedure that allows us to detect the (small) number of these
+observables for epidemics on adaptive networks based on data mining
+only.  The “macro-variables” discovered by this process for the case
+of a SIS epidemic on an adaptive network will be presented, discussed,
+and contrasted to traditionally used macro-variables for the same
+problem.
 
 Our approach is motivated by, and illustrated through, SIS dynamics on
-adaptive networks.1,15,16 The computational methodology, however, is
-in principle applicable to many problems that involve the dynamic
-evolution of networks with both labeled nodes (when we know the
-identity of individuals) or unlabeled nodes (when we do not). 17,18 We
-link the DMAPS procedure with quantities that allow us to usefully
-compare different networks; we use this approach to detect the number
-of macroscopic observables involved in the dynamics of our SIS
-epidemic model, and compare these data-based observables with typical
-network statistics. The last few years have seen several innovative
-approaches to finding accurate reduced models for dynamic,
-network-evolution problems, extending and complementing
-well-established techniques like those based on moment closures. 16
-Our approach should be considered as a data-mining based alternative
-to these techniques with the advantages of not requiring any knowledge
-about the underlying model and automating the process of feature
-extraction.
+adaptive networks
+\cite{gross_epidemic_2006,gross_adaptive_2008,gross_robust_2008}. The
+computational methodology, however, is in principle applicable to many
+problems that involve the dynamic evolution of networks with both
+labeled nodes (when we know the identity of individuals) or unlabeled
+nodes (when we do not)
+\cite{sayama_modeling_2013,huepe_adaptive-network_2011}. We link the
+DMAPS procedure with quantities that allow us to usefully compare
+different networks; we use this approach to detect the number of
+macroscopic observables involved in the dynamics of our SIS epidemic
+model, and compare these data-based observables with typical network
+statistics. The last few years have seen several innovative approaches
+to finding accurate reduced models for dynamic, network-evolution
+problems, extending and complementing well-established techniques like
+those based on moment closures \cite{gross_robust_2008}. Our approach
+should be considered as a data-mining based alternative to these
+techniques with the advantages of not requiring any knowledge about
+the underlying model and automating the process of feature extraction.
 
 The rest of the paper is organized as follows: We will first describe
 our implementation of a SIS epidemic model on an adaptive network,
@@ -122,23 +128,24 @@ techniques. We then present an extension to DMAPS that expands their
 applicability to data in the form of evolving networks (where the
 connectivity of the network evolves in time along with the state of
 the network nodes). We first validate our network data mining approach
-on data obtained from a simple Watts-Strogatz network model.19 We then
-present our main results: the application of our data-mining technique
-to data collected from dynamic SIS simulations on an adaptive network,
-obtained over a range of epidemic parameter values where it is known
-that complex, oscillatory dynamics arise. We discuss the relation of
-the variables detected through our approach to those of more
-traditional, moment-based approaches, and conclude with a brief
-perspective on potential shortcomings but also potential fruitful
-applications of the approach.
+on data obtained from a simple Watts-Strogatz network model
+\cite{watts_collective_1998}. We then present our main results: the
+application of our data-mining technique to data collected from
+dynamic SIS simulations on an adaptive network, obtained over a range
+of epidemic parameter values where it is known that complex,
+oscillatory dynamics arise. We discuss the relation of the variables
+detected through our approach to those of more traditional,
+moment-based approaches, and conclude with a brief perspective on
+potential shortcomings but also potential fruitful applications of the
+approach.
 
 \section{The adaptive SIS model}
 
 An implementation of the adaptive SIS model can be constructed by
-considering a labeled graph with nodes and links, with each node
-representing an individual in a social network; the state of each
-individual, either susceptible (S) or infected (I), constitutes the
-node label. Edges between individuals are defined as SS-links,
+considering a labeled graph $G$ with $N$ nodes and $L$ links, with
+each node representing an individual in a social network; the state of
+each individual, either susceptible (S) or infected (I), constitutes
+the node label. Edges between individuals are defined as SS-links,
 II-links, or SI-links, according to the label of the nodes they
 connect. Starting with a given initial network connectivity pattern (a
 given network topology), the evolution of the model can be
@@ -147,40 +154,42 @@ in the model's evolution:
 
 \begin{enumerate}
   \item All infected nodes recover with
-    probability , becoming susceptible.
+    probability $r$, becoming susceptible.
   \item For every SI-link, the
-    susceptible individual becomes infected with probability
-  \item Every SI-link is removed with probability . In this case, a
+    susceptible individual becomes infected with probability $p$.
+  \item Every SI-link is removed with probability $w = w_0 \rho$. In this case, a
     new edge between the corresponding susceptible node and another
     susceptible node is formed. The new link is made with a node
     chosen uniformly at random from the set of all other susceptible
     individuals.
 \end{enumerate}
 
-The probability of rewiring is based on a constant input parameter and
-the infected fraction, where is the number of infected nodes. These
-rules are motivated by the assumption that humans are more likely to
-avoid infected individuals proportionally to their awareness of
-disease spread, which here is assumed to be directly proportional to
-the infected fraction of the population.1
+The probability of rewiring $w = w_0 \rho$ is based on a constant
+input parameter $w_0$ and the infected fraction $\rho = i/N$, where
+$i$ is the number of infected nodes. These rules are motivated by the
+assumption that humans are more likely to avoid infected individuals
+proportionally to their awareness of disease spread, which here is
+assumed to be directly proportional to the infected fraction of the
+population \cite{gross_epidemic_2006}.
 
 Although the behavior of this model is inherently complex (see the
-bifurcation diagram in Fig. 1A, reproduced by permission),16 it has
-been previously established that the system-level dynamics of a
-sufficiently large network can be captured by just three macroscopic
-observables: the number of infected nodes , the number of SS-links and
-the number of II-links . These variables suffice to describe all
-long-term dynamical behavior exhibited by the system, since the values
-of other variables (higher order moments of the network state) quickly
-become slaved to (functions of) these three and do not contribute
-extra degrees of freedom over long timescales. As the infection
-parameter varies, one can observe stationary states as well as
-coarsely oscillatory dynamics, and even coexistence between the two
-(associated with an apparent subcritical coarse Hopf bifurcation).20
-In this paper we will show how to extract the relevant observables
-responsible for the dynamics of the system without making use of any
-prior knowledge about their suitability. This will be accomplished by
-first constructing a suitable similarity measure for quantifying graph
+bifurcation diagram in Fig. 1A, reproduced by permission)
+\cite{gross_robust_2008}, it has been previously established that the
+system-level dynamics of a sufficiently large network can be captured
+by just three macroscopic observables: the number of infected nodes $i$,
+the number of SS-links $l_{SS}$ and the number of II-links $l_{II}$ . These variables
+suffice to describe all long-term dynamical behavior exhibited by the
+system, since the values of other variables (higher order moments of
+the network state) quickly become slaved to (functions of) these three
+and do not contribute extra degrees of freedom over long
+timescales. As the infection parameter $p$ varies, one can observe
+stationary states as well as coarsely oscillatory dynamics, and even
+coexistence between the two (associated with an apparent subcritical
+coarse Hopf bifurcation) \cite{holmes_turbulence_2012}.  In this paper
+we will show how to extract the relevant observables responsible for
+the dynamics of the system without making use of any prior knowledge
+about their suitability. This will be accomplished by first
+constructing a suitable similarity measure for quantifying graph
 differences, and secondly, by applying DMAPS on ensembles of graphs
 resulting from the dynamic simulation of the model’s evolution.
 
@@ -208,68 +217,84 @@ model from simulation datasets.
 
 \section{Principal component analysis and diffusion maps}
 
-Given a dataset (with each ), several approaches exist to uncover a
-lower-dimensional description of the data, where and . Perhaps the
-best-known method for achieving this is Principal Component Analysis
-(PCA), 12 illustrated in Fig. (3). Unfortunately, PCA assumes the data
-lies on, or around, a linear subspace, whereas data points generally
-lie on nonlinear manifolds. To circumvent this limitation we turn to
-the nonlinear dimensionality reduction technique of Diffusion Maps
-(DMAPS). 13 The algorithm is outlined below.
+Given a dataset ${x_1, x_2, \dots, x_N}$ (with each
+$x_i \in \mathbb{R}^n$), several approaches exist to uncover a
+lower-dimensional description ${y_1, y_2, \dots, y_N}$ of the data,
+where $y_i \in \mathbb{R}^p$ and $p \ll n$. These new
+lower-dimensional points $y_i$ accurately capture the salient features
+of the original data set, with minimal loss of important
+information. In essence, we try to describe our data as concisely as
+possible.
 
-Given vectors in , we form an matrix defined as:
-
-where is a measure of the distance between points and , and represents
-the neighborhood in which we consider to “meaningfully” capture
-differences between the data. By defining the diagonal matrix , we can
-create a new row-stochastic matrix The entries of can be viewed as
-defining a random walk over the dataset. The first few eigenvectors of
-this random walk process represent an efficient parameterization of
-the original high-dimensional dataset. We denote the k-dimensional
-diffusion map embedding at time as the transformation:
-
-where and are the ith eigenvalue and eigenvector respectively, ordered
-by decreasing magnitude; throughout this paper we set .
-
-By simulating a diffusion process over the dataset, DMAPS will reveal the underlying low-dimensional nonlinear structure. This is illustrated in Fig. (3), where the algorithm is applied to a collection of points ,  that lie on a curved surface (a “Swiss roll”). The result is a concise, two-dimensional embedding of the data into , .
+Perhaps the best-known method for achieving this is Principal
+Component Analysis (PCA) \cite{jolliffe_principal_2014}, detailed in
+Section~\ref{sec:ml:pca}. Unfortunately, PCA assumes the data lies on,
+or around, a linear subspace, whereas data points generally lie on
+nonlinear manifolds. To circumvent this limitation we turn to the
+nonlinear dimensionality reduction technique of Diffusion Maps (DMAPS)
+\cite{coifman_diffusion_2006}. The algorithm is detailed in
+Section~\ref{sec:dmaps}. In brief, by simulating a diffusion process
+over the dataset, DMAPS will reveal the underlying low-dimensional
+nonlinear structure.
 
 \section{Similarities between different networks}
 
-In order to simulate diffusion over the dataset, DMAPS requires a scalar distance between two data points, . When each point  is a vector in  as in our examples in Fig. (3), the Euclidean distance between points is often sufficient. However, in the dataset we investigate below, each point  is not a vector, but actually a graph (or network), which we represent as .
+In order to simulate diffusion over the dataset, DMAPS requires a
+scalar distance between two data points, $d(x_i, x_j)$. When each
+point is a vector the Euclidean distance between points is often
+sufficient. However, in the dataset we investigate below, each point
+$x_i$ is not a vector, but actually a graph (or network), which we
+represent as $G_i$.
 
 The literature contains a number of ways of quantifying the distance
-between two graphs, , for example by measuring how easily can be
-transformed into (Graph Edit Distance), or by comparing random walks
-on the graphs (spectral distance).21-24 Such distances, however, were
-found to be computationally intractable for all but very small graphs,
-which often exhibit much simpler dynamics due to their size. It was
-therefore important to construct a dissimilarity measure that works on
-large graphs and has the advantage of being applicable to models with
-much more complex dynamics. For this reason, we use a different
-approach for measuring graph similarity, which proves to be much more
-computationally efficient. Extending previous work on unlabeled
-graphs, we construct a motif-based distance measure for labeled graphs
-in the following way: we consider two graphs to be similar if they
-share similar numbers of certain features. More precisely, we define a
-list of subgraphs , such as the single edge, the two connected edges,
-the triangle shown in Fig. (4) etc. Then we record how many times each
-subgraph appears in our input graph in a vector , where is the number
-of times subgraph was found in input graph . This process maps each
-graph to a vector of subgraph densities, the counts in , thus
-embedding the graph as a point in We then use these k-long vectors
-(k-dimensional points) as the input to DMAPS, and use the Euclidean
-distance between them as our notion of graph similarity. Thus
-. Fig. (4) presents a schematic illustrating this subgraph-enumeration
-process.
+between two graphs, $d(G_i, G_j)$, for example by measuring how easily
+$G_i$ can be transformed into $G_j$ (graph edit distance), or by
+comparing random walks on the graphs (spectral distance)
+\cite{bunke_graph_1998,gao_survey_2010,papadimitriou_web_2010,vishwanathan_graph_2010}. In
+this paper, we consider two graphs to be similar if they share similar
+numbers of certain features. More precisely, we define a list of $k$
+subgraphs $S = {s_1, s_2, \dots, s_k}$, such as the single edge, the
+two connected edges, the triangle shown in Fig. (4) etc. Then we
+record how many times each subgraph appears in our input graph in a
+vector $v_i = {c_1^i, c_2^i, \dots, c_k^i}$, where $c_j^i$ is the
+number of times subgraph $s_j$ was found in input graph $G_i$. This
+process maps each graph to a vector of subgraph densities, the counts
+$G_i \rightarrow v_i, \; v_i = {c_1^i, c_2^i, \dots, c_k^i}$ in
+$\mathbb{R}^k$, thus embedding the graph as a point in
+$\mathbb{R}^k$. We then use these k-long vectors (k-dimensional
+points) as the input to DMAPS, and use the Euclidean distance between
+them as our notion of graph similarity. Thus
+$d(G_i, G_j) = \| v_i - v_j \|_2$. Fig. (4) presents a schematic
+illustrating this subgraph-enumeration process.
 
 
-In the SIS model, we are actually working with labeled graphs, since each node has one of two labels – susceptible (S) or infected (I). It is inappropriate to simply ignore network labels, since networks with the same connectivity, but with different node labels, can behave in extremely different ways and should thus be considered dissimilar. To overcome this issue, for a given labeled graph  we choose to consider three separate unlabeled subgraphs  and . Here  is the initial graph  without node labels and ,  the unlabeled subgraphs obtained (induced) by only considering the S, or the I nodes respectively. We will represent each overall labeled graph by the concatenation of the three count vectors  into , again using the Euclidian norm to quantify (dis)similarity between them. Note that we scale the subgraph counts so that we really measure a “density” of  in , given by:
+In the SIS model, we are actually working with labeled graphs, since
+each node has one of two labels – susceptible (S) or infected (I). It
+is inappropriate to simply ignore network labels, since networks with
+the same connectivity, but with different node labels, can behave in
+extremely different ways and should thus be considered dissimilar. To
+overcome this issue, for a given labeled graph $G$ we choose to
+consider three separate unlabeled subgraphs $G_0, G_S$ and $G_I$. Here
+$G_0$ is the initial graph $G$ without node labels and $G_S$, $G_I$
+the unlabeled subgraphs obtained (induced) by only considering the S,
+or the I nodes respectively. We will represent each overall labeled
+graph by the concatenation of the three count vectors $v_0, v_I, v_S$
+into $v = [v_0 v_I v_S]^T$, again using the Euclidian norm to quantify (dis)similarity
+between them. Note that we scale the subgraph counts so that we really
+measure a “density” of $s$ in $G$, given by:
 
-where is the number of nodes in , is the number of nodes in , is an
-injection from the first integers to the first , and is an indicator
-function which takes the value 1 when subgraph has been located in
-. The subgraph enumeration procedure in the case of labeled nodes is
-illustrated in Fig. (5).
+\begin{align}
+  \label{eqn:homdenG}
+  \rho(H,G) := \frac{1}{{n\choose k}} \!  \sum_{\varphi:[k] \to [n]} \!
+  \left[ \forall  i, j \in [k] \! : \! H(i,j) \! = \! G(\varphi(i),
+  \varphi(j)) \right].
+\end{align}
+
+where $n$ is the number of nodes in $G$, $k$ is the number of nodes in
+$s$, $\varphi$ is an injection from the first $k$ integers to the
+first $n$, and $\!$ is an indicator function which takes the value 1
+when subgraph $s$ has been located in $G$. The subgraph enumeration
+procedure in the case of labeled nodes is illustrated in Fig. (5).
 
 \section{An unlabeled graph example: the Watts-Strogatz model}
 
@@ -277,49 +302,53 @@ To validate the applicability of the above approach/graph similarity
 measure on graph objects, we used the Watts-Strogatz (WS) network
 generation model to construct a graph object dataset on which to apply
 DMAPS. For a fixed graph size, the WS model relies on two parameters
-to generate a so-called small-world network output.19 The first
-parameter is initially used to generate a two-dimensional lattice
-where each vertex is connected to all of its neighbors situated a
-distance at most away. For each vertex in the graph, we choose the
-edge that connects it to its nearest neighbor and, with probability ,
-rewire this edge to connect with a vertex chosen uniformly at random
-from the graph. This procedure is repeated, each time considering the
-edge that connects the next closest neighbor to the vertex in question
-until all edges have been considered once, with no duplicate edges
-allowed. The resulting graph is considered the output of the
-model. The networks produced by this model exhibit various
-qualitatively different properties as its “generating parameters”
-vary. For the model reduces to generating an Erdős–Rényi random graph
-: a graph of size for which the probability that any two vertices are
-connected is . On the other hand, for the graph remains a regular
+to generate a so-called small-world network output
+\cite{watts_collective_1998}. The first parameter $p$ is initially
+used to generate a two-dimensional lattice where each vertex is
+connected to all of its neighbors situated a distance at most $p$
+away. For each vertex in the graph, we choose the edge that connects
+it to its nearest neighbor and, with probability $r$, rewire this edge
+to connect with a vertex chosen uniformly at random from the
+graph. This procedure is repeated, each time considering the edge that
+connects the next closest neighbor to the vertex in question until all
+edges have been considered once, with no duplicate edges allowed. The
+resulting graph is considered the output of the model. The networks
+produced by this model exhibit various qualitatively different
+properties as its “generating parameters” vary. For $r=1$ the model
+reduces to generating an Erdős–Rényi random graph $G(n,p)$: a graph of
+size $n$ for which the probability that any two vertices are connected
+is $p$. On the other hand, for $r=0$ the graph remains a regular
 lattice, with no random changes in its topology. Lastly, for
-intermediate values of we get many local connections between adjacent
-nodes and few edges between far away nodes, which is a defining
-characteristic of small-world networks.
+intermediate values of $r$ we get many local connections between
+adjacent nodes and few edges between far away nodes, which is a
+defining characteristic of small-world networks.
 
-The WS algorithm was used to generate different small-world graphs,
-each with vertices. For each such graph , we generated uniformly at
-random the two variables and . We thus are confident that, by
-construction, this is a two-parameter set of graph data, parametrized
-by the generating parameters and . The diffusion map embedding was
-then constructed by using the graph similarity measure defined
-above. It was found that the first two principal DMAP eigenvectors and
-were sufficient to represent the data. This is confirmed by the two
-dimensional nature of the manifold. When considering the values of and
-of the various data points (the various graphs) that lie on this
-two-dimensional manifold, it can be observed that they vary in
+The WS algorithm was used to generate $n=2000$ different small-world
+graphs, each with $n=100$ vertices. For each such graph
+$G_i(p_i, r_i)$, we generated uniformly at random the two variables
+$r_i ~ \mathrm{unif}[0,1]$ and $p_i ~ \mathrm{unif}[0,1]$. We thus are
+confident that, by construction, this is a two-parameter set of graph
+data, parametrized by the generating parameters $p$ and $r$. The
+diffusion map embedding was then constructed by using the graph
+similarity measure defined above. It was found that the first two
+principal DMAP eigenvectors $\phi_2$ and $\phi_3$ were sufficient to
+represent the data. This is confirmed by the two dimensional nature of
+the $(\phi_2, \phi_3)$ manifold. When considering the values of $p_i$
+and $r_i$ of the various data points (the various graphs) that lie on
+this two-dimensional manifold, it can be observed that they vary in
 directions visually independent of each other. This strongly suggests
-that the transformation has a nonsingular Jacobian matrix, which in
-turn implies that the transformation is bijective – the two variable
-pairs are one-to-one with each other, and they each constitute
-coordinates of the network dataset. This means that DMAPS discovered a
-reparameterization of the two variables and , which in this case were
-known in advance to be (by construction) the variables that define
-this dataset. This serves as a validation for the DMAPS approach and
-the chosen graph similarity measure since, by only examining a dataset
-generated by the WS model, the technique was able to “learn” that only
-two features mattered, and that the two features were one-to-one with
-the construction parameters that here were a priori known.
+that the transformation $f:(\phi_2, \phi_3) \rightarrow (r,p)$ has a
+nonsingular Jacobian matrix, which in turn implies that the
+transformation is bijective – the two variable pairs are one-to-one
+with each other, and they each constitute coordinates of the network
+dataset. This means that DMAPS discovered a reparameterization of the
+two variables $r$ and $p$, which in this case were known in advance to
+be (by construction) the variables that define this dataset. This
+serves as a validation for the DMAPS approach and the chosen graph
+similarity measure since, by only examining a dataset generated by the
+WS model, the technique was able to “learn” that only two features
+mattered, and that the two features were one-to-one with the
+construction parameters $(r, p)$ that here were a priori known.
 
 \section{SIS model results}
 
@@ -331,18 +360,20 @@ simulation over time from various parameters/initial conditions, with
 each simulation leading to different long-term dynamical behavior. The
 principal directions, represented by the leading diffusion map
 coordinates, identify the important variables that define the model's
-evolution over time. Since the set of coarse variables are known to be
-central to the model's evolution, their relationship with the derived
-principal directions was investigated.16
+evolution over time. Since the set of coarse variables
+$(i, l_{II}, l_{SS})$ are known to be central to the model's
+evolution, their relationship with the derived principal directions
+was investigated \cite{gross_robust_2008}.
 
 More specifically, the system is known to undergo a Hopf bifurcation
-to periodic solutions as the parameter varies around and graph objects
-at parameter values around this bifurcation point were sampled to
-create a dataset of graphs . After the graphs were sampled, the DMAPS
+to periodic solutions as the parameter $p$ varies around
+$(p, r, w_0) \approx (0.00071, 0.0002, 0.06)$ and graph objects at
+parameter values around this bifurcation point were sampled to create
+a dataset of $N = 6000$ graphs ${G_i}_{i=1}^N$. After the graphs were sampled, the DMAPS
 procedure detailed above was applied, with our labeled graph metric
 used as a similarity measure. An analysis of the relationship between
 the diffusion map coordinates indicates a two-dimensional embedding in
-the first two principal directions . Furthermore, an investigation of
+the first two principal directions $\phi_2$, $\phi_3$. Furthermore, an investigation of
 the relationship between and with other diffusion map coordinates
 demonstrates that no new direction is captured by higher order
 eigenvectors, something that strongly implies that the manifold on
@@ -384,7 +415,7 @@ of each other, and that they are reparametrizations of the principal
 eigenvectors. Similar results are obtained if we consider instead of
 . These observations imply that the diffusion map technique has been
 successful in identifying, up to parameterization, the variables found
-in [16] as responsible for the long term dynamics of the
+in ~\cite{gross_robust_2008} as responsible for the long term dynamics of the
 model. Furthermore, we were able to confirm that the long-term
 dynamics of this model really depend on only two macro-variables, the
 total number of infected nodes and the total number of SI-links .
