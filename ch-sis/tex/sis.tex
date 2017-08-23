@@ -170,28 +170,69 @@ $i$ is the number of infected nodes. These rules are motivated by the
 assumption that humans are more likely to avoid infected individuals
 proportionally to their awareness of disease spread, which here is
 assumed to be directly proportional to the infected fraction of the
-population \cite{gross_epidemic_2006}.
+population \cite{gross_epidemic_2006}. Figure~\ref{fig:sis2} shows a
+schematic of this evolution process, while Figure~\ref{fig:sis1} gives
+a sense of the model behavior in different parameter regimes.
 
 Although the behavior of this model is inherently complex (see the
-bifurcation diagram in Fig. 1A, reproduced by permission)
-\cite{gross_robust_2008}, it has been previously established that the
-system-level dynamics of a sufficiently large network can be captured
-by just three macroscopic observables: the number of infected nodes $i$,
-the number of SS-links $l_{SS}$ and the number of II-links $l_{II}$ . These variables
-suffice to describe all long-term dynamical behavior exhibited by the
-system, since the values of other variables (higher order moments of
-the network state) quickly become slaved to (functions of) these three
-and do not contribute extra degrees of freedom over long
-timescales. As the infection parameter $p$ varies, one can observe
-stationary states as well as coarsely oscillatory dynamics, and even
-coexistence between the two (associated with an apparent subcritical
-coarse Hopf bifurcation) \cite{holmes_turbulence_2012}.  In this paper
-we will show how to extract the relevant observables responsible for
-the dynamics of the system without making use of any prior knowledge
-about their suitability. This will be accomplished by first
-constructing a suitable similarity measure for quantifying graph
-differences, and secondly, by applying DMAPS on ensembles of graphs
-resulting from the dynamic simulation of the model’s evolution.
+bifurcation diagram in Figure~\ref{fig:sis1}, reproduced by
+permission) \cite{gross_robust_2008}, it has been previously
+established that the system-level dynamics of a sufficiently large
+network can be captured by just three macroscopic observables: the
+number of infected nodes $i$, the number of SS-links $l_{SS}$ and the
+number of II-links $l_{II}$ . These variables suffice to describe all
+long-term dynamical behavior exhibited by the system, since the values
+of other variables (higher order moments of the network state) quickly
+become slaved to (functions of) these three and do not contribute
+extra degrees of freedom over long timescales. As the infection
+parameter $p$ varies, one can observe stationary states as well as
+coarsely oscillatory dynamics, and even coexistence between the two
+(associated with an apparent subcritical coarse Hopf bifurcation)
+\cite{holmes_turbulence_2012}.  In this paper we will show how to
+extract the relevant observables responsible for the dynamics of the
+system without making use of any prior knowledge about their
+suitability. This will be accomplished by first constructing a
+suitable similarity measure for quantifying graph differences, and
+secondly, by applying DMAPS on ensembles of graphs resulting from the
+dynamic simulation of the model’s evolution.
+
+\begin{figure}[!htp]
+\centering
+\begin{tabular}{cc}
+  \includegraphics[width=0.45\textwidth]{1a} &
+  \includegraphics[width=0.45\textwidth]{1b}\\
+  (a) & (b)\\
+  \includegraphics[width=0.45\textwidth]{1c} &
+  \includegraphics[width=0.45\textwidth]{1d}\\
+  (c) & (d) \\
+  \includegraphics[width=0.45\textwidth]{1e} &
+  \includegraphics[width=0.45\textwidth]{1f}\\
+  (e) & (f)
+\end{tabular}
+\caption{(a) Model bifurcation diagrams wrt. the infection rate
+  parameter $p$ (reprinted with permission)
+  \cite{gross_epidemic_2006}. (b) The system evolves to a stable
+  stationary state for $p = 0.00073$. (c) Oscillatory behavior
+  indicating a (coarse) limit cycle at $p = 0.0006$. (d) Stable
+  stationary state for $p = 0.0003$. Bottom graphs indicate the
+  relationship between $i$, $l_{SS}$ , and $l_{II}$ over the course of
+  one complete oscillation for $p = 0.0006$. Model parameters:
+  $(r, w_0, N, L) = (0.0002, 0.03, 10^5 , 10^6)$. \label{fig:sis1}}
+\end{figure}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[width=0.9\textwidth]{2}
+\caption{Schematic of the adaptive SIS model evolution: the three
+  substeps constituting one SIS evolution timestep. (A) The initial
+  graph at time $t$. (B) Each infected node recovers with probability
+  $r$, becoming susceptible. (C) The disease spreads along SI-links
+  with probability $p$, infecting susceptible nodes. (D) With
+  probability $w$, each SI-link is broken and a new SS-link is
+  created. (E) The final graph at $t+1$. Broken links and nodes that
+  change status between steps are colored in red, while rewired links
+  are colored in green. \label{fig:sis2}}
+\end{figure}
 
 \section{A brief discussion of dimensionality reduction}
 
@@ -254,7 +295,7 @@ comparing random walks on the graphs (spectral distance)
 this paper, we consider two graphs to be similar if they share similar
 numbers of certain features. More precisely, we define a list of $k$
 subgraphs $S = {s_1, s_2, \dots, s_k}$, such as the single edge, the
-two connected edges, the triangle shown in Fig. (4) etc. Then we
+two connected edges, the triangle shown in Figure~\ref{fig:sis4} etc. Then we
 record how many times each subgraph appears in our input graph in a
 vector $v_i = {c_1^i, c_2^i, \dots, c_k^i}$, where $c_j^i$ is the
 number of times subgraph $s_j$ was found in input graph $G_i$. This
@@ -264,7 +305,7 @@ $\mathbb{R}^k$, thus embedding the graph as a point in
 $\mathbb{R}^k$. We then use these k-long vectors (k-dimensional
 points) as the input to DMAPS, and use the Euclidean distance between
 them as our notion of graph similarity. Thus
-$d(G_i, G_j) = \| v_i - v_j \|_2$. Fig. (4) presents a schematic
+$d(G_i, G_j) = \| v_i - v_j \|_2$. Figure~\ref{fig:sis4} presents a schematic
 illustrating this subgraph-enumeration process.
 
 
@@ -294,7 +335,22 @@ where $n$ is the number of nodes in $G$, $k$ is the number of nodes in
 $s$, $\varphi$ is an injection from the first $k$ integers to the
 first $n$, and $\!$ is an indicator function which takes the value 1
 when subgraph $s$ has been located in $G$. The subgraph enumeration
-procedure in the case of labeled nodes is illustrated in Fig. (5).
+procedure in the case of labeled nodes is illustrated in Figure~\ref{fig:sis5}.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[width=0.9\textwidth]{subgraph-counting}
+\caption{Illustration of the subgraph-enumeration process with an
+  unlabeled input graph. \label{fig:sis4}}
+\end{figure}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[width=0.9\textwidth]{subgraph-counting-labeled}
+\caption{Illustration of the subgraph-enumeration process with a
+  labeled input graph. In this case, we must discriminate between
+  differently labeled subgraphs. \label{fig:sis5}}
+\end{figure}
 
 \section{An unlabeled graph example: the Watts-Strogatz model}
 
@@ -321,7 +377,8 @@ is $p$. On the other hand, for $r=0$ the graph remains a regular
 lattice, with no random changes in its topology. Lastly, for
 intermediate values of $r$ we get many local connections between
 adjacent nodes and few edges between far away nodes, which is a
-defining characteristic of small-world networks.
+defining characteristic of small-world networks. These different
+regimes are depicted in Figure~\ref{fig:sis6a}.
 
 The WS algorithm was used to generate $n=2000$ different small-world
 graphs, each with $n=100$ vertices. For each such graph
@@ -333,13 +390,14 @@ diffusion map embedding was then constructed by using the graph
 similarity measure defined above. It was found that the first two
 principal DMAP eigenvectors $\phi_2$ and $\phi_3$ were sufficient to
 represent the data. This is confirmed by the two dimensional nature of
-the $(\phi_2, \phi_3)$ manifold. When considering the values of $p_i$
-and $r_i$ of the various data points (the various graphs) that lie on
-this two-dimensional manifold, it can be observed that they vary in
+the $(\phi_2, \phi_3)$ manifold, shown in Figure~\ref{fig:sis6bc}
+colored by $\log(r)$ and $p$. When considering the values of $p_i$ and
+$r_i$ of the various data points (the various graphs) that lie on this
+two-dimensional manifold, it can be observed that they vary in
 directions visually independent of each other. This strongly suggests
 that the transformation $f:(\phi_2, \phi_3) \rightarrow (r,p)$ has a
 nonsingular Jacobian matrix, which in turn implies that the
-transformation is bijective – the two variable pairs are one-to-one
+transformation is bijective - the two variable pairs are one-to-one
 with each other, and they each constitute coordinates of the network
 dataset. This means that DMAPS discovered a reparameterization of the
 two variables $r$ and $p$, which in this case were known in advance to
@@ -349,6 +407,35 @@ similarity measure since, by only examining a dataset generated by the
 WS model, the technique was able to “learn” that only two features
 mattered, and that the two features were one-to-one with the
 construction parameters $(r, p)$ that here were a priori known.
+
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[width=0.9\textwidth]{6a}
+\caption{The Watts-Strogatz Model and its construction parameters:
+  The value of $r$ denotes the probability of long-distance rewiring
+  with $r = 0$ denoting a regular lattice, $r < 1$ a small-world graph,
+  and $r = 1$ an Erdős–Rényi random graph. The value of $p$ quantifies how
+  interconnected the initial lattice is, being the number of
+  neighboring nodes each node connects to. \label{fig:sis6a}}
+\end{figure}
+
+\begin{figure}[!htp]
+\centering
+\begin{tabular}{cc}
+  \includegraphics[width=0.45\textwidth]{6b} &
+  \includegraphics[width=0.45\textwidth]{6c}\\
+  (a) & (b)
+\end{tabular}
+\caption{(a) Second versus third eigenvector $(\phi_2 ,\phi_3)$
+  colored by $\log(r)$ (a) and $p$ (b). The visual linear independence
+  of the directions of change of $\log(r)$ and $p$ indicate that the
+  $(\phi_2 ,\phi_3)$ coordinates form a bijection with (a
+  reparametrization of) the construction parameters $(r, p)$. An
+  $\epsilon$ of 0.1 was used in our DMAPS
+  computations. \label{fig:sis6bc}}
+\end{figure}
+
 
 \section{SIS model results}
 
@@ -369,56 +456,66 @@ More specifically, the system is known to undergo a Hopf bifurcation
 to periodic solutions as the parameter $p$ varies around
 $(p, r, w_0) \approx (0.00071, 0.0002, 0.06)$ and graph objects at
 parameter values around this bifurcation point were sampled to create
-a dataset of $N = 6000$ graphs ${G_i}_{i=1}^N$. After the graphs were sampled, the DMAPS
-procedure detailed above was applied, with our labeled graph metric
-used as a similarity measure. An analysis of the relationship between
-the diffusion map coordinates indicates a two-dimensional embedding in
-the first two principal directions $\phi_2$, $\phi_3$. Furthermore, an investigation of
-the relationship between and with other diffusion map coordinates
-demonstrates that no new direction is captured by higher order
-eigenvectors, something that strongly implies that the manifold on
-which the dataset lies is indeed two-dimensional. This is achieved by
-performing linear regression, with a suitable kernel, on the
-eigenvectors and checking whether each can be accurately reconstructed
-using the rest, quantified as cross-validation error. This measure is
-high for eigenvectors characterized by unique directions, and low for
-higher harmonics and noise. It has the added benefit that it can be
-used to compare many eigenvectors, not limiting it only to the first
-few.
+a dataset of $N = 6000$ graphs ${G_i}_{i=1}^N$. After the graphs were
+sampled, the DMAPS procedure detailed above was applied, with our
+labeled graph metric used as a similarity measure. An analysis of the
+relationship between the diffusion map coordinates indicates a
+two-dimensional embedding in the first two principal directions
+$\phi_2$, $\phi_3$, see Figures~\ref{fig:sis7} (a). Furthermore, an
+investigation of the relationship between $\phi_2$ and $\phi_3$ with
+other diffusion map coordinates demonstrates that no new direction is
+captured by higher order eigenvectors, something that strongly implies
+that the manifold on which the dataset lies is indeed
+two-dimensional. This is achieved by performing linear regression,
+with a suitable kernel, on the eigenvectors and checking whether each
+can be accurately reconstructed using the rest, quantified as
+cross-validation error, shown in Figures~\ref{fig:sis7} (b). This
+measure is high for eigenvectors characterized by unique directions,
+and low for higher harmonics and noise. It has the added benefit that
+it can be used to compare many eigenvectors, not limiting it only to
+the first few.
 
-Motivated by the evidence that the manifold fully captures all
-independent directions in the dataset, we look at the relationship
-between these two principal directions and the coarse variables ,
-known to encapsulate the long-term dynamics of this system. This can
-be investigated by visually studying the embedding of the coarse
-variables in diffusion map space and by using the cross-validation
-algorithm defined above. Looking at the relationship between these
-three variables in our dataset, it can be noticed that they actually
-span two (and not three different) dimensions, which can be garnered
-by their two dimensional embedding in . Thus, we are actually looking
-for two principal directions, motivating the definition of the total
-number of SI-links as a compound variable. This is done without
-introducing or removing any information from the system, as the total
-number of edges is constant throughout. We consider as a candidate
+Motivated by the evidence that the $(\phi_2 ,\phi_3)$ manifold fully
+captures all independent directions in the dataset, we look at the
+relationship between these two principal directions and the coarse
+variables $(i, l_{II}, l_{SS})$ , known to encapsulate the long-term
+dynamics of this system. The relationship between $(\phi_2 ,\phi_3)$
+and $(i, l_{II}, l_{SS})$ can be investigated by visually studying the
+embedding of the coarse variables in diffusion map space. Looking at
+the relationship between these three variables in our dataset, it can
+be noticed that they actually span two (and not three different)
+dimensions, which can be garnered by their two dimensional embedding
+in $\mathbb{R}^3$. Thus, we are actually looking for two principal
+directions, motivating the definition of
+$l_{SI} = L − (l_{II} + l_{SS})$, the total number of SI-links as a
+compound variable. This is done without introducing or removing any
+information from the system, as the total number of edges is
+11constant throughout. We consider $\log(l_{SI})$ as a candidate
 macro-variable, since we are interested in finding a bijective
-relationship between and .
+relationship between $(\phi_2 ,\phi_3)$ and $(i, l_{II}, l_{SS})$.
 
-By inspecting the relative directions of and in the two dimensional
-embedding of , it becomes apparent that they are transverse to each
-other, with the former varying roughly from left to right and the
-latter from top to bottom. Such an observation is strong evidence that
-the Jacobian of the transformation is nonsingular on this dataset,
-much in the same manner as for the Watts-Strogatz graph
+By inspecting the relative directions of $i$ and $\log(l_{SI})$ in the
+two dimensional embedding of $(\phi_2 ,\phi_3)$, as shown in
+Figure~\ref{fig:sis7} (c) and (d), it becomes apparent that they are
+transverse to each other, with the former varying roughly from left to
+right and the latter from top to bottom. Such an observation is strong
+evidence that the Jacobian of the transformation
+$f:(\phi_2, \phi_3) \rightarrow (i, l_{SI})$ is nonsingular on this
+dataset, much in the same manner as for the Watts-Strogatz graph
 ensembles. Thus, we can conclude that the directions of change on the
-manifold represented by changing and , respectively, are independent
-of each other, and that they are reparametrizations of the principal
-eigenvectors. Similar results are obtained if we consider instead of
-. These observations imply that the diffusion map technique has been
+$(\phi_2 ,\phi_3)$ manifold represented by changing $i$ and $l_{SI}$,
+respectively, are independent of each other, and that they are
+reparametrizations of the principal eigenvectors. Similar results are
+obtained if we consider $l_{SI}$ instead of $\log(l_{SI})$. These
+observations imply that the diffusion map technique has been
 successful in identifying, up to parameterization, the variables found
-in ~\cite{gross_robust_2008} as responsible for the long term dynamics of the
-model. Furthermore, we were able to confirm that the long-term
+in ~\cite{gross_robust_2008} as responsible for the long term dynamics
+of the model. Furthermore, we were able to confirm that the long-term
 dynamics of this model really depend on only two macro-variables, the
-total number of infected nodes and the total number of SI-links .
+total number of infected nodes $i$ and the total number of SI-links
+$l_{SI}$. Figures~\ref{fig:sis7} (e) and (f) show other colorings of
+the $(\phi_2 ,\phi_3)$ plane, and Figure~\ref{fig:sis8} shows the
+two-dimensional nature of the system as seen in three dimensions.
 
 In addition, there was no need to take any a priori knowledge about
 the model's specifics into account when isolating the important
@@ -430,6 +527,50 @@ for high-dimensional systems can assist in developing a framework for
 isolating the coarse variables that define graph-based datasets
 without resorting to approaches that rely on intuition about the
 specific model.
+
+
+\begin{figure}[!htp]
+\centering
+\begin{tabular}{cc}
+  \includegraphics[width=0.45\textwidth]{7a} &
+  \includegraphics[width=0.45\textwidth]{7b}\\
+  (a) & (b)\\
+  \includegraphics[width=0.45\textwidth]{7c} &
+  \includegraphics[width=0.45\textwidth]{7d}\\
+  (c) & (d)\\
+  \includegraphics[width=0.45\textwidth]{7e} &
+  \includegraphics[width=0.45\textwidth]{7f}\\
+  (e) & (f)
+\end{tabular}
+\caption{Coarse variable detection: (a) The leading eigenvalues of the
+  random walk matrix are plotted. (b) Computation a criterion
+  suggesting that the first two eigendirections suffice (the first is
+  a trivial one, and the third is much less important than the first
+  two. The $x$ and $y$ coordinates of the middle and bottom row
+  figures indicate the components of each datum, representing a graph,
+  in the second and third eigenvectors of the random walk matrix. Each
+  point is also colored by the number of (c) infected nodes $i$, (d)
+  $\log$(SI-links), (e) SS-links, and (f) II-links found in the
+  corresponding graph. A comparison between (c) and (d) indicates a
+  linear independence relationship between $i$ and $log(l_{SI})$. An
+  $\epsilon$ of 70 was used. \label{fig:sis7}}
+\end{figure}
+
+\begin{figure}[!htp]
+\centering
+\begin{tabular}{cc}
+  \includegraphics[width=0.45\textwidth]{8a} &
+  \includegraphics[width=0.45\textwidth]{8b}\\
+  (a) & (b)
+\end{tabular}
+\caption{Coarse Variable Dependencies: An illustration of the
+  relationship between $l_{SS}$, $l_{SI}$, and $i$ in the diffusion
+  map dataset. The two-dimensional nature of the manifold indicates
+  that the number of SS links can be thought of as a function, on the
+  data, of $i$ and $l_{SI}$, and is thus not necessary as an
+  independent macro-variable. \label{fig:sis8}}
+\end{figure}
+
 
 \section{Conclusion}
 
@@ -492,6 +633,13 @@ introduced as a “wrapper algorithm” around brief bursts of detailed,
 fine scale simulation; we believe that the approach holds real promise
 in enabling systems level analysis, simulation and control of
 detailed, realistic epidemic dynamics.
+
+We have now seen two unique applications of DMAPS to network
+systems. The next chapter will again employ this nonlinear manifold
+learning technique, but in a different application. We will see how
+DMAPS can be used to uncover important parameter combinations in
+systems of differential equations.
+
 
 
 %%% Local Variables: ***
