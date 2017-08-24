@@ -1,0 +1,551 @@
+\chapter{Appendix}
+
+\section{Details of regularly perturbed example \label{app:regpert}}
+
+The system under investigation is $y' = \epsilon y^3 - y$ with
+parameter $\epsilon$ and state $y$. This differential equation is
+separable, and, restricting ourselves to $y \ge 0$, we can write down
+the analytical solution in terms of $\epsilon$ and $y_0$ as
+
+\begin{align}
+  y(t) = \frac{1}{\sqrt{\epsilon + e^{2 t} \left(\frac{1}{y_0^2} -
+  \epsilon \right)}}
+\label{eq:regpert}
+\end{align}
+
+In our analysis, we are interested in the behavior of the system as
+$\epsilon \rightarrow 0$. This limiting solution can be found by
+simply dropping the $y^3$ term from the differential equation, giving
+us
+
+\begin{align}
+  \lim_{\epsilon \rightarrow 0} y(t) = y_0 e^{-t}
+\label{eq:regpert-limit}
+\end{align}
+
+The key distinction between this system and the singularly perturbed
+model above is that the initial conditions influence the trajectories
+even at small values of $\epsilon$. If we vary both $\epsilon$ and
+$y_0$, at large values of $\epsilon$ we will have a model response
+governed by equation~\ref{eq:regpert}, a function of both $\epsilon$
+and $y_0$. At small values of $\epsilon$, the trajectories converge
+to equation~\ref{eq:regpert-limit}, where $\epsilon$ does not
+affect the model response.
+
+Looking back at the model manifold depicted in
+Fig.~\ref{fig:regpert-mm}, this is precisely what we see. At larger
+values of $\epsilon$, the model manifold is two dimensional as
+variations in both $y_0$ and $\epsilon$ influence the model
+response. At smaller values of $\epsilon$, the model manifold
+converges to a one-dimensional line parameterized by $y_0$. The exact
+form of this line is simply $f(y_0)= \left( y_0 e^{-t_1}, y_0 e^{-t_2}, y_0
+  e^{-t_3} \right)$. The dependence on $\epsilon$ is lost.
+
+To create Fig.~\ref{fig:regpert-mm}, we fixed $t_1 = 0.25$,
+$t_2 = 1.0$ and $t_3 = 1.75$. We then calculated the model response
+over the rectangle $y_0 \in [1.25, 3.5]$ and $\log(\epsilon) \in [-3,
+-1]$, so for each particular $y_0$ and $\epsilon$ value we have
+
+\begin{align}
+  f(y_0, \epsilon) = \begin{bmatrix} y(t_1) \\ y(t_2) \\
+    y(t_3) \end{bmatrix} = \begin{bmatrix} \frac{1}{\sqrt{\epsilon + e^{2 t_1} \left(\frac{1}{y_0^2} -
+  \epsilon \right)}} \\ 
+\frac{1}{\sqrt{\epsilon + e^{2 t_2} \left(\frac{1}{y_0^2} -
+      \epsilon \right)}} \\
+\frac{1}{\sqrt{\epsilon + e^{2 t_3} \left(\frac{1}{y_0^2} -
+      \epsilon \right)}}
+\end{bmatrix} \in \mathbb{R}^3
+\end{align}
+
+We mask out points for which $y(t_3) > 2.0$ to aid the interpretability of
+the figure; otherwise, the few solutions that grow very rapidly stretch
+the axes and obscure the bulk of the manifold. 
+
+To create Fig.~\ref{fig:regpert-params}, we performed DMAPS on a set
+of nearly 12,000 points. We drew these points uniformly at random over
+the rectangle $y_0 \in [1.25, 3.5]$ and $\log(\epsilon) \in [-3, -1]$
+as before, and calculated the corresponding model responses, again
+omitting points for which $y(t_3) > 2.0$. Applying DMAPS to the
+collection of model responses that remained using a $\delta = 1.0$,
+and coloring parameter space by the resulting $\phi_1$ values gives
+Fig.~\ref{fig:regpert-params}.
+
+A final note of clarification is needed regarding
+Fig.~\ref{fig:regpert-params}, namely the existence of the uncolored
+white patch in the upper right. Examining equation~\ref{eq:regpert},
+we see that our solution may diverge in finite time if
+$\left(\frac{1}{y_0^2} - \epsilon \right) < 0$. We can find the exact
+time at which the solution becomes infinite by setting the denominator
+equal to zero, giving us
+$t^* = \ln \left( \sqrt{\frac{y_0^2 \epsilon}{y_0^2 \epsilon - 1}}
+\right)$. Thus, having fixed $t_1$, $t_2$ and $t_3$, there are certain
+parameter combinations that diverge at $t^* \le t_3$. The model
+response is undefined at such points, and therefore we omit these
+parameter combinations from our plots.
+
+
+\section{Details of singularly perturbed example \label{app:singpert}}
+
+\section{Details of reaction network \label{app:abc}}
+
+%
+In this section, we identify the singularly perturbed regime for the dynamics associated with the reaction scheme
+%
+\[
+  A \xrightleftharpoons[k_{-1}]{k_1} B \xrightarrow[]{k_2} C .
+\]
+%
+As we will see, the dynamics in that regime are driven by the single effective parameter $\keff$.
+
+\subsection{Exact solution}
+%
+The evolution of the molar concentrations is dictated by the linear ODEs
+%
+\[
+ \frac{d}{dt}
+\left[\begin{array}{c}
+ A \\ B \\ C
+\end{array}\right]
+=
+\left[\begin{array}{ccc}
+ -k_1 & k_{-1} & 0 \\ k_1 & -(k_{-1}+k_2) & 0 \\ 0 & k_2 & 0
+\end{array}\right]
+%
+\left[\begin{array}{c}
+ A \\ B \\ C
+\end{array}\right] ,
+%
+\ \mbox{subject to} \
+%
+\left[\begin{array}{c}
+ A(0) \\ B(0) \\ C(0)
+\end{array}\right]
+=
+\left[\begin{array}{c}
+ A_0 \\ B_0 \\ C_0
+\end{array}\right] .
+\]
+%
+This system has the explicit solution
+%
+\be
+\begin{array}{rcl}
+\left[\begin{array}{c}
+ A(t) \\ B(t) \\ C(t)
+\end{array}\right]
+&=&
+\displaystyle
+ \frac{\lp A_0 + (\lp+k_2)B_0}{\dl}
+\left[\begin{array}{ccc}
+ -(1+\lm/k_2) \\ \lm/k_2 \\ 1
+\end{array}\right]
+ \mathrm{e}^{\lm t}
+\\
+&{}&
+\displaystyle
++
+ \frac{\lm A_0 + (\lm+k_2)B_0}{\dl}
+\left[\begin{array}{ccc}
+ -(1+\lp/k_2) \\ \lp/k_2 \\ 1
+\end{array}\right]
+ \mathrm{e}^{\lp t}
+\\
+&{}&
+\displaystyle
++
+ (A_0+B_0+C_0)
+\left[\begin{array}{ccc}
+ 0 \\ 0 \\ 1
+\end{array}\right] ,
+\end{array}
+\label{ABC-soln}
+\ee
+%
+where $\dl = \lp-\lm > 0$ is the difference between the nonzero eigenvalues
+%
+\be
+ \lpm
+=
+ \frac{1}{2}
+\left[
+ -(k_{-1}+k_1+k_2)
+\pm
+ \sqrt{(k_{-1}+k_1+k_2)^2 - 4 k_1 k_2}
+\right]
+<
+ 0 .
+\label{ABC-lambda}
+\ee
+%
+Among them, $\lm$ controls the fastest timescale (\emph{transient dynamics})
+and $\lp$ the rate of approach to the steady state $(A_*,B_*,C_*)=(0,0,A_0+B_0+C_0)$ (\emph{slow dynamics}).
+The third eigenvalue is identically zero and associated with the conservation law $A(t)+B(t)+C(t)=A_0+B_0+C_0$.
+For our purposes, we assume a fixed initial state $(A_0,B_0,C_0)=(1,0,0)$
+(in arbitrary units) and variable reaction rates $\p = (k_{-1},k_1,k_2)$.
+Observing the system takes the form of monitoring the product concentration at preset times $0 \le t_1 < \ldots < t_N$,
+whence $\omr(\p) = (C(t_1 \vert \p) , \ldots , C(t_N \vert \p))^\mathrm{T}$.
+
+\subsection{Singularly perturbed regime}
+%
+Rearrranging terms from slowest to fastest in \eqref{ABC-soln} yields
+%
+\be
+ C(t \vert \p)
+=
+ 1
++
+ \frac{\lm}{\dl}
+ \mathrm{e}^{\lp t}
+\left(
+ 1
++
+ \frac{\lp}{\lm}
+ \mathrm{e}^{r \lp t}
+\right) ,
+\quad\mbox{with}\
+ r = \frac{\dl}{|\lp|} > 0 .
+\label{ABC-C-soln}
+\ee
+%
+To resolve the slow dynamics, we select $t_1 = \alpha/|\lp|$ for $\alpha \approx 0.5$.
+In the presence of timescale disparity, the fast component should be negligible by that time already,
+which necessitates that $\vert\lp/\lm\vert \mathrm{e}^{-\alpha r} \ll 1$.
+This order relation determines the asymptotic regime in parameter space.
+Since the ratio $\vert\lp/\lm\vert$ depends only algebraically on $\p$,
+timescale separation must arise from the exponential term
+for all $r> r_*$ with $\alpha r_* \gg 1$.
+As an indication, the value $r_* = 6$ reduces the exponential term to approximately $0.05$.\\
+
+To identify the asymptotic regime explicitly, we work with the compactification
+%
+\be
+ \eps
+=
+%  \frac{1}{4}
+% \left[
+%  1 - \left(\frac{\dl}{\Sigma |\lambda|}\right)^2
+% \right]
+% =
+ \frac{1}{4}
+\left[
+ 1 - \left(\frac{r}{r+2}\right)^2
+\right]
+=
+ \frac{k_1 k_2}{(k_{-1}+k_1+k_2)^2}
+<
+ \eps_*
+=
+ \frac{1}{4}
+\left[
+ 1 - \left(\frac{r_*}{r_*+2}\right)^2
+\right] ,
+\label{ABC-asympt-bound}
+\ee
+%
+where we have used \eqref{ABC-lambda} to express $r$ in terms of the kinetic parameters.
+The composite parameter $\eps$ decreases with $r$ from $1/4$ to zero,
+hence timescale disparity exists for $\eps < \eps_* \ll 1$: $\eps$ acts as a \emph{small parameter}.
+As an indication, the value $r_*=6$ above yields $\eps_* \approx 0.11$.
+To understand the quadratic curve~\eqref{ABC-asympt-bound} bounding the singularly perturbed regime,
+we introduce the transformation
+%
+\[
+\left[\begin{array}{c}
+ \kappa_1 \\ \kappa_2
+\end{array}\right]
+=
+ \frac{1}{\sqrt2}
+%
+\left[\begin{array}{rr}
+ 1+\sqrt{1-4\eps_*} & -1+\sqrt{1-4\eps_*} \\ -1+\sqrt{1-4\eps_*} & 1+\sqrt{1-4\eps_*}
+\end{array}\right]
+%
+\left[\begin{array}{c}
+ k_1/k_{-1} - 2 \eps_*/(1 - 4 \eps_*) \\ k_2/k_{-1} - 2 \eps_*/(1 - 4 \eps_*)
+\end{array}\right]
+\]
+%
+that factorizes \eqref{ABC-asympt-bound} as $\kappa_1 \kappa_2 < 2 \eps_*/(1 - 4 \eps_*)$.
+In the $(\kappa_1,\kappa_2)-$plane, the asymptotic regime is bounded by two hyperbolas in the first and third quadrants.
+Since the $\kappa_1-$ and $\kappa_2-$axes align with the axes in the $(k_1/k_{-1},k_2/k_{-1})$ plane, at leading order,
+the regime $\eps_* \downarrow 0$ becomes the narrow sliver shown in Fig.~\ref{f-regim}.\\
+%
+\begin{figure}[t]
+\scalebox{1}[1]{
+% \includegraphics{asymptotic_regime.eps}
+}
+\caption{\label{f-regim}
+The region on the $(k_1,k_2)-$plane within which there is timescale separation.
+}
+\end{figure}
+%
+
+\subsection{Effective parameter}
+%
+By construction, data generated by parameter values in the asymptotic regime
+are well-described by the slow component alone, whose decay rate is
+%
+\[
+ \vert \lp \vert
+=
+ \frac{1 - \sqrt{1-4\eps}}{2}
+ (k_{-1}+k_1+k_2)
+\sim
+ \frac{k_1 k_2}{k_{-1}+k_1+k_2}
+=
+ \keff .
+\]
+%
+For parameter values in that regime, the observable effectively reads (cf.~\eqref{ABC-C-soln})
+%
+\[
+ C(t \vert \p)
+=
+ 1
+-
+ \mathrm{e}^{-\keff t} ,
+\quad\mbox{since}\
+ \frac{\lp}{\lm}
+ \mathrm{e}^{-r \lp t}
+\ll
+ 1
+\ \mbox{and} \
+ \frac{\lm}{\dl}
+=
+-
+\frac{
+ 1 + \sqrt{1 - 4 \eps}
+}{
+ 2 \sqrt{1 - 4 \eps}
+}
+\sim
+ -1 .
+\]
+%
+This leading order result shows the observable to depend solely on the
+decay rate $\keff$, in the singularly perturbed regime.  That regime
+is foliated by (subsets of) the level sets of $\keff$,
+with the model response remaining largely constant on each such surface.\\
+
+It is interesting to note that, next to sloppiness, the setup above
+also exhibits \emph{structural non-identifiability}.  Indeed, the
+observable only depends on the two parameter combinations $\lpm$, see
+the exact formula \eqref{ABC-C-soln}.  It is important to understand
+that this effect is distinct from timescale disparity and thus not
+limited to the singularly perturbed regime.  This further entails that
+the parameter space is foliated by curves along which $\lpm$ remain
+constant, with all points on any such curve yielding \emph{identical}
+model responses.  Since $\keff$ is merely another name for $\lp$, each
+surface $\keff = const.$ is itself foliated by these curves.  In other
+words, the curves of \emph{identical} model response (constant $\lpm$)
+foliate surfaces of \emph{leading-order identical} model response
+(constant $\lp$) which, in turn, foliate the singularly perturbed
+regime.  We remark once again that sloppiness and non-identifialibity
+are pertinent to both the system and the monitoring protocol employed.
+Allowing $B_0>0$ in the initial condition or observing $A(t)$ and/or
+$B(t)$, next to $C(t)$, suffices to lift the non-identifiability.\\
+
+
+% \section{The Michaelis--Menten--Henri system}
+% %
+% We consider the prototypical chemical pathway \cite{JG11,MM13}
+% %
+% \[
+%  {\rm S + E}
+% \
+%  \xrightleftharpoons[k_{-1}]{k_1}
+% \
+%  {\rm C}
+% \
+%  \xrightarrow{k_2}
+% \
+%  {\rm P + E} ,
+% \label{s2c2p}
+% \]
+% %
+% modeling the two-step conversion of a substrate $\mathrm{S}$ into product $\mathrm{P}$ through the mediation of an enzyme $\mathrm{E}$.
+% The consituent concentrations evolve under
+% %
+% \be
+% \begin{array}{rclcl}
+%  S' &=& -k_1 E S + k_{-1} C ,
+% \\
+%  C' &=& \ \ \, k_1 E S - (k_{-1} + k_2) C ,
+% \\
+%  E' &=& -k_1 E S + (k_{-1} + k_2) C ,
+% \\
+%  P' &=& \ \ \, k_2 C ,
+% \end{array}
+% \label{SCEP-ODE}
+% \ee
+% %
+% supplemented by the initial concentrations $S_0$, $E_0$, $C_0$ and $P_0$.
+% This system has two exact conservation laws expressing mass balance,
+% %
+% \[
+%  S+C+P = S_0+C_0+P_0 =: S_T
+% \quad\mbox{and}\quad
+%  C+E = C_0+E_0 =: E_T .
+% \]
+% %
+% Typically, one uses these to eliminate the last two ODEs, thus obtaining 
+% %
+% \be
+% \begin{array}{rclcl}
+%  S' &=& -k_1 (E_T-C) S + k_{-1} C ,
+% \\
+%  C' &=& \ \ \, k_1 (E_T-C) S - (k_{-1} + k_2) C .
+% \end{array}
+% \label{SC-ODE}
+% \ee
+% %
+% This is the classical Michaelis--Menten--Henri system in \emph{dimensional} form \cite{SS89}.
+% In a typical experimental setting, $C_0=P_0=0$ so that $S_T=S_0$.
+% We follow this setup here and consider a problem with five parameters,
+% the three kinetic constants $k_{\pm1}$ and $k_2$ and the total concentrations $S_T$ and $E_T$.
+% To further emulate an experimental setting,
+% we set our observable to be the product concentration,
+% whose time course is determined by the IVP
+% %
+% \be
+%  P' = k_2 C ,
+% \quad\mbox{subject to}\
+%  P_0 = 0 .
+% \label{P-IVP}
+% \ee
+% %
+% Equations~\eqref{SC-ODE} and \eqref{P-IVP} are termed the \emph{original system}.
+
+
+% \subsection{System dynamics}
+% %
+% The multiscale dynamics of this system has been analyzed in a series of publications,
+% among which the landmark articles \cite{HTA67,SS89}.
+% The salient features of these two articles is the system nondimensionalizations they propose and, in particular,
+% the small parameter they use to define the singularly perturbed regime.
+% Specifically, the authors of \cite{HTA67} work with the small parameter $\bar{\eps} = E_T/S_T$,
+% whereas those of \cite{SS89} use $\eps = E_T/(S_T+K_M)$;
+% the asymptotic regime is defined as $\bar{\eps} \ll 1$ and $\eps \ll 1$, respectively.\\
+
+% % To study multiscale parameter sloppiness in our kinetic model, we first identify relevant parameter combinations.
+% % Note carefully that this is done to help interpret our results and is not an integral part of our data-driven investigation.
+% To nondimensionalize the system, we draw inspiration from \cite{SS89} and define the new parameter set
+% %
+% \be
+%  (\sigma , K_M , V_M , \kappa , \eps)
+% =
+% \left(
+%  \frac{S_T}{K_M}
+% \,,\,
+%  \dst\frac{k_{-1} + k_2}{k_1}
+% \,,\,
+%  k_2 E_T
+% \,,\,
+%  \dst\frac{k_{-1}}{k_2}
+% \,,\,
+%  \dst\frac{E_T}{S_T + K_M}
+% \right) .
+% \label{params-new}
+% \ee
+% %
+% Here, $S_T$ and $K_M$ have units of concentration, $V_M$ of reaction speed and $\kappa$ and $\eps$ are non-dimensional.
+% The inverse of this bijection is
+% %
+% \[
+%  S_T
+% =
+%  \sigma K_M ,
+% \
+%  E_T
+% =
+%  \eps K_M (\sigma + 1) ,
+% \
+%  (k_{-1} , k_1 , k_2)
+% =
+%  \frac{V_M}{\eps K_M (\sigma + 1)}
+% \left(
+%  \kappa , \frac{\kappa+1}{K_M} , 1
+% \right) .
+% % \label{params-old}
+% \]
+% %
+% Additionally, we nondimensionalize time and reactant concentrations through
+% %
+% \[
+%  \tau
+% =
+%  \frac{t}{t_s}
+% \quad\mbox{and}\quad
+%  (s , c , p)
+% =
+% \left(
+%  \frac{S}{S_T} , \frac{C}{\bar{C}} , \frac{P}{S_T}
+% \right) ,
+% \]
+% %
+% where the slow timescale $t_S$ and complex concentration estimate $\bar{C}$ are \cite{SS89}
+% %
+% \[
+%  t_s
+% =
+%  \frac{S_T + K_M}{V_M}
+% \quad\mbox{and}\quad
+%  \bar{C}
+% =
+%  \frac{E_T S_T}{S_T + K_M} .
+% \]
+% %
+% The new system of ODEs becomes
+% %
+% \be
+% \begin{array}{rclcl}
+%  \dot{s}
+% &=&
+% \dst
+%  (\kappa+1)
+% \left[
+% -
+%  \left(1 + \sigma\right)
+%  s
+% +
+%  \sigma
+%  c s
+% +
+%  \frac{\kappa}{\kappa+1}
+%  c
+% \right] ,
+% \vspace{2mm}\\
+%  \eps
+%  \dot{c}
+% &=&
+% \dst
+%  (\kappa+1)
+% \left[
+% \ \ \,
+%  \left(1 + \sigma\right)
+%  s
+% -
+%  \sigma
+%  c s
+% -
+%  c
+% \right] ,
+% \end{array}\!\!
+% \label{SC-ODE-new}
+% \ee
+% %
+% with initial conditions $s_0 = 1$ and $c_0 = 0$.
+% The observable $p$ evolves under
+% %
+% \be
+%  \dot{p}
+% =
+%  c ,
+% \quad\mbox{subject to}\
+%  p_0 = 0 .
+% \label{P-IVP-new}
+% \ee
+% %
+% We term this system the \emph{rescaled system}.
+
+

@@ -209,7 +209,7 @@ dynamic simulation of the model’s evolution.
   \includegraphics[width=0.45\textwidth]{1f}\\
   (e) & (f)
 \end{tabular}
-\caption{(a) Model bifurcation diagrams wrt. the infection rate
+\caption[Quantitative behavior of SIS model]{(a) Model bifurcation diagrams wrt. the infection rate
   parameter $p$ (reprinted with permission)
   \cite{gross_epidemic_2006}. (b) The system evolves to a stable
   stationary state for $p = 0.00073$. (c) Oscillatory behavior
@@ -223,7 +223,7 @@ dynamic simulation of the model’s evolution.
 \begin{figure}[!htp]
 \centering
 \includegraphics[width=0.9\textwidth]{2}
-\caption{Schematic of the adaptive SIS model evolution: the three
+\caption[Schematic of SIS model evolution]{Schematic of the adaptive SIS model evolution: the three
   substeps constituting one SIS evolution timestep. (A) The initial
   graph at time $t$. (B) Each infected node recovers with probability
   $r$, becoming susceptible. (C) The disease spreads along SI-links
@@ -340,14 +340,14 @@ procedure in the case of labeled nodes is illustrated in Figure~\ref{fig:sis5}.
 \begin{figure}[!htp]
 \centering
 \includegraphics[width=0.9\textwidth]{subgraph-counting}
-\caption{Illustration of the subgraph-enumeration process with an
+\caption[Illustration of subgraph-enumeration process for unlabeled graphs]{Illustration of the subgraph-enumeration process with an
   unlabeled input graph. \label{fig:sis4}}
 \end{figure}
 
 \begin{figure}[!htp]
 \centering
 \includegraphics[width=0.9\textwidth]{subgraph-counting-labeled}
-\caption{Illustration of the subgraph-enumeration process with a
+\caption[Illustration of subgraph-enumeration process for labeled graphs]{Illustration of the subgraph-enumeration process with a
   labeled input graph. In this case, we must discriminate between
   differently labeled subgraphs. \label{fig:sis5}}
 \end{figure}
@@ -412,7 +412,7 @@ construction parameters $(r, p)$ that here were a priori known.
 \begin{figure}[!htp]
 \centering
 \includegraphics[width=0.9\textwidth]{6a}
-\caption{The Watts-Strogatz Model and its construction parameters:
+\caption[Variations of Watts-Strogatz model]{The Watts-Strogatz model and its construction parameters:
   The value of $r$ denotes the probability of long-distance rewiring
   with $r = 0$ denoting a regular lattice, $r < 1$ a small-world graph,
   and $r = 1$ an Erdős–Rényi random graph. The value of $p$ quantifies how
@@ -427,7 +427,7 @@ construction parameters $(r, p)$ that here were a priori known.
   \includegraphics[width=0.45\textwidth]{6c}\\
   (a) & (b)
 \end{tabular}
-\caption{(a) Second versus third eigenvector $(\phi_2 ,\phi_3)$
+\caption[DMAPS results on Watts-Strogatz networks]{(a) Second versus third eigenvector $(\phi_2 ,\phi_3)$
   colored by $\log(r)$ (a) and $p$ (b). The visual linear independence
   of the directions of change of $\log(r)$ and $p$ indicate that the
   $(\phi_2 ,\phi_3)$ coordinates form a bijection with (a
@@ -542,8 +542,8 @@ specific model.
   \includegraphics[width=0.45\textwidth]{7f}\\
   (e) & (f)
 \end{tabular}
-\caption{Coarse variable detection: (a) The leading eigenvalues of the
-  random walk matrix are plotted. (b) Computation a criterion
+\caption[DMAPS results on SIS networks]{Coarse variable detection: (a) The leading eigenvalues of the
+  random walk matrix are plotted. (b) Computational criterion
   suggesting that the first two eigendirections suffice (the first is
   a trivial one, and the third is much less important than the first
   two. The $x$ and $y$ coordinates of the middle and bottom row
@@ -563,7 +563,7 @@ specific model.
   \includegraphics[width=0.45\textwidth]{8b}\\
   (a) & (b)
 \end{tabular}
-\caption{Coarse Variable Dependencies: An illustration of the
+\caption[Another view of DMAPS results on SIS networks]{Coarse Variable Dependencies: An illustration of the
   relationship between $l_{SS}$, $l_{SI}$, and $i$ in the diffusion
   map dataset. The two-dimensional nature of the manifold indicates
   that the number of SS links can be thought of as a function, on the
