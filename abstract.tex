@@ -1,14 +1,14 @@
 % !TEX root = thesis.tex
 
-Recent decades have seen a tremendous rise in affordability and
+Recent decades have seen a tremendous rise in the affordability and
 performance of various computational technologies, enabling
-researchers to propose and probe ever-more complicated numerical
+researchers to propose and probe ever more complicated numerical
 models. These simulations often generate incredible quantities of data
 that must be sifted through to glean useful conclusions. This thesis
 highlights our efforts to automate this process in two specific areas:
 (a) uncovering simplified descriptions of dynamic network models and
-(b) detecting important parameter combinations in general
-systems. Both advances involve modification of the Diffusion Maps to
+(b) detecting important parameter combinations in general nonlinear
+systems. Both advances involve modification of the manifold learning algorithm, Diffusion Maps (DMAPS), to
 address the particular problem.
 
 In the first case, the challenge is quanitifying the similarity of two
@@ -21,8 +21,7 @@ of one or two values instead of thousands.
 
 In the second, we must extend Diffusion Maps to operate on the graph
 of a function. In particular we consider a model that maps parameter
-values to some output. By properly accounting for both parameters and
-the resulting model output, we enable DMAPS to discover the directions
+values to some output. By properly formulating the DMAPS kernel, we enable DMAPS to discover the directions
 in parameter space along which model predictions vary most
 significantly.
 

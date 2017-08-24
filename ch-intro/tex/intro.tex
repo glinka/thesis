@@ -2,19 +2,28 @@
 
 Since the advent of the information age with the completion of the
 first transistor-based computer in 1954, Moore's law has ensured a
-steady decrease in the cost of computation. The concomitant rise in
-simulation complexity paired with the proliferation of electronic
-sensors has resulted in a torrent of data; the CERN Data Centre alone
-proccesses around one thousand terabytes daily. To address the
-challenge of separating the valuable bits from the uninformative, a
-host of machine learning techniques have been developed, ranging from
-the simplistic but venerable principal component analysis to complex
-neural networks. Their successes are numerous. Principal component
-analysis has been used to analyze PET scans \cite{friston_functional_1993}, to predict traffice flow \cite{zhang_forecasting_2007}, and to examine groundwater composition
-\cite{helena_temporal_2000}. Neural networks can automatically segment images and
-classify videos \cite{karpathy_large-scale_2014,zheng_conditional_2015}, and logistic regression has been used to
-detect gene interactions \cite{park_penalized_2008}. These are but a few of the thousands
-of successful applications of machine learning algorithms to large
+steady decrease in the cost of computation \cite{Moore's law: past,
+  present and future}. The concomitant rise in simulation complexity
+paired with the proliferation of electronic sensors has resulted in a
+torrent of data; the CERN Data Centre alone proccesses hundreds of
+terabytes daily \cite{How to deal with petabytes of data: the LHC Grid
+  project}. To address the challenge of separating the valuable bits
+from the uninformative, a host of machine learning techniques have
+been developed, ranging from the simplistic but venerable principal
+component analysis to complex neural networks \cite{Hotelling,The
+  Handbook of Brain Theory and Neural Networks, A Global Geometric
+  Framework for Nonlinear Dimensionality Reduction, DMAPS}. Their
+successes are numerous: principal component analysis has been used to
+approximate the dynamics of signaling proteins \cite{Parallel imaging
+  of Drosophila embryos for quantitative analysis of genetic
+  perturbations of the Ras pathway}, to predict traffice flow
+\cite{zhang_forecasting_2007}, and to examine groundwater composition
+\cite{helena_temporal_2000}. Neural networks can automatically segment
+images and classify videos
+\cite{karpathy_large-scale_2014,zheng_conditional_2015}, and logistic
+regression has been used to detect gene interactions
+\cite{park_penalized_2008}. These are but a few of the thousands of
+successful applications of machine learning algorithms to large
 datasets.
 
 Despite this progress, the problem demands continuous innovation to
@@ -24,34 +33,39 @@ number of variables possible without discarding important information,
 is an increasingly imporant area of investigation. Dimensionality
 reduction can reveal simpler ways of viewing a system, directing
 researcher's attention to the few significant variables hidden in
-their experimental output. Alternatively, it is often used as a
-crucial pre-processing step when implementing machine learning models,
-accelerating optimization. The work presented in this thesis focuses
-on advances of the former type, where the algorithms we develop yield
-insight into the important factors driving a system. In particular we
-target the fields of complex networks and parameter estimation.
+their experimental output \cite{Systematic determination of order
+  parameters for chain dynamics using diffusion maps}. Alternatively,
+it is often used as a crucial pre-processing step when implementing
+machine learning models, accelerating optimization \cite{Truncated SVD
+  methods for discrete linear ill-posed problems, Efficient
+  large-scale sequence comparison by locality-sensitive hashing}. The
+work presented in this thesis focuses on advances of the former type,
+where the algorithms we develop yield insight into the important
+factors driving a system. In particular we target the fields of
+complex networks and parameter estimation.
 
-Defined as a set of items and the connections between them \cite{newman_structure_2003}, networks provide a
-useful framework for modeling many real-world systems. In biology,
-protein-protein interaction networks have been used to identify
-distinct collections of proteins that are conserved across species
-\cite{wuchty_evolutionary_2003}. Economist have constructed network
+Defined as a set of items and the connections between them
+\cite{newman_structure_2003}, networks provide a useful framework for
+modeling many real-world systems. In biology, protein-protein
+interaction networks have been used to identify distinct collections
+of proteins that are conserved across species
+\cite{wuchty_evolutionary_2003}. Economists have constructed network
 models of trade and determined that highly connected networks are more
-sensititve to price variations \cite{li_spatial_2008}. Applications can even be found in
-linguistics, where semantic network analysis indicates that
-well-structured speeches win presidential debates \cite{Semantic
-  networks and competition: Election year winners and losers in
-  U.S. televised presidential debates, 1960–2004} (note that this
-study included no data from 2016).
+sensititve to price variations \cite{li_spatial_2008}. Applications
+can even be found in linguistics, where semantic network analysis
+indicates that well-structured speeches win presidential debates
+\cite{Semantic networks and competition: Election year winners and
+  losers in U.S. televised presidential debates, 1960–2004} (note that
+this study included no data from 2016).
 
 Regardless of the specific system, researchers often seek an
-understanding of some emergent, macroscopic behavior. In
-epidiemological models composed of thousands of interacting
-individuals, often just the overall fraction that is infected is of
-interest \cite{shi_sis_2008}. Ideally an analytical equation governing
-the evolution of the quantity of interest would be readily derived
-from a description of the fine-scale dynamics; however, as model
-complexity increases in an effort to better match real-world
+understanding of some emergent, macroscopic behavior. For example, in
+epidiemological models composed of thousands of interacting agents,
+often the only quantity of interest is the fraction of infected
+individuals \cite{shi_sis_2008}. Ideally an analytical equation
+governing the evolution of the interesting variables would be readily
+derived from a description of the fine-scale dynamics; however, as
+model complexity increases in an effort to better match real-world
 conditions, deriving such closed-form expressions becomes increasingly
 difficult. In such cases, equation free modeling may enable the
 desired macroscopic analysis despite the lack of explicit
@@ -60,14 +74,14 @@ of network evolution \cite{bold_equation-free_2014}, and we extend
 this work to hypergraph models in which multiple connections are
 permitted between nodes.
 
-Often the goal is even more basic: to determine whether a
+However, often the goal is even more basic: to determine whether a
 low-dimensional description of the model exists in the first place. In
 many models of network generation, the parameters that influence the
 network structure are clear, see for instance
 \cite{erdos_random_1959,chung_connected_2002,watts_collective_1998,
-  Barabasi}. In more complicated models the picture is muddier, and it
-would helpful to have an automated method of identifying whether such
-a simpler description is present. Towards this end, we extend the
+  Barabasi}. In more complicated systems the picture is muddier, and
+it would be helpful to have an automated method of identifying whether
+such a simplified description is present. Towards this end, we extend the
 dimensionality-reduction technique Diffusion Maps to parameterize
 collections of hypergraphs. This requires a suitable measure of the
 similarity between two networks, a problem which is discussed in some
