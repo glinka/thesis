@@ -10,19 +10,10 @@ challenge of separating the valuable bits from the uninformative, a
 host of machine learning techniques have been developed, ranging from
 the simplistic but venerable principal component analysis to complex
 neural networks. Their successes are numerous. Principal component
-analysis has been used to analyze PET scans \cite{Functional
-  Connectivity: The Principal-Component Analysis of Large (PET) Data
-  Sets}, to predict traffice flow \cite{Forecasting Approach for
-  Short-term Traffic Flow based on Principal Component Analysis and
-  Combined Neural Network}, and to examine groundwater composition
-\cite{Temporal evolution of groundwater composition in an alluvial
-  aquifer (Pisuerga River, Spain) by principal component
-  analysis}. Neural networks can automatically segment images and
-classify videos \cite{Large-scale video classification with
-  convolutional neural networks; Conditional Random Fields as
-  Recurrent Neural Networks}, and logistic regression has been used to
-detect gene interactions \cite{Penalized logistic regression for
-  detecting gene interactions}. These are but a few of the thousands
+analysis has been used to analyze PET scans \cite{friston_functional_1993}, to predict traffice flow \cite{zhang_forecasting_2007}, and to examine groundwater composition
+\cite{helena_temporal_2000}. Neural networks can automatically segment images and
+classify videos \cite{karpathy_large-scale_2014,zheng_conditional_2015}, and logistic regression has been used to
+detect gene interactions \cite{park_penalized_2008}. These are but a few of the thousands
 of successful applications of machine learning algorithms to large
 datasets.
 
@@ -40,16 +31,13 @@ on advances of the former type, where the algorithms we develop yield
 insight into the important factors driving a system. In particular we
 target the fields of complex networks and parameter estimation.
 
-Defined as a set of items and the connections between them \cite{The
-  Structure and Functino of Complex Networks}, networks provide a
+Defined as a set of items and the connections between them \cite{newman_structure_2003}, networks provide a
 useful framework for modeling many real-world systems. In biology,
 protein-protein interaction networks have been used to identify
 distinct collections of proteins that are conserved across species
-\cite{Evolutionary conservation of motif constituents in the yeast
-  protein interaction network}. Economist have constructed network
+\cite{wuchty_evolutionary_2003}. Economist have constructed network
 models of trade and determined that highly connected networks are more
-sensititve to price variations \cite{Spatial price dynamics: From
-  complex network perspective}. Applications can even be found in
+sensititve to price variations \cite{li_spatial_2008}. Applications can even be found in
 linguistics, where semantic network analysis indicates that
 well-structured speeches win presidential debates \cite{Semantic
   networks and competition: Election year winners and losers in
@@ -60,29 +48,30 @@ Regardless of the specific system, researchers often seek an
 understanding of some emergent, macroscopic behavior. In
 epidiemological models composed of thousands of interacting
 individuals, often just the overall fraction that is infected is of
-interest \cite{An SIS model with infective medium on complex
-  networks}. Ideally an analytical equation governing the evolution of
-the quantity of interest would be readily derived from a description
-of the fine-scale dynamics; however, as model complexity increases in
-an effort to better match real-world conditions, deriving such
-closed-form expressions becomes increasingly difficult. In such cases,
-equation free modeling may enable the desired macroscopic analysis
-despite the lack of explicit equations. This approach has been
-successfuly applied to simple models of network evolution \cite{bold},
-and we extend this work to hypergraph models in which multiple connections
-are permitted between nodes.
+interest \cite{shi_sis_2008}. Ideally an analytical equation governing
+the evolution of the quantity of interest would be readily derived
+from a description of the fine-scale dynamics; however, as model
+complexity increases in an effort to better match real-world
+conditions, deriving such closed-form expressions becomes increasingly
+difficult. In such cases, equation free modeling may enable the
+desired macroscopic analysis despite the lack of explicit
+equations. This approach has been successfuly applied to simple models
+of network evolution \cite{bold_equation-free_2014}, and we extend
+this work to hypergraph models in which multiple connections are
+permitted between nodes.
 
 Often the goal is even more basic: to determine whether a
 low-dimensional description of the model exists in the first place. In
 many models of network generation, the parameters that influence the
-network structure are clear, see for instance \cite{ER; Chung Lu;
-  Barabasi; Watts}. In more complicated models the picture is muddier,
-and it would helpful to have an automated method of identifying
-whether such a simpler description is present. Towards this end, we
-extend the dimensionality-reduction technique Diffusion Maps to
-parameterize collections of hypergraphs. This requires a suitable
-measure of the similarity between two networks, a problem which is
-discussed in some depth.
+network structure are clear, see for instance
+\cite{erdos_random_1959,chung_connected_2002,watts_collective_1998,
+  Barabasi}. In more complicated models the picture is muddier, and it
+would helpful to have an automated method of identifying whether such
+a simpler description is present. Towards this end, we extend the
+dimensionality-reduction technique Diffusion Maps to parameterize
+collections of hypergraphs. This requires a suitable measure of the
+similarity between two networks, a problem which is discussed in some
+depth.
 
 Finally, whether the system of interest is couched in terms of
 networks, differential equations, or otherwise, fitting model
@@ -94,7 +83,7 @@ magnitude. Such unimportant parameter directions are termed
 to obscuring otherwise-relevant parameters from investigators. Current
 methods resort to linear analysis or require analytical derivations
 of simpler models based on intimate knowledge of the system
-\cite{sensitivity analysis; mbam}. We again turn to Diffusion Maps to
+\cite{Sensitivity Analysis;,transtrum_model_2014}. We again turn to Diffusion Maps to
 address this problem, adapting it to parameterize the importance
 parameter combinations of a model without knowledge of the explicit
 model structure.
@@ -106,6 +95,9 @@ domains, and should arm researchers with tools that can quickly lead
 to a deeper understanding of the system under investigation.
 
 
+\input{ch-intro/tex/sub-outline}
+\input{ch-intro/tex/sub-ml}
+\input{ch-intro/tex/sub-cg}
 
 
 % It is my hope that the
@@ -142,10 +134,6 @@ to a deeper understanding of the system under investigation.
 % are unable to make them good.
 
 % It is no secret that big data requires big algorithms.
-
-\input{ch-intro/tex/sub-outline}
-\input{ch-intro/tex/sub-ml}
-\input{ch-intro/tex/sub-cg}
 
 %%% Local Variables: ***
 %%% mode:latex ***
