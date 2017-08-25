@@ -5,19 +5,20 @@ manifold learning, first reducing the dimensionality of network
 systems and then identifying important parameters in generic
 models. In both cases we have adapted the manifold learning technique
 Diffusion Maps to the problem at hand. We have also employed Equation
-Free modeling to both accelerate the simulation of a hypergraph system
+Free modeling to both accelerate the simulation of a multigraph system
 and to implement a stationary-state solver.
 
 Chapter~\ref{ch:graphs} began with an introduction of the dynamic
-hypergraph model developed in \cite{Balazs}. After identifying that
-the degree distribution was a suitable coarse variable for the system,
-and further reducing the low-dimensional description through curve
+multigraph model developed in
+\cite{rath_multigraph_2012,rath_time_2012}. After identifying that the
+degree distribution was a suitable coarse variable for the system, and
+further reducing the low-dimensional description through curve
 fitting, the equation free framework was successfully applied. This
 not only accelerated simulations through coarse projective
 integration, but also allowed us to locate stationary states through
 coarse Newton-GMRES. Additionally, an underlying two-dimensional
-description was uncovered via principal component analysis and
-Diffusion Maps after a distance between networks was defined. These
+description was uncovered using both principal component analysis and
+Diffusion Maps, after a distance between networks was defined. These
 automated methods of dimensionality-reduction are quite general, and
 can in principle be applied in a wide range of network settings to
 probe hidden low-dimensional structure in network models. The next
@@ -27,16 +28,16 @@ state space needed for equation free techniques, instead of relying on
 domain knowledge and experimentation.
 
 In Chapter~\ref{ch:sis} we continued this sort of analysis on an
-epidiemiological model, the susceptible-infected-susceptible
+epidemiological model, the susceptible-infected-susceptible
 system. We again showed the effectiveness of applying DMAPS to obtain
 reduced descriptions of collections of networks. Here we were able to
 go one step further and relate the DMAPS output to system
 variables. This investigation could be extended by comparing the
 effectiveness of other network-similarity measures. While those used
-in our work were successfull, others measures may be faster to
+in our work were successful, other measures may be faster to
 compute. Chapters~\ref{ch:graphs} and ~\ref{ch:sis} extend previous
-work in the group and reaffirm the utility of DMAPS in the context of
-evolving networks.
+work and reaffirm the utility of DMAPS in the context of evolving
+networks.
 
 Finally, Chapter~\ref{ch:params} introduced a new variant of DMAPS
 capable of identifying important parameter combinations in complex
@@ -44,7 +45,7 @@ models. By forming a kernel based on the model response at different
 parameter values, DMAPS learns a parameterization of the model
 manifold. In particular, the top eigenvectors should parameterize the
 directions in which the manifold extends furthest. These, in turn,
-parameterize the most significant parameter combinations. Thus, DMAPS
+correspond to the most significant parameter combinations. Thus, DMAPS
 is able to parameterize the most important, nonlinear directions in
 the input parameter space. The analysis does not resort to linear
 approximations, nor does it require formal derivations of the reduced
@@ -55,12 +56,11 @@ explore in the future. First, the DMAPS output can be used to guide
 optimization routines along significant directions, avoiding sloppy
 parameters that would otherwise slow convergence. Second, a more
 sophisticated method of sampling the model manifold could be
-developed. A technique invovling geometric harmonics, similar to that
-found in \cite{Anastasia}, may work here. Finally, investigating the
-relation between recent work in alternating Diffusion Maps,
-\cite{alternating dmaps}, and the modified kernel presented in
-Section~\ref{sec:modkernel} may enable multi-objective optimization in
-the manner of~\cite{nn multi-objective}.
+developed. A technique involving geometric harmonics, similar to that
+found in \cite{chiavazzo_intrinsic_2017} may work here. Finally,
+investigating the relation between recent work in alternating
+Diffusion Maps, \cite{lederman_learning_2015}, and our model-manifold kernel may
+enable multi-objective optimization in the manner of~\cite{marler_survey_2004}.
 
 While the work presented here advances effective data analysis of
 networks and highly parameterized models, there are also many

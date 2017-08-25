@@ -2,21 +2,19 @@
 
 Since the advent of the information age with the completion of the
 first transistor-based computer in 1954, Moore's law has ensured a
-steady decrease in the cost of computation \cite{Moore's law: past,
-  present and future}. The concomitant rise in simulation complexity
-paired with the proliferation of electronic sensors has resulted in a
-torrent of data; the CERN Data Centre alone proccesses hundreds of
-terabytes daily \cite{How to deal with petabytes of data: the LHC Grid
-  project}. To address the challenge of separating the valuable bits
-from the uninformative, a host of machine learning techniques have
-been developed, ranging from the simplistic but venerable principal
-component analysis to complex neural networks \cite{Hotelling,The
-  Handbook of Brain Theory and Neural Networks, A Global Geometric
-  Framework for Nonlinear Dimensionality Reduction, DMAPS}. Their
+steady decrease in the cost of computation
+\cite{schaller_moores_1997}. The concomitant rise in simulation
+complexity paired with the proliferation of electronic sensors has
+resulted in a torrent of data; the CERN Data Centre alone processes
+hundreds of terabytes daily \cite{britton_how_2014}. To address the
+challenge of separating the valuable bits from the uninformative, a
+host of machine learning techniques have been developed, ranging from
+the simplistic but venerable principal component analysis to complex
+neural networks
+\cite{hotelling_analysis_1933,lecun_handbook_1998,tenenbaum_global_2000,coifman_diffusion_2006}. Their
 successes are numerous: principal component analysis has been used to
-approximate the dynamics of signaling proteins \cite{Parallel imaging
-  of Drosophila embryos for quantitative analysis of genetic
-  perturbations of the Ras pathway}, to predict traffice flow
+approximate the dynamics of signaling proteins
+\cite{goyal_parallel_2017}, to predict traffic flow
 \cite{zhang_forecasting_2007}, and to examine groundwater composition
 \cite{helena_temporal_2000}. Neural networks can automatically segment
 images and classify videos
@@ -30,15 +28,12 @@ Despite this progress, the problem demands continuous innovation to
 match the growing variety and supply of data. Dimensionality
 reduction, the problem of describing a set of data in the fewest
 number of variables possible without discarding important information,
-is an increasingly imporant area of investigation. Dimensionality
+is an increasingly important area of investigation. Dimensionality
 reduction can reveal simpler ways of viewing a system, directing
 researcher's attention to the few significant variables hidden in
-their experimental output \cite{Systematic determination of order
-  parameters for chain dynamics using diffusion maps}. Alternatively,
+their experimental output \cite{ferguson_systematic_2010}. Alternatively,
 it is often used as a crucial pre-processing step when implementing
-machine learning models, accelerating optimization \cite{Truncated SVD
-  methods for discrete linear ill-posed problems, Efficient
-  large-scale sequence comparison by locality-sensitive hashing}. The
+machine learning models, accelerating optimization \cite{xu_truncated_1998,buhler_efficient_2001}. The
 work presented in this thesis focuses on advances of the former type,
 where the algorithms we develop yield insight into the important
 factors driving a system. In particular we target the fields of
@@ -51,16 +46,15 @@ interaction networks have been used to identify distinct collections
 of proteins that are conserved across species
 \cite{wuchty_evolutionary_2003}. Economists have constructed network
 models of trade and determined that highly connected networks are more
-sensititve to price variations \cite{li_spatial_2008}. Applications
+sensitive to price variations \cite{li_spatial_2008}. Applications
 can even be found in linguistics, where semantic network analysis
 indicates that well-structured speeches win presidential debates
-\cite{Semantic networks and competition: Election year winners and
-  losers in U.S. televised presidential debates, 1960–2004} (note that
+\cite{doerfel_semantic_2009} (note that
 this study included no data from 2016).
 
 Regardless of the specific system, researchers often seek an
 understanding of some emergent, macroscopic behavior. For example, in
-epidiemological models composed of thousands of interacting agents,
+epidemiological models composed of thousands of interacting agents,
 often the only quantity of interest is the fraction of infected
 individuals \cite{shi_sis_2008}. Ideally an analytical equation
 governing the evolution of the interesting variables would be readily
@@ -69,38 +63,38 @@ model complexity increases in an effort to better match real-world
 conditions, deriving such closed-form expressions becomes increasingly
 difficult. In such cases, equation free modeling may enable the
 desired macroscopic analysis despite the lack of explicit
-equations. This approach has been successfuly applied to simple models
+equations. This approach has been successfully applied to simple models
 of network evolution \cite{bold_equation-free_2014}, and we extend
-this work to hypergraph models in which multiple connections are
+this work to multigraph models in which multiple connections are
 permitted between nodes.
 
 However, often the goal is even more basic: to determine whether a
 low-dimensional description of the model exists in the first place. In
-many models of network generation, the parameters that influence the
-network structure are clear, see for instance
-\cite{erdos_random_1959,chung_connected_2002,watts_collective_1998,
-  Barabasi}. In more complicated systems the picture is muddier, and
+many basic models of network generation, the parameters that influence
+the network structure are clear, see for instance
+\cite{erdos_random_1959,chung_connected_2002,watts_collective_1998,barabasi_emergence_1999}. In more complicated systems the picture is muddier, and
 it would be helpful to have an automated method of identifying whether
-such a simplified description is present. Towards this end, we extend the
-dimensionality-reduction technique Diffusion Maps to parameterize
-collections of hypergraphs. This requires a suitable measure of the
+such a simplified description is present. Towards this end, we extend
+the dimensionality-reduction technique Diffusion Maps to parameterize
+collections of multigraphs. This requires a suitable measure of the
 similarity between two networks, a problem which is discussed in some
-depth.
+depth. \\
 
 Finally, whether the system of interest is couched in terms of
-networks, differential equations, or otherwise, fitting model
-parameters to data is a nearly universal pursuit. It is often
-discovered that certain parameter combinations do not significantly
-affect the model output despite being varied over many orders of
-magnitude. Such unimportant parameter directions are termed
-``sloppy'', and cause fitting routines to converge slowly in addition
-to obscuring otherwise-relevant parameters from investigators. Current
-methods resort to linear analysis or require analytical derivations
-of simpler models based on intimate knowledge of the system
-\cite{Sensitivity Analysis;,transtrum_model_2014}. We again turn to Diffusion Maps to
-address this problem, adapting it to parameterize the importance
-parameter combinations of a model without knowledge of the explicit
-model structure.
+networks, differential equations, or some other form, fitting model
+parameters to data is a nearly universal pursuit. It is often found
+that certain parameter combinations do not significantly affect the
+model output despite being varied over many orders of magnitude
+\cite{gutenkunst_universally_2007}. Such unimportant parameter
+directions are termed ``sloppy'', and cause fitting routines to
+converge slowly, in addition to obscuring otherwise-relevant
+parameters from investigators \cite{transtrum_geometry_2011}. Current
+methods resort to linear analysis or require analytical derivations of
+simpler models based on intimate knowledge of the system
+\cite{saltelli_front_2002,transtrum_model_2014}. We again turn to
+Diffusion Maps to address this problem, adapting it to parameterize
+the important parameter combinations of a model without knowledge of
+the explicit model structure.
 
 In total, it is my hope that the following chapters will be viewed as
 a small advance in the larger march towards effective data

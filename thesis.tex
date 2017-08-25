@@ -21,7 +21,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\
 %%%% Author & title page info
 
-\title{Manifold Learning for States and Parameters}
+\title{Manifold learning for network systems and parameter reduction}
 
 \submitted{September 2017}  % degree conferral date (January, April, June, September, or November)
 \copyrightyear{2017}  % year in which the copyright is secured by publication of the dissertation.
@@ -63,7 +63,7 @@
 
 %%% For figures
 % \usepackage{graphicx}
-\usepackage[draft]{graphicx}
+\usepackage{graphicx}
 \graphicspath{
   {./ch-intro/figs/}
   {./ch-graphs/figs/}
@@ -283,12 +283,12 @@
 \input{abstract}
 }
 
-\acknowledgements{
-%I would like to thank...
-\input{acknowledgements}
-}
+% \acknowledgements{
+% %I would like to thank...
+% \input{acknowledgements}
+% }
+% \dedication{Mum and dad}
 
-\dedication{Mum and dad}
 
 \fi  % disable frontmatter
 
@@ -323,7 +323,9 @@
 
 % \include lets us split up the document (and each include starts a new page):
 \include{ch-intro/tex/intro}
+
 % \include{ch-simple-graphs/tex/simple-graphs} % karthik's paper
+
 \include{ch-graphs/tex/graphs}
 \include{ch-sis/tex/sis}
 \include{ch-params/tex/params}
@@ -344,7 +346,7 @@
 \addcontentsline{toc}{chapter}{Bibliography}
 
 % % include your .bib file
-\bibliographystyle{abbrv} \bibliography{./references-iv.bib}
+\bibliographystyle{abbrv} \bibliography{./references.bib}
 
 \end{document}
 

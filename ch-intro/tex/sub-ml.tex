@@ -1,100 +1,96 @@
 \section{Manifold learning techniques \label{sec:ml}}
 
 Since the advent of principal component analysis (PCA) in 1933
-\ref{Hotelling}, manifold learning has been applied to a wide array of
+\cite{hotelling_analysis_1933}, manifold learning has been applied to a wide array of
 problems in an effort to unearth hidden structure in data. In a
 typical setting, a researcher will collect many data points
 $\{x_i\}_{i=1}^N$, often vectors in $\mathbb{R}^n$, that contain
 features relevant to the problem under investigation. For example,
-when studying collections of $k \times k$-pixel images, it is common
-to stack each column of pixel values so that the dataset becomes
-vectors $x_i \in \mathbb{R}^n$ where $n = k^2$. Alternatively, when
-studying a certain population, each $x_i$ couuld represent a
-collection of features about a particular individual such as their
-income, education level, and age: a vector in $\mathbb{R}^3$. Manifold
-learning would then be applied to this collection of points to reveal
-structure in the data that might be obscured by its
-high-dimensionality. 
+when studying collections of $k \times k$ pixel images, it is common
+to stack each column of pixel values on top of one another so that the
+dataset becomes vectors $x_i \in \mathbb{R}^n$ where $n =
+k^2$. Alternatively, when studying a certain population, each $x_i$
+could represent a collection of features about a particular individual
+such as their income, education level, and age: a vector in
+$\mathbb{R}^3$. Manifold learning could then be applied
+to the collection of points to reveal structure in the data that
+might be obscured by its high-dimensionality.
 
-In the latter example, one would expect to find
-that income and education level are not indepedent variables, but are
-instead positively correlated. This is unsurprising, and hardly a good
-use-case for manifold learning. On the other hand, if we study a
-collection of images of a human face, each taken at a different angle,
-manifold learning can uncover that each image can be described by just
-two variables hidden in the dataset: the azimuthal and polar angle at
-which the photo was taken \ref{dmaps or isomap}. This example
+In the latter example, one would expect to find that income and
+education level are not independent variables, and have positive
+correlation. This is unsurprising, and hardly a good use-case for
+manifold learning. On the other hand, if we study a collection of
+images of a human face, each taken at a different angle, manifold
+learning can uncover that each image can be described by just two
+variables hidden in the dataset: the azimuthal and polar angle at
+which the photo was taken \cite{coifman_diffusion_2006}. This
 demonstrates the power of manifold learning as a form of
 dimensionality reduction: we can now describe each image as $y_i =
 \begin{bmatrix} \theta_i \\ \phi_i \end{bmatrix} \in \mathbb{R}^2$
 instead of $x_i \in \mathbb{R}^{4096}$ (if the image contains
-$64 \times 64 = 4096$ pixels).  Equivalently, we could say that
-$x \in \mathbb{R}^{4096}$ is parameterized by $y = \begin{bmatrix}
-  \theta \\ \phi \end{bmatrix} \in \mathbb{R}^2$.
+$64 \times 64 = 4096$ pixels).  Equivalently, we could say that our
+data $x \in \mathbb{R}^{4096}$ is parameterized by
+$y = \begin{bmatrix} \theta \\ \phi \end{bmatrix} \in \mathbb{R}^2$.
 
 Many approaches have been proposed to address this problem, each
 exploiting a different aspect of the dataset. Some are designed to
-find linear relationships among input variables \ref{PCA}, others use
-the smoothness of the manifold as a basis for a new parameterization
-\ref{hessiang eigenmaps}. Below, we detail the mathematical
+find linear relationships among input variables
+\cite{jolliffe_principal_2014}, others use the smoothness of the
+manifold as a basis for a new parameterization
+\cite{donoho_hessian_2003}. Below, we detail the mathematical
 underpinnings of two particular methods: PCA and Diffusion Maps
 (DMAPS). As the most widely used manifold learning technique, PCA is
 conceptually simple and provides easily-understandable
 results. However, we will see that it is incapable of efficiently
 embedding nonlinear manifolds. For this, we turn to DMAPS, a method
 that will return a better embedding of the data at the cost of
-interpretability. Both are used throughout subsequent sections of this
-paper.
+interpretability. Both are used throughout subsequent sections.
 
 \subsection{Principal component analysis \label{sec:pca}}
 
 In brief, PCA returns a ranking of the important linear relationships
 in data. This importance is determined by the amount of the data's
-variability a particular linear relationship is able to capture. These
+variability a particular linear direction is able to capture. These
 statements are made precise below.
 
 As usual we begin with a collection of $N$ vectors $x_i \in \mathbb{R}^n$,
 which we stack in rows to form our input matrix
 
-\begin{align}
+\begin{align*}
   X = \begin{bmatrix} \; - \; x_1^T \; - \; \\ \; - \; x_2^T \; - \; \\ \vdots \\ \; - \; x_N^T
     \; - \; \end{bmatrix} \in \mathbb{R}^{N \times n}
-\end{align}
+\end{align*}
 
 Note that each column represents a particular variable, e.g. age or
 income, while each row contains an individual data point. We will
-assume that each column has a mean value of zero; if not the mean can
-simply be subtracted from each column. We will also assume that we
-$N \gg n$, so one imagine can running many experiments in which only a
-few variables are measured each time. \\
+assume that each column has a mean value of zero; if not, the column
+mean can simply be subtracted. We will also assume that we $N \gg n$,
+as if we had run many experiments in which only a few variables were
+measured each time.
 
 The problem can now be posed as: if we projected each $x_i$ along some
 $v \in \mathbb{R}^n$, which choice of $v$ would maximize the variance
 in the projection? More formally, we wish to solve
 
-\begin{align}
-  \max_{v \in \mathbb{R}^n} \mathrm{var}(Xv) = v^TX^TXv \\
+\begin{align*}
+  \max_{v \in \mathbb{R}^n} \mathrm{var}(Xv) = v^TX^TXv 
   \mathrm{s.t.} \| v \| = 1
-\end{align}
+\end{align*}
 
 where we have added the scaling condition $\| v \| = 1$ to prevent
 infinite variances. An equivalent formulation is
 
-\begin{align}
+\begin{align*}
   \max_{v \in \mathbb{R}^n} \frac{v^TX^TXv}{v^Tv}
-\end{align}
+\end{align*}
 
 where we notice that $\frac{v^TX^TXv}{v^Tv}$ is the Rayleigh quotient
 of $M = X^TX$. It is well known that the Rayleigh quotient is
 maximized when $v$ is the eigenvector of $M$ corresponding to the
-largest eigenvalue. Thus if we order the eigenvalues
-$\lambda_1, \lambda_2, \cdots, \lambda_n$ and corresponding
-eigenvectors $v_1, v_2, \cdots, v_n$ such that
-$\lambda_i \ge \lambda_{i+1}$, we find that $v_1$ is our desired
-vector. Note that this makes some intuitive sense as $M = X^TX$ is the
-unscaled covariance matrix of $X$, and by choosing the largest
-eigenvector of $X^TX$, we are choosing the direction along which
-variance is maximized. \\
+largest eigenvalue. Thus if we order the eigenvalues and eigenvectors
+of $M$ as $\lambda_1, \lambda_2, \cdots, \lambda_n$ and
+$v_1, v_2, \cdots, v_n$ such that $\lambda_i \ge \lambda_{i+1}$, we
+find that $v_1$ is our desired vector.
 
 There is a clear connection between PCA and the singular value
 decomposition (SVD) of a matrix, and the two terms are often used
@@ -122,19 +118,20 @@ $X \in \mathbb{R}^{N \times n}$, is given by
              & & \vdots & & \\
            - & \multicolumn{3}{c}{v_n} & - \\
          \end{array} \right]
+  \label{eq:svd}
 \end{align}
 
-where $U$ and $V$ are $N \times n$ and $n \times n$ unitary matrices,
-and $D$ is an $n \times n$ diagonal matrix with non-negative
-entries. Now $X^TX$ becomes
+where $U$ and $V$ are $N \times n$ and $n \times n$ matrices, and $D$
+is an $n \times n$ diagonal matrix with non-negative entries. $V$ is
+unitary, and the columns of $U$ are orthonormal. Now $X^TX$ becomes
 
-\begin{align}
+\begin{align*}
   X^T X = (V D^T U^T) U D V^T = V D^2 V^T
-\end{align}
+\end{align*}
 
-This shows that the vector $v_1$ is the very same vector we desire
-from our principal component analysis: the top eigenvector of the
-unscaled covariance matrix.
+This shows that the vector $v_1$ from Equation~\ref{eq:svd} is the
+very same vector we desire from our principal component analysis: the
+top eigenvector of the unscaled covariance matrix.
 
 To actually affect any dimensionality reduction, we would use a subset
 of these principal components to project our data into some reduced
@@ -142,9 +139,9 @@ number of dimensions. For instance, if $\hat{V}$ is an $n \times k$
 matrix containing the leading $k$ singular vectors of $X$, we would
 have
 
-\begin{align}
-  y_i = \hat{V}\hat{V}^T x_i
-\end{align}
+\begin{align*}
+  y_i = \hat{V}\hat{V}^T x_i \in \R^k
+\end{align*}
 
 corresponding to a reduction in dimensionality from $n$ to $k$.
 
@@ -155,45 +152,46 @@ of the technique, consider drawing points $x_1$ and $x_2$ from a
 multivariate normal distribution. Let them share a mean value of zero
 and a variance of one, but let their covariance be two. Thus
 
-\begin{align}
-  \mu_1 &= \mu_2 &= 0 \\
-  \Sigma_{11} &= \Sigma_{22} &= 4.5 \\
-  &\Sigma_{12} &= 5.5
-\end{align}
+\begin{align*}
+  &\mu_1 = \mu_2 = 0 \\
+  &\Sigma_{11} = \Sigma_{22} = 4.5 \\
+  &\Sigma_{12} = 5.5
+\end{align*}
 
-If $\xb = (x_1, x_2)$, $\xb \sim \mathcal{N}(\mub, \Sigma)$ with
-$\mub = (\mu_1, \mu_2)$ and $\Sigma = \begin{bmatrix} \sigma_{11}^2 &
-  \sigma_{12}^2 \\ \sigma_{12}^2 &
-  \sigma_{22}^2 \end{bmatrix}$. Taking the eigendecomposition of
+If $x = (x_1, x_2)$, $x \sim \mathcal{N}(\mu, \Sigma)$ with
+$\mu = (\mu_1, \mu_2)$ and $\Sigma = \begin{bmatrix} \Sigma_{11} &
+  \Sigma_{12} \\ \Sigma_{12} &
+  \Sigma_{22} \end{bmatrix}$. Taking the eigendecomposition of
 $\Sigma$ we find
 
-\begin{align}
+\begin{align*}
   V = \begin{bmatrix} 1/\sqrt{2} & 1/\sqrt{2} \\
     1/\sqrt{2} & - 1/\sqrt{2} 
   \end{bmatrix} \quad \mathrm{and} \quad
-                 \Sigma = \begin{bmatrix} 10 & 0 \\
+                 D = \begin{bmatrix} 10 & 0 \\
                    0 & 1 
                  \end{bmatrix}
-\end{align}
+\end{align*}
 
 This, then, would be the expected result of our principal component
 analysis: a vector pointing in the $(1,1)$ direction with a
-corresponding singular value of $\sqrt{10 n}$, and a second vector pointing in
-$(1, -1)$ with singular value $\sqrt{1 n}$ where $n$ is the number of
-points in our sample. Fig. \ref{fig:pca-ex} shows a
-sample dataset chosen from this particular distribution, along with
-principal component vectors scaled by their singular values. The
-result is as expected. Indeed, inspecting the numerical output from
-5000 points we find
+corresponding singular value of $\sqrt{10 n}$, and a second vector
+pointing in $(1, -1)$ with singular value $\sqrt{1 n}$ where $n$ is
+the number of points in our sample (the multiplication by $\sqrt{n}$ is
+necessary because the covariance matrix is
+unscaled). Fig. \ref{fig:pca-ex} shows a sample dataset chosen from
+this particular distribution, along with principal component vectors
+scaled by their singular values. The result is as expected. Indeed,
+inspecting the numerical output from 5000 points we find
 
-\begin{align}
+\begin{align*}
   V \approx \begin{bmatrix} 1/\sqrt{2} & 1/\sqrt{2} \\
     1/\sqrt{2} & - 1/\sqrt{2} 
   \end{bmatrix} \quad \mathrm{and} \quad
                  \Sigma = \begin{bmatrix} 222 \approx \sqrt{50000} & 0 \\
                    0 & 71 \approx \sqrt{5000}
                  \end{bmatrix}
-\end{align}
+\end{align*}
 
 \begin{figure}
   \centering
@@ -204,12 +202,12 @@ result is as expected. Indeed, inspecting the numerical output from
 \end{figure}
 
 Besides its relative simplicity and ease of implementation, PCA has
-one other great strength compared to other dimensionality reduction
+one other great strength compared to many dimensionality reduction
 methods: it provides an explicit functional form between the input
-variables and the output projection in the form of a simple, linear
-relationship. In the context of PCA, the principal vectors, which are
-some linear combination of the input variables, are precisely the
-``best'' new variables to work in. Using the output of the previous
+variables and the output projection which is a simple, linear
+relationship. In the context of PCA, the linear combination of the
+input variables that compose the principal vectors are precisely the
+best new variables to work in. Using the output of the previous
 example, we may decide that only the value $x_1 + x_2$ is important
 enough to keep, allowing us to reduce our description of the dataset
 from $(x_1, x_2) \rightarrow (x_1 + x_2)$. As we will see in the
@@ -222,205 +220,103 @@ While PCA may be effective in uncovering linear relationships among
 input variables, most real-world problems exhibit significant
 nonlinearities. This motivates our introduction of Diffusion Maps
 (DMAPS), an algorithm designed to address such difficulties. We begin
-with a description of the DMAPS' implementation.
+with a description of DMAPS' implementation
+\cite{nadler_diffusion_2005}.
 
-The goal of DMAPS is identical to that of PCA: given some dataset
+The goal of DMAPS matches that of PCA: given some dataset
 $\{x_1, x_2, \hdots, x_N \}$ with $x_i \in \R^n$, we desire a mapping
 of $x_i$ into $y_i$ such that $y_i$ is a low-dimensional embedding of
-$x_i$ that captures important characteristics of the original data. We
-again stack each datapoint $x_i$ into an $N \times n$ matrix
-$X$. DMAPS begins by evaluating a Gaussian kernel between each point,
+$x_i$ that captures important characteristics of the original
+data. DMAPS begins by evaluating a Gaussian kernel between each point,
 and storing the results in an $N \times N$ matrix $W$, so that
 
-\begin{align}
+\begin{align*}
   W_{ij} = \exp \left( -\frac{\|x_i - x_j\|^2}{\epsilon^2} \right)
-\end{align}
+\end{align*}
 
-where $\epsilon$ is a parameter which will be discussed below. Note
-that $W_{ij} \rightarrow 0$ as the distance between $x_i$ and $x_j$
-increases. We then calculate the sum of each row of $W$, and use these
-values to construct a new diagonal matrix $D$ with
-$D_{ii} = \sum_j W_{ij}$. Finally, we compute $A = D^{-1} W$. As
-$A_{ij} \ge 0$ and $\sum_j A_{ij} = 1$, $A$ is a stochastic
-matrix. This lends its entries $A_{ij}$ an intuitive interpretation:
-if we are performing a random walk from point to point in our dataset,
-$A_{ij}$ is the probability that, starting from $x_i$ we will hop next
-to $x_j$. Just as $W_{ij}$ decreases when the distance between $x_i$
-and $x_j$ grows, so too will $A_{ij}$ decrease, so that the
-probability of jumping to nearby points is much greater than the
-probability of jumping to distant ones. This concept is illustrated in
-Fig.~\ref{fig:dmaps-3pts} for three points.
+where $\epsilon$ is a user-defined parameter which defines the
+relevant neighborhood for each point. Note that $W_{ij} \rightarrow 0$
+as the distance between $x_i$ and $x_j$ increases. We then calculate
+the sum of each row of $W$, and use these values to construct a new
+diagonal matrix $D$ with $D_{ii} = \sum_j W_{ij}$. Finally, we compute
+$A = D^{-1} W$. As $A_{ij} \ge 0$ and $\sum_j A_{ij} = 1$, $A$ is a
+stochastic matrix. This lends its entries $A_{ij}$ an intuitive
+interpretation: if we are performing a random walk from point to point
+in our dataset, $A_{ij}$ is the probability that, starting from point
+$x_i$ we will hop next to $x_j$. Just as $W_{ij}$ decreases when the
+distance between $x_i$ and $x_j$ grows, $A_{ij}$ will likewise
+decrease, so that the probability of jumping to nearby points is much
+greater than the probability of jumping to distant ones. This concept
+is illustrated in Fig.~\ref{fig:dmaps-3pts} for three points.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\textwidth]{dmaps-3pts}
   \caption[Illustration of random walk on data]{Probability of
-    transitioning from $x_1$ to points $x_2$ and $x_3$ and to
+    transitioning from $x_1$ to points, $x_2$, $x_3$, and to
     itself. \label{fig:dmaps-3pts}}
 \end{figure}
 
 
 Having constructed the stochastic matrix $A$, the penultimate step in
-the DMAPS algorithm is to perform an eigen-decomposition of
+the DMAPS algorithm is to perform an eigendecomposition of
 $A$. Numerically, it is helpful to note that $A$ is similar to the
 symmetric matrix $\hat{A}$
 
-\begin{align}
-  \hat{A} &= D^{1/2}A D^{-1/2} \\
-  & = D^{-1/2} W D^{-1/2}
-\end{align}
+\begin{align*}
+  \hat{A} &= D^{1/2}A D^{-1/2} = D^{-1/2} W D^{-1/2}
+\end{align*}
 
-As specialied eigensolvers such as the Lanczos algorithm have been
+As specialized eigensolvers such as the Lanczos algorithm have been
 developed for symmetric matrices, it is best to transform $A$ into
 $\hat{A}$, calculate the eigendecomposition, and transform the
-eigenvectors of $\hat{A}$ into eigenvectors of $A$ by multiplying by
-$D^{-1/2}$. This results in eigenvalues
-$\la_0 \ge |\la_1| \ge \cdots \ge |\la_{n-1}|$ with $\la_0 = 1$ and
-corresponding eigenvectors $\phi_0, \phi_1, \cdots, \phi_{n-1}$. That
+eigenvectors of $\hat{A}$ into eigenvectors of $A$ by multiplying them
+by $D^{-1/2}$. This results in eigenvalues
+$\la_0 \ge |\la_1| \ge \cdots \ge |\la_{n-1}|$, $\la_0 = 1$, and
+eigenvectors $\phi_0, \phi_1, \cdots, \phi_{n-1}$. That
 all eigenvalues have absolute value no greater than one is a
 consequence of Gershgorin's circle theorem, while the existence of
-$\la_0 = 1$ is clear when one considers the eigenvector $v_0 = (1/N,
-1/N, \cdots, 1/N)^T$, so that, for any row stochastic matrix $A$, $A
-v_0 = \la_0 v_0$. Finally, the low-dimensional map is given by
+$\la_0 = 1$ is clear when one considers the eigenvector
+$v_0 = (1/N, 1/N, \cdots, 1/N)^T$, so that, for any row stochastic
+matrix $A$, $A v_0 =  v_0$. Finally, the low-dimensional map is
+given by
 
-\begin{align}
-  \Phi_t: x_i \rightarrow \begin{bmatrix} \la_1^t \phi_1(i) \\ \la_2^t
-    \phi_2(i) \\ \vdots \\ \la_k^t \phi_k(i) \end{bmatrix} \in \R^k
-\end{align}
+\begin{align*}
+  \Phi: x_i \rightarrow \begin{bmatrix} \la_1 \phi_1(i) \\ \la_2
+    \phi_2(i) \\ \vdots \\ \la_k \phi_k(i) \end{bmatrix} \in \R^k
+\end{align*}
 
 where we have chosen the top $k \ll N$ eigenvectors to embed our data,
 and $\phi_j(i)$ represents the $i$th component of $\phi_j$. It is not
 immediately clear what the effect of such a mapping is, but there are
-two useful characterizations of the DMAPS embeddings that elucidate
-its utility. First, letting $y_i = \Phi(x_i)$, we can show that $y_i$
+two useful characterizations of the DMAPS embedding that elucidate its
+utility. First, letting $y_i = \Phi(x_i)$, we can show that $y_i$
 provides the best $k$-dimensional approximation to the so-called
-``diffusion distance'' between points. We now detail this connection.
-
-\subsubsection{Diffusion distance}
-
-Returning to our stochastic matrix $A$, say we have a vector
-$\Psi_t \in \R^N$ where each entry $\Psi_t(i)$ represents the
-probability of finding a random walk at data point $i$ at step $t$ of
-the walk (so $\sum_j \Psi_t(j) = 1$ and $\Psi_t(j) \ge 0$). In other
-terms, $\Psi_t(j) = p(r_t = x_j)$ where $r_i$ is the position of the
-random walk at iteration $i$. We then have that
-
-\begin{align}
-  \Psi_t^T = \Psi_0^T A^t
-\end{align}
-
-to see this, note that
+``diffusion distance'' between points. That is, $\| y_i - y_j \|_2$ is
+a close approximation of, in some sense, the difficulty of diffusing
+from point $i$ to $j$. See \cite{lafon_diffusion_2006} for details. The second
+interpretation is that $y_i$ approximates the eigenfunctions of a
+particular operator defined on the manifold containing the dataset,
+Laplace-Beltrami being the most common operator. We illustrate this
+result with an analytically tractable example for which
+the manifold is a simple rectangle, $\chi = [0, L_x] \times [0, L_y]$
+where $L_x$ and $L_y$ are the lengths of the rectangle along the $x$
+and $y$ axes. We wish to find the eigenfunctions of the Laplace
+operator over the rectangle with homogeneous Neumann boundary
+conditions. That is, we want to find functions $f$ such that
+$\Delta f = \lambda f$ and
+$\frac{\partial f}{\partial x}\Big|_{x=0,L_x} =\frac{\partial
+  f}{\partial y}\Big|_{y=0,L_y} = 0$. We solve this problem using
+separation of variables to obtain
 
 \begin{align*}
-  \Psi_t^T A = \big( &\sum_i \Psi_t(i) A_{i1},\; \sum_i
-                         \Psi_t(i) A_{i2},\; \dots,\; \sum_i \Psi_t(i) A_{iN} \big) \\
-             = \bigg( &\sum_i p(r_{t+1} = x_1 | r_t = x_i)p(r_t = x_i) , \\
-             & \sum_i p(r_{t+1} = x_2 | r_t = x_i)p(r_t = x_i), \\
-             & \dots, \\
-                     & \sum_i p(r_{t+1} = x_N | r_t = x_i)p(r_t = x_i)
-                       \bigg) \\
-  = \bigg( & p(r_{t+1} = x_1), \;p(r_{t+1} = x_2), \; \dots, \;
-             p(r_{t+1} = x_N) \bigg) \\
-  = & \Psi_{t+1}
-\end{align*}
-
-so by multiplying $\Psi_0$ by $A^t$, we march our random walk forward
-$t$ steps. In the limit of infinite steps, we find that the
-probability distribution becomes stationary, so further applications
-of $A$ do not change the probability of being at a particular
-point. We will call this stationary distribution $\Psi_*$, and find
-that
-
-\begin{align}
-  \Psi_*^T &= \lim_{t \rightarrow \infty} \Psi_0^T A^t \\
-           &= \Psi_*^T A
-\end{align}
-
-Thus $\Psi_*$ is the right eigenvector of $A$ with eigenvalue one. By
-inspection, its entries will be $\Psi_*(i) = \frac{d_i}{\sum_j d_j}$
-where $d_i = \sum_i A_{ij}$.
-
-We now define the diffusion distance at time $t$ between points $x$
-and $y$ to be
-
-\begin{align}
-  D^2_t(x_i, x_j) &= \| p(r_t = x_i| \cdot) - p(r_t = x_j | \cdot) \|^2_{1/\Psi_*} \\
-                  &= \sum_k \frac{A^t_{ki} - A^t_{kj}}{\Psi_*(k)} \\
-\end{align}
-
-Now, denoting the right eigenvectors of $A$ as $\psi_i$, we have
-$A^t_{ij} = \sum_k \la_k^t \phi_k(i) \psi_k(j)$ by the spectral
-decomposition of $A$. Substituting this into the equation above gives
-
-\begin{align}
-  D^2_t(x_i, x_j) &= \sum_{k=1}^{N-1} \la_k^t \left( \phi_k(i) -
-                    \phi_k(j) \right)^2 \\
-\end{align}
-
-where we omit $k=0$ which corresponds to the constant
-eigenvector. Finally, we see that this diffusion distance between
-points is approximated by the Euclidean distance between $y_i$ and
-$y_j$. As we have chosen the largest $k$ eigenvalues to include in
-$y_i$, and assuming the magnitude of the eigenvalues decays quickly
-after $\la_k$, we see that
-
-\begin{align}
-  D^2_t(x_i, x_j) & \approx \sum_{k=1}^{k} \la_k^t \left( \phi_k(i) -
-                    \phi_k(j) \right)^2 \\
-  & = \| y_i - y_j \|^2
-\end{align}
-
-This provides an interesting probabilisitic interpretation to the
-DMAPS embedding. We now turn to a geometric view of the algorithm.
-
-\subsubsection{Eigenfunctions of operators}
-
-Besides embedding points based on their approximate diffusion
-distances, DMAPS also provides a parameterization of the manifold on
-which the data reside by yielding approximate eigenfunctions of
-diffusion operators defined on the manifold. We assume that our data
-have been sampled from an underlying manifold $\chi$ with some density
-$p(x)$. Essentially, as the number of points tends to infinity and our
-$\epsilon$ scaling term tends to zero, the resulting stochastic matrix
-$A$ approximates certain differential operators depending on the value
-of $\alpha$ in the algorithm. These are given below
-
-\begin{equation}
-\begin{aligned}
-  \alpha &= 0: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi + 2
-    \nabla \phi \cdot \frac{\nabla p}{p} \\
-  \alpha &= 1/2: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi +
-    \nabla \phi \cdot \frac{\nabla p}{p} \\
-  \alpha &= 1: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi
-\end{aligned}
-\end{equation}
-
-The eigenvectors of $A$ will then approximate the eigenfunctions of
-the corresponding operator. In particular, we see that with the choice
-$\alpha = 1$, we recover the Laplace-Beltrami operator on our
-manifold. As such, the resulting eigenvectors will be influenced only
-by the geometry of the manifold and not by our sampling density on
-it. However, if our data is uniformly sampled so that $p(x) = c$, all
-values of $\alpha $ yield the same result.
-
-We illustrate this result with an analytically tractable example for
-which the manifold is a simple rectangle, $\chi = [0, L_x] \times [0,
-L_y]$ where $L_x$ and $L_y$ are the lengths of the rectangle along the
-$x$ and $y$ axes. We wish to find the eigenfunctions of the Laplace
-operator over the rectangle with homogenous Neumann boundary
-conditions. That is, we want to find functions $f$ such that $\Delta f
-= \lambda f$ and $\frac{\partial f}{\partial x}\Big|_{x=0,L_x}
-=\frac{\partial f}{\partial y}\Big|_{y=0,L_y} = 0$. We solve this
-problem using separation of variables to obtain
-
-\begin{align}
   f_{ij} = \cos\left(\frac{i \pi x}{L_x}\right) \cos\left(\frac{j \pi y}{L_y}\right) \quad
   \mathrm{and} \quad \lambda_{ij} = -\left( \left(\frac{i \pi
   }{L_x}\right)^2 + \left(\frac{j \pi}{L_y}\right)^2 \right)
-\end{align}
+\end{align*}
 
 Assigning $L_x = \frac{5}{2}$ and $L_y = 1$ and ordering these eigenpairs by
-increasing $|\lambda_{ij}|$, we see that the first few eigenfunctions
+increasing $|\lambda_{ij}|$, we see that the first few nontrivial eigenfunctions
 will be
 
 \begin{itemize}
@@ -444,20 +340,126 @@ provide an approximation to these eigenfunctions which, as we have
 just seen, will parameterize the hidden manifold our data lie on. This
 is the essence of the geometric perspective of DMAPS.
 
-\subsubsection{Examples}
 
-We now provide numerical examples of DMAPS' behavior on simple
-datasets to help build an intuitive understanding of its
-performance. In all cases, our manifold will be the simple rectangle
-described above, with side lengths $L_x = \frac{5}{2}$ and $L_y =
-1$. We also fix the number of points to $N = 4000$. Initially we
-sample uniformly at random over the rectangle, and then apply the
-DMAPS algorithm~\ref{alg:dmaps} to the resulting set of points
-$(x_i, y_i)$ $i = 1, \dots, N$. In Fig.~\ref{fig:dmaps-comp} we
-compare the numerical results to the theoretical eigenfunctions we
+
+% \subsubsection{Diffusion distance}
+
+% Returning to our stochastic matrix $A$, say we have a vector
+% $\Psi_t \in \R^N$ where each entry $\Psi_t(i)$ represents the
+% probability of finding a random walk at data point $i$ at step $t$ of
+% the walk (so $\sum_j \Psi_t(j) = 1$ and $\Psi_t(j) \ge 0$). In other
+% terms, $\Psi_t(j) = p(r_t = x_j)$ where $r_i$ is the position of the
+% random walk at iteration $i$. We then have that
+
+% \begin{align*}
+%   \Psi_t^T = \Psi_0^T A^t
+% \end{align*}
+
+% to see this, note that
+
+% \begin{align*}
+%   \Psi_t^T A = \big( &\sum_i \Psi_t(i) A_{i1},\; \sum_i
+%                          \Psi_t(i) A_{i2},\; \dots,\; \sum_i \Psi_t(i) A_{iN} \big) \\
+%              = \bigg( &\sum_i p(r_{t+1} = x_1 | r_t = x_i)p(r_t = x_i) , \\
+%              & \sum_i p(r_{t+1} = x_2 | r_t = x_i)p(r_t = x_i), \\
+%              & \dots, \\
+%                      & \sum_i p(r_{t+1} = x_N | r_t = x_i)p(r_t = x_i)
+%                        \bigg) \\
+%   = \bigg( & p(r_{t+1} = x_1), \;p(r_{t+1} = x_2), \; \dots, \;
+%              p(r_{t+1} = x_N) \bigg) \\
+%   = & \Psi_{t+1}
+% \end{align*}
+
+% so by multiplying $\Psi_0$ by $A^t$, we march our random walk forward
+% $t$ steps. In the limit of infinite steps, we find that the
+% probability distribution becomes stationary, so further applications
+% of $A$ do not change the probability of being at a particular
+% point. We will call this stationary distribution $\Psi_*$, and find
+% that
+
+% \begin{align*}
+%   \Psi_*^T &= \lim_{t \rightarrow \infty} \Psi_0^T A^t \\
+%            &= \Psi_*^T A
+% \end{align*}
+
+% Thus $\Psi_*$ is the right eigenvector of $A$ with eigenvalue one. By
+% inspection, its entries will be $\Psi_*(i) = \frac{d_i}{\sum_j d_j}$
+% where $d_i = \sum_i A_{ij}$.
+
+% We now define the diffusion distance at time $t$ between points $x$
+% and $y$ to be
+
+% \begin{align*}
+%   D^2_t(x_i, x_j) &= \| p(r_t = x_i| \cdot) - p(r_t = x_j | \cdot) \|^2_{1/\Psi_*} \\
+%                   &= \sum_k \frac{A^t_{ki} - A^t_{kj}}{\Psi_*(k)} \\
+% \end{align*}
+
+% Now, denoting the right eigenvectors of $A$ as $\psi_i$, we have
+% $A^t_{ij} = \sum_k \la_k^t \phi_k(i) \psi_k(j)$ by the spectral
+% decomposition of $A$. Substituting this into the equation above gives
+
+% \begin{align*}
+%   D^2_t(x_i, x_j) &= \sum_{k=1}^{N-1} \la_k^t \left( \phi_k(i) -
+%                     \phi_k(j) \right)^2 \\
+% \end{align*}
+
+% where we omit $k=0$ which corresponds to the constant
+% eigenvector. Finally, we see that this diffusion distance between
+% points is approximated by the Euclidean distance between $y_i$ and
+% $y_j$. As we have chosen the largest $k$ eigenvalues to include in
+% $y_i$, and assuming the magnitude of the eigenvalues decays quickly
+% after $\la_k$, we see that
+
+% \begin{align*}
+%   D^2_t(x_i, x_j) & \approx \sum_{k=1}^{k} \la_k^t \left( \phi_k(i) -
+%                     \phi_k(j) \right)^2 \\
+%   & = \| y_i - y_j \|^2
+% \end{align*}
+
+% This provides an interesting probabilisitic interpretation to the
+% DMAPS embedding. We now turn to a geometric view of the algorithm.
+
+% \subsubsection{Eigenfunctions of operators}
+
+% Besides embedding points based on their approximate diffusion
+% distances, DMAPS also provides a parameterization of the manifold on
+% which the data reside by yielding approximate eigenfunctions of
+% diffusion operators defined on the manifold. We assume that our data
+% have been sampled from an underlying manifold $\chi$ with some density
+% $p(x)$. Essentially, as the number of points tends to infinity and our
+% $\epsilon$ scaling term tends to zero, the resulting stochastic matrix
+% $A$ approximates certain differential operators depending on the value
+% of $\alpha$ in the algorithm. These are given below
+
+% \begin{equation*}
+% \begin{aligned}
+%   \alpha &= 0: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi + 2
+%     \nabla \phi \cdot \frac{\nabla p}{p} \\
+%   \alpha &= 1/2: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi +
+%     \nabla \phi \cdot \frac{\nabla p}{p} \\
+%   \alpha &= 1: &&\frac{(I - A)}{\epsilon} \phi = \Delta \phi
+% \end{aligned}
+% \end{equation*}
+
+% The eigenvectors of $A$ will then approximate the eigenfunctions of
+% the corresponding operator. In particular, we see that with the choice
+% $\alpha = 1$, we recover the Laplace-Beltrami operator on our
+% manifold. As such, the resulting eigenvectors will be influenced only
+% by the geometry of the manifold and not by our sampling density on
+% it. However, if our data is uniformly sampled so that $p(x) = c$, all
+% values of $\alpha $ yield the same result.
+
+\subsubsection{Example}
+
+We now provide a numerical example of DMAPS' behavior on a simple
+dataset: data sampled from the simple rectangle described above, with
+side lengths $L_x = \frac{5}{2}$ and $L_y = 1$. We also fix the number
+of points to $N = 4000$. Initially we sample uniformly at random over
+the rectangle, and then apply the DMAPS algorithm to the resulting set
+of points $(x_i, y_i)$ $i = 1, \dots, N$. In Fig.~\ref{fig:dmaps-comp}
+we compare the numerical results to the theoretical eigenfunctions we
 derived in the previous section. The agreement is good, and as
-expected, $\phi_1$ and $\phi_3$ parameterize $x$ and $y$
-respectively.
+expected, $\phi_1$ and $\phi_3$ parameterize $x$ and $y$ respectively.
 
 \begin{figure}
   \centering
@@ -497,44 +499,44 @@ respectively.
   \caption[Comparison of analytical and numerical DMAPS results]{ \label{fig:dmaps-xy} }
 \end{figure}
 
-However, if the density of our points is nonuniform over the rectangle
-as shown in Fig.~\ref{fig:dmaps-nonun-data}, the output of algorithm
-~\ref{alg:dmaps-unnorm} will be affected by the particular
-distribution of points. On the other hand, ~\ref{alg:dmaps} will
-continue to approximate eigenfunctions of $\nabla
-f$. Fig.~\ref{fig:dmaps-nonun-phi} confirms this behavior.
+% However, if the density of our points is nonuniform over the rectangle
+% as shown in Fig.~\ref{fig:dmaps-nonun-data}, the output of algorithm
+% ~\ref{alg:dmaps-unnorm} will be affected by the particular
+% distribution of points. On the other hand, ~\ref{alg:dmaps} will
+% continue to approximate eigenfunctions of $\nabla
+% f$. Fig.~\ref{fig:dmaps-nonun-phi} confirms this behavior.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\linewidth]{data-non-y-x}
-    \caption[Data with nonuniform density]{Data sampled nonuniformly over the
-      rectangle. \label{fig:dmaps-nonun-data} }
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.9\linewidth]{data-non-y-x}
+%     \caption[Data with nonuniform density]{Data sampled nonuniformly over the
+%       rectangle. \label{fig:dmaps-nonun-data} }
+% \end{figure}
 
 
-\begin{figure}
-  \centering
-  \begin{subfigure}[t]{0.45\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{dmaps-non-x}
-    \subcaption{Results for $\phi_1 \approx f_{10}$.}
-  \end{subfigure}
-  % \hspace{0.5cm}
-  \begin{subfigure}[t]{0.45\linewidth}
-    \centering
-    \includegraphics[width=\linewidth]{dmaps-non-y}
-    \subcaption{Results for $\phi_3 \approx f_{01}$.}
-  \end{subfigure}
-  \caption[Comparison of different DMAPS variants]{Comparison of analytical result with normalized and
-    unnormalized DMAPS variants showing that the normalized version
-    captures the eigenfunctions of the Laplace operator regardless the
-    point distribution. \label{fig:dmaps-nonun-phi} }
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \begin{subfigure}[t]{0.45\linewidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{dmaps-non-x}
+%     \subcaption{Results for $\phi_1 \approx f_{10}$.}
+%   \end{subfigure}
+%   % \hspace{0.5cm}
+%   \begin{subfigure}[t]{0.45\linewidth}
+%     \centering
+%     \includegraphics[width=\linewidth]{dmaps-non-y}
+%     \subcaption{Results for $\phi_3 \approx f_{01}$.}
+%   \end{subfigure}
+%   \caption[Comparison of different DMAPS variants]{Comparison of analytical result with normalized and
+%     unnormalized DMAPS variants showing that the normalized version
+%     captures the eigenfunctions of the Laplace operator regardless the
+%     point distribution. \label{fig:dmaps-nonun-phi} }
+% \end{figure}
 
 The great benefit of DMAPS over PCA is its ability to parameterize
 nonlinear manifolds. This comes at the cost of interpretability, as we
-now lack an explicit connection between the input, $X$, and the output
-$\phi_i$. In certain numerical applications this understanding is
+now lack an explicit connection between the input, $x_i$, and the output
+$y_i$. In certain numerical applications this understanding is
 unimportant. When one is interested in an intuitive physical
 interpretation of the low-dimensional description, the DMAPS output
 can be used to test hypotheses about which variable combinations are

@@ -33,7 +33,7 @@ to equation~\ref{eq:regpert-limit}, where $\epsilon$ does not
 affect the model response.
 
 Looking back at the model manifold depicted in
-Fig.~\ref{fig:regpert-mm}, this is precisely what we see. At larger
+Fig.~\ref{fig:regpert} (a), this is precisely what we see. At larger
 values of $\epsilon$, the model manifold is two dimensional as
 variations in both $y_0$ and $\epsilon$ influence the model
 response. At smaller values of $\epsilon$, the model manifold
@@ -41,7 +41,7 @@ converges to a one-dimensional line parameterized by $y_0$. The exact
 form of this line is simply $f(y_0)= \left( y_0 e^{-t_1}, y_0 e^{-t_2}, y_0
   e^{-t_3} \right)$. The dependence on $\epsilon$ is lost.
 
-To create Fig.~\ref{fig:regpert-mm}, we fixed $t_1 = 0.25$,
+To create Fig.~\ref{fig:regpert} (a), we fixed $t_1 = 0.25$,
 $t_2 = 1.0$ and $t_3 = 1.75$. We then calculated the model response
 over the rectangle $y_0 \in [1.25, 3.5]$ and $\log(\epsilon) \in [-3,
 -1]$, so for each particular $y_0$ and $\epsilon$ value we have
@@ -61,17 +61,17 @@ We mask out points for which $y(t_3) > 2.0$ to aid the interpretability of
 the figure; otherwise, the few solutions that grow very rapidly stretch
 the axes and obscure the bulk of the manifold. 
 
-To create Fig.~\ref{fig:regpert-params}, we performed DMAPS on a set
+To create Fig.~\ref{fig:regpert} (b), we performed DMAPS on a set
 of nearly 12,000 points. We drew these points uniformly at random over
 the rectangle $y_0 \in [1.25, 3.5]$ and $\log(\epsilon) \in [-3, -1]$
 as before, and calculated the corresponding model responses, again
 omitting points for which $y(t_3) > 2.0$. Applying DMAPS to the
 collection of model responses that remained using a $\delta = 1.0$,
 and coloring parameter space by the resulting $\phi_1$ values gives
-Fig.~\ref{fig:regpert-params}.
+Fig.~\ref{fig:regpert} (b).
 
 A final note of clarification is needed regarding
-Fig.~\ref{fig:regpert-params}, namely the existence of the uncolored
+Fig.~\ref{fig:regpert} (b), namely the existence of the uncolored
 white patch in the upper right. Examining equation~\ref{eq:regpert},
 we see that our solution may diverge in finite time if
 $\left(\frac{1}{y_0^2} - \epsilon \right) < 0$. We can find the exact
@@ -84,7 +84,7 @@ response is undefined at such points, and therefore we omit these
 parameter combinations from our plots.
 
 
-\section{Details of singularly perturbed example \label{app:singpert}}
+% \section{Details of singularly perturbed example \label{app:singpert}}
 
 \section{Details of reaction network \label{app:abc}}
 
@@ -268,7 +268,7 @@ we introduce the transformation
 that factorizes \eqref{ABC-asympt-bound} as $\kappa_1 \kappa_2 < 2 \eps_*/(1 - 4 \eps_*)$.
 In the $(\kappa_1,\kappa_2)-$plane, the asymptotic regime is bounded by two hyperbolas in the first and third quadrants.
 Since the $\kappa_1-$ and $\kappa_2-$axes align with the axes in the $(k_1/k_{-1},k_2/k_{-1})$ plane, at leading order,
-the regime $\eps_* \downarrow 0$ becomes the narrow sliver shown in Fig.~\ref{f-regim}.\\
+the regime $\eps_* \downarrow 0$ becomes a narrow sliver.\\
 %
 \subsection{Effective parameter}
 %

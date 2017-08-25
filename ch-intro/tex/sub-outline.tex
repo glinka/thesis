@@ -1,25 +1,25 @@
 \section{Outline of thesis}
 
 We begin with a background of the mathematical techniques used
-throughout the bulk of the thesis work, including manifold learning
+throughout the bulk of this thesis, including manifold learning
 algorithms and the Equation Free framework. With this foundation
-established, we turn to an extension of these techniques into the
-field of network science. In particular, we study a dynamic multigraph
-model which exhibits the sort of preferential attachment phenomenon
-seen in many real-world social networks. We implement a coarse
-projective integrator for this system and use it to construct a
-stationary state solver. We also explore the problem of quantifying
-similarities between pairs of networks, and having found such a
-measure we embed whole trajectories of network evolution and find
-low-dimensional structure. 
+established, we apply these techniques to the field of networks. In
+particular, we study a dynamic multigraph model which exhibits the
+sort of preferential attachment phenomenon seen in many real-world
+social networks. We implement a coarse projective integrator for this
+system and use it to construct a stationary state solver. We also
+explore the problem of quantifying similarities between pairs of
+networks, and having found such a measure we embed whole trajectories
+of network evolution and find low-dimensional structure.
 
 After validating the use of manifold learning in this simpler network
 setting, we apply similar techniques to a popular model of disease
 propogation, the susceptible-infected-susceptible (SIS) model. Again,
 by selecting an appropriate measure of similarity between networks we
 are able to algorithmically reduce the problem's dimensionality using
-DMAPS without recourse to analytical derivations. Our results suggest
-that a previously-derived low dimensional system may be improved.
+DMAPS, without recourse to analytical derivations. Our results suggest
+that a previously-derived low dimensional system may be further
+simplified.
 
 The third and final section of this thesis moves from network models
 to more traditional systems of ordinary differential equations whose
@@ -29,14 +29,11 @@ predictions so that we may ignore those parameter combinations that do
 not significantly affect the model output, thus reducing the
 dimensionality of parameter space. By constructing a variant of DMAPS
 that operates on model predictions, we are able to realize this
-objective even in the presence of nonlinear parameter combinations. In
-a related section, we also show how such an approach can identify the
-fast manifolds in singularly perturbed systems.
+objective even in the presence of nonlinear parameter combinations.
 
 In total, these chapters display the utility of extending manifold
 learning techniques into novel domains, and of the pervasiveness of
-low-dimensional structure in complex
-systems.
+low-dimensional structure in complex systems.
 
 %%% Local Variables: ***
 %%% mode:latex ***

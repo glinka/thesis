@@ -30,7 +30,7 @@ billions \cite{hsu_biggest_2015}. Molecular dynamics simulations in
 1957 entailed tens of hard-sphere particles \cite{alder_phase_1957};
 today we model entire proteins and their folding dynamics
 \cite{piana_atomic-level_2013}. And Lorenz's three-dimensional system
-of equations describing atmospheric convections in 1963
+of equations describing atmospheric convection in 1963
 \cite{lorenz_deterministic_1963} led to modern large eddy simulations
 run across multiple computing clusters \cite{ghosal_dynamic_1995}. In
 all cases, the improvement in precision afforded by increased model
@@ -40,10 +40,11 @@ Highly parameterized models may aid accuracy, but the effect of each
 individual parameter on the overall model output is often difficult to
 ascertain. Indeed, it has been well-document that a wide array of
 systems contain particular hidden parameters that appear to have no
-influence on the model's predictions. These have been termed ``sloppy
+influence on the model's predictions
+\cite{gutenkunst_extracting_2007}. These have been termed ``sloppy
 parameters'', and their presence seems ubiquitous in contemporary
-systems \cite{gutenkunst_extracting_2007}. This is problematic as not
-only do sloppy parameters obfuscate the parameters that actually
+systems \cite{gutenkunst_universally_2007}. This is problematic as not
+only do sloppy parameters obfuscate the inputs that actually
 matter, but they also lead to slow convergence of model-fitting
 algorithms \cite{transtrum_geometry_2011}.
 
@@ -56,21 +57,22 @@ settings \cite{constantine_active_2015}. Here, we present a
 data-driven approach to parameter reduction that is flexible enough to
 handle nonlinear systems. This is accomplished through Diffusion Maps
 (DMAPS), an established manifold learning technique that we adapt to
-the problem at hand \cite{coifman_diffusion_2006}. We begin with a
-description of our broader view of the situation, and then present a
+this context \cite{coifman_diffusion_2006}. We begin with a
+description of our formulation of the problem, and then present a
 simple example that clearly shows the consequences of sloppiness,
 while also providing some intuition as to how it emerges.
 
-Our overall approach to this problem is motivated by the work in
+Our overall approach is motivated by the work in
 \cite{transtrum_geometry_2011}. We consider a model to consist of a
 vector of parameters $\theta \in \mathbb{R}^k$ and a function mapping
-these inputs to a model response, or output, in $\mathbb{R}^n$,
+these inputs to a model response (or model output) in $\mathbb{R}^n$,
 $f: \mathbb{R}^k \rightarrow \mathbb{R}^n$. Sloppiness would reveal
 itself as regions of parameter space, $\Omega_S \in \mathbb{R}^k$ in
 which the model reponse remains nearly constant:
 $f(\theta_i) \approx f(\theta_j)\; \theta_i, \theta_j \in
-\Omega_S$. We will also denote distances in model response space as
-$\delta(\theta_i, \theta_j) = \| f(\theta_i), f(\theta_j)\|_2$. To
+\Omega_S$. We will also denote distances in parameter space as
+$\delta(\theta_i, \theta_j) = \| f(\theta_i) - f(\theta_j)\|_2$, that
+is, the Euclidean distance between the resulting model responses. To
 provide a concrete example, consider a model with parameters $p_1$ and
 $p_2$, and model output
 $f(p_1, p_2) = (p_1 p_2 , \ln(p_1) + \ln(p_2) , (p_1 p_2)^2)$. Then
@@ -80,7 +82,7 @@ depends only on the overall product $p_1 p_2$, and not on $p_1$ and
 $p_2$ independently. To make it explicit, set $p_{eff} = p_1 p_2$ and
 rewrite $f$ as $(p_{eff}, \ln(p_{eff}), p_{eff}^2)$. Thus, although we
 have chosen to include both $p_1$ and $p_2$ as independent parameters
-in our original model, only the value of $p_{eff}$ matters. Also note
+in our original model, only the value of $p_{eff}$ is significant. Also note
 that if we only had access to a black-box function evaluator, it would
 be non-trivial to determine the existence of $p_{eff}$ at all.
 
@@ -97,7 +99,7 @@ model output more strongly than others. In addition, optimization
 routines will still converge to disparate points in the plane: the
 model remains sloppy.
 
-Our goal, then, is to extract the approprate, intrinsic
+Our goal, then, is to extract the appropriate, intrinsic
 parameterization of the model using only input-output data. As we
 shall see, this parameterization may vary across input space regimes.
 We will show how this variation can be associated with the traditional
@@ -124,7 +126,7 @@ the number of effective parameters changes.
 
 
 
-\subsection{Unraveling sloppiness} \label{sec:rr}
+\section{Example from chemical kinetics} \label{sec:rr}
 
 We now examine a system of chemical reactions in which an effective
 parameter again emerges, and show how we can detect this in a
@@ -175,7 +177,7 @@ approximated by
   k_{eff}
   =
   \frac{k_1 k_2}{k_{-1} + k_1 + k_2} .
-  \label{ABC-QSSA}
+  \label{eq:abc-qssa}
 \end{align}
 % 
 Note that this approximate solution extends to a larger parameter
@@ -192,18 +194,18 @@ choose reference parameter settings $\theta^*$ in the regime
 identified above, fix sampling times $t_1,\ldots,t_N$, set the model
 response to $f(\theta)=( C(t_1|\theta) , \ldots , C(t_N|\theta) )$,
 sample log-parameter space uniformly, and record the squared Euclidean
-distance $\delta(\theta) = \| f(\theta) - f^* \|^2$ for each sampled
-$\theta$.  Figure~\ref{fig:abc-keff} shows the results colored by
-$k_{eff}$. We only retained parameter combinations with
+distance $\delta(\theta) = \| f(\theta) - f(\theta^*) \|^2$ for each
+sampled $\theta$.  Figure~\ref{fig:abc-keff} shows the results colored
+by $k_{eff}$. We only retained parameter combinations with
 $\delta(\theta) < 10^{-6}$ to aid in visualization. As expected, the
 level sets of constant $\delta$ align with those of the effective
 parameter, so this automated sampling process effectively reveals
-sheets of the foliation in Fig.~\ref{fig:abc-ill} without recourse to
-an analytic expression for $k_{eff}$.
+sheets of different $k_{eff}$ values without recourse to an analytic
+expression.
 
 \begin{figure}[!htp]
   \centering
-  \includegraphics[width=0.9\textwidth]{keff-illustration}
+  \includegraphics[width=0.4\textwidth]{keff-illustration}
   \caption[Illustration of level sets of the effective parameter in a
   model of chemical kinetics]{Illustration of level sets of $k_{eff}$
     in parameter space. \label{fig:abc-ill}}
@@ -227,10 +229,10 @@ an analytic expression for $k_{eff}$.
   \centering
   \begin{tabular}{cc}
     \includegraphics[width=0.45\textwidth]{keff-phi1} &
-                                                        \includegraphics[width=0.45\textwidth]{k2-kinv-k1-phi1}\\
+                                                        \includegraphics[width=0.5\textwidth]{k2-kinv-k1-phi1}\\
     (a) & (b)
   \end{tabular}
-  \caption{(a) Coloring parameter space by $\phi_1$, showing that
+  \caption[DMAPS results for simple kinetic model]{(a) Coloring parameter space by $\phi_1$, showing that
     $\phi_1$ captures the effective parameter in this system; (b)
     $k_{eff}$ plotted against $\phi_1$ showing that the first DMAPS
     eigenvector parameterizes the significant, nonlinear parameter
@@ -238,14 +240,14 @@ an analytic expression for $k_{eff}$.
 \end{figure}
 
 
-With this data in hand, we turn to a description of our modified the
+With this data in hand, we turn to a description of our modified
 DMAPS algorithm. Details of the basic algorithm can be found in
 Section~\ref{sec:dmaps}. In brief, given a collection of parameter
 values ${\theta_i}_{i=1}^N$, we define our DMAPS kernel as
 
 \begin{align}
-  k(\theta_i, \theta_j) = \exp \left(-\frac{\|f(theta_i) -
-  f(theta_j)\|^2}{\epsilon^2} \right)
+  k(\theta_i, \theta_j) = \exp \left(-\frac{\|f(\theta_i) -
+  f(\theta_j)\|^2}{\epsilon^2} \right)
   \label{eq:dmaps-mm}
 \end{align}
 
@@ -254,18 +256,20 @@ obviously represent a sample of parameter space, they simultaneously
 sample the model response space through $f(\theta)$. Considering the
 structure of this space, we can understand that all of the points
 lying on a surface of constant $k_{eff}$ will be mapped to
-approximately the same point in model response space. Only changes in
-$k_{eff}$ affect the model output, and thus our data will lie along a
-one-dimensional curve in model response space, parameterized by
-$k_{eff}$. Therefore, if we apply DMAPS to the model response data,
-the first eigenvector $\phi_1$ will likewise yield a parameterization
-of this curve. Thus, we expect $k_{eff}$ and $\phi_1$ to be in
-one-to-one correspondence. This is precisely what
-Figures~\ref{fig:abc-dmaps} show DMAPS has, in effect, uncovered the
-effective parameter hidden in the system using only paramter and model
-response data. We will now investigate how sloppiness can arise in
-singularly- and regularly-perturbed systems, and we will see that
-DMAPS is able to detect these perturbed regimes.
+approximately the same point in model response space: they share the
+same output concentration trajectory as seen in
+Equation~\ref{eq:abc-qssa}. Only changes in $k_{eff}$ affect the model
+output, and thus our data will lie along a one-dimensional curve in
+model response space, parameterized by $k_{eff}$. Therefore, if we
+apply DMAPS to the model response data, the first eigenvector $\phi_1$
+will yield a parameterization of this curve and we expect $k_{eff}$
+and $\phi_1$ to be in one-to-one correspondence. This is precisely
+what Figures~\ref{fig:abc-dmaps} shows. DMAPS has, in effect,
+uncovered the effective parameter hidden in the system using only
+parameter and model response data. We will now investigate how
+sloppiness can arise in singularly- and regularly-perturbed systems,
+and we will see that DMAPS is able to provide a more uniformly
+significant reparameterization.
 
 
 \section{Regular perturbation}
@@ -290,12 +294,12 @@ regularly perturbed, and converges to the simpler
 $\frac{dy}{dt} = -y$. Note that in this limit, $\eps$ has no influence
 on the model response, and $y_0$ becomes the only significant
 parameter. Again, considering the implications for the model manifold,
-it is clear that for small values of epsilon, our response will form a
+it is clear that for small values of $\eps$, our response will form a
 one dimensional curve parameterized by $y_0$. At larger values, both
 $\eps$ and $y_0$ are significant, and the manifold is
 two-dimensional. Figure~\ref{fig:regpert} (a) depicts the model
 manifold colored by $\eps$, and we see exactly this behavior. The red
-portion of the surface, corresponding to larger $\eps$ is
+portion of the surface, corresponding to larger $\eps$, is
 two-dimensional, while the blue, with small $\eps$, is contained in a
 single line at the edge of the surface. Sampling this manifold, as
 detailed in Appendix~\ref{app:regpert}, and applying DMAPS with the
@@ -313,11 +317,11 @@ will be singularly perturbed.
 \begin{figure}[ht!]
   \centering
   \begin{tabular}{cc}
-    \includegraphics[width=0.45\textwidth]{y3-y2-y1-eps} &
-                                                           \includegraphics[width=0.45\textwidth]{y0-eps-phi1} \\
+    \includegraphics[width=0.5\textwidth]{y3-y2-y1-eps} &
+                                                           \includegraphics[width=0.5\textwidth]{y0-eps-phi1} \\
     (a) & (b)\\
   \end{tabular}
-  \caption{(a) Model manifold of regularly perturbed system with
+  \caption[Model manifold and parameter space of regularly perturbed system]{(a) Model manifold of regularly perturbed system with
     parameters $y_0$ and $\epsilon$, colored by $\epsilon$. As
     $\epsilon$ decreases, the model response is increasingly
     determined solely by $y_0$ as the system converges to $y' = -y$;
@@ -351,25 +355,27 @@ Crucially, on the slow manifold our system is approximately
 one-dimensional, governed by $\frac{dx}{dt} = -2 - 2x$. If we choose
 our sampling times $t_1, t_2, \dots, t_n$ based on the slow timescale
 of the system, our dynamics will be one-dimensional, and in fact
-neither $\eps$ nor $y_0$ will affect the model response. At
+neither $\eps$ nor $y_0$ will affect the model response. At small
+$\eps$, $y$ quickly converges to the slow manifold (order $\eps$
+time), and then slowly evolves toward the stationary state. At
 $\eps \ll 1$, our model manifold converges to a single,
 zero-dimensional point. Whereas in the regularly perturbed example we
 transitioned from two to one significant parameters, singular
 perturbation brings a transition from two to zero. If we have obtained
-a sample of the $(\eps, y_0)$ parameter plane as described in
-Appendix~\ref{app:singpert}, we can again apply DMAPS to
-re-parameterize the system. Figure~\ref{fig:singpert-dmaps} shows the
-results. In Figures~\ref{fig:singpert-dmaps} (a) and (d) we have
-colored the parameter plane by $\phi_1$ and $\phi_2$, analogous to
+a sample of the $(\eps, y_0)$ parameter plane, we can again apply
+DMAPS to re-parameterize the system. Figure~\ref{fig:singpert-dmaps}
+shows the results of such an analysis. In
+Figures~\ref{fig:singpert-dmaps} (a) and (d) we have colored the
+parameter plane by $\phi_1$ and $\phi_2$, analogous to
 Figure~\ref{fig:regpert} (b). Both eigenvectors are constant at small
-$\eps$ reflecting the absence of significant parameters there. At
-larger $\eps$, $\phi_1$ and $\phi_2$ vary independently as this
-corresponds to the two-dimensional region of the manifold. Both
-$(\eps, y_0)$ and $(\phi_1, \phi_2)$ can be used to parameterize the
-system, but whereas there are distinct regions in which $\eps$ and
-$y_0$ become irrelevant, $\phi_1$ and $\phi_2$ are consistently
-significant. DMAPS provides an automated and improved parameterization
-of the system.
+$\eps$ reflecting the complete absence of significant parameters in
+this regime. At larger $\eps$, $\phi_1$ and $\phi_2$ vary
+independently as this corresponds to the two-dimensional region of the
+manifold. Both $(\eps, y_0)$ and $(\phi_1, \phi_2)$ can be used to
+parameterize the system, but whereas there are distinct regions in
+which $\eps$ and $y_0$ become irrelevant, $\phi_1$ and $\phi_2$ are
+consistently significant. DMAPS provides an automated and improved
+parameterization of the system.
 
 To clarify the relationship between parameter space, the model
 manifold and the DMAPS embedding, we plot these three views of the
@@ -378,17 +384,18 @@ also color four different patches and track their transformation from
 one space to the next. The yellow rectangle at larger $\eps$ is mapped
 to a slightly deformed rectangle in both the model manifold and DMAPS
 embedding. The blue patch, which approaches the singularly perturbed
-regime, is stretched at one tip in the other views. The red patch is
-compressed to an apparently one-dimensional line, while the green,
-lying solidly within the singularly perturbed region, is mapped to a
-point in both cases. This represents the fact that in the limit of
-small $\eps$, neither $y_0$ nor $\eps$ influence the model output:
-everything collapses to a single point.
+regime, becomes stretched at the tip. The red patch is compressed to
+an apparently one-dimensional line, while the green patch, lying
+solidly within the singularly perturbed region, is mapped to a single
+point in both alternative spaces. This represents the fact that in the
+limit of small $\eps$, neither $y_0$ nor $\eps$ influence the model
+output: everything collapses to a zero-dimensional point.
 
+\vspace{1cm}
 \begin{figure}[!htp]
   \centering
-  \includegraphics[width=0.9\textwidth]{sample_traj_sing}
-  \caption{The phase portrait of the singularly perturbed system for
+  \includegraphics[width=0.4\textwidth]{sample_traj_sing}
+  \caption[Phase portrait for singularly perturbed system]{The phase portrait of the singularly perturbed system for
     different initial conditions; solid lines: $\epsilon=0.02$, dotted
     lines are $\epsilon=0.12$. \label{fig:singpert}}
 \end{figure}
@@ -405,9 +412,9 @@ everything collapses to a single point.
                                                                                                                     \includegraphics[width=0.33\textwidth]{phi2_phi1_y0_sing}  \\
     (d) & (e) & (f)\\
   \end{tabular}
-  \caption{(a) \& (d) Parameter space colored by $\phi_1$ and
-    $\phi_2$; (b) \& (e) Model manifold colored by $\epsilon$ and
-    $y_0$; (c) \& (f) Diffusion map space colored by $\epsilon$ and
+  \caption[DMAPS results for singularly perturbed system]{(a) and (d) Parameter space colored by $\phi_1$ and
+    $\phi_2$; (b) and (e) Model manifold colored by $\epsilon$ and
+    $y_0$; (c) and (f) Diffusion map space colored by $\epsilon$ and
     $y_0$ \label{fig:singpert-dmaps}}
 \end{figure}
 
@@ -415,28 +422,27 @@ everything collapses to a single point.
 \begin{figure}[!htp]
   \centering
   \begin{tabular}{c}
-    \includegraphics[height=0.3\textheight]{y0-eps-patches} \\
+    \includegraphics[height=0.2\textheight]{y0-eps-patches} \\
     (a)\\
-    \includegraphics[height=0.3\textheight]{y4-y3-y2-patches}\\
+    \includegraphics[height=0.2\textheight]{y4-y3-y2-patches}\\
     (b)\\
-    \includegraphics[height=0.3\textheight]{phi2-phi1-patches}\\
+    \includegraphics[height=0.2\textheight]{phi2-phi1-patches}\\
     (c)\\
   \end{tabular}
-  \caption{(a) Patches in parameter space for singularly perturbed
-    system; (b) Patches in model response space for singularly
-    perturbed system; (c) Patches in DMAPS embedding space for
-    singularly perturbed system \label{fig:singpert-patches}}
+  \caption[Different views of singularly perturbed system]{(a) Patches in parameter space for the singularly perturbed
+    system; (b) Corresponding patches in model response space; (c)
+    Corresponding patches in DMAPS embedding
+    space \label{fig:singpert-patches}}
 \end{figure}
 
 
-\section{Michaelis-Menten}
+\section{Application to Michaelis-Menten kinetics}
 
-We apply our toolbox to a familiar chemical kinetic prototype, namely
-the Michaelis-Menten system modeling enzymatic action \cite{The
-  Original Michaelis Constant: Translation of the 1913
-  Michaelis–Menten Paper}.  In that mechanism, a substrate $S$ is
-turned into product $P$ by the action of an enzyme $E$ through the
-creation of an intermediate complex $C$,
+Finally, we apply our toolbox to a familiar chemical kinetic
+prototype, namely the Michaelis-Menten system modeling enzymatic
+action \cite{johnson_original_2011}.  In that mechanism, a substrate
+$S$ is turned into product $P$ by the action of an enzyme $E$ through
+the creation of an intermediate complex $C$,
 
 \begin{align}
   E + S \xrightleftharpoons[k_{-1}]{k_1} C \xrightarrow[]{k_2} E + P
@@ -490,19 +496,19 @@ parameter space through the transformations
 The observable here is the product concentration $P$ at ten equally
 spaced times in the interval $[t_s/2,2t_s]$, where the timescale
 $t_s = (S_T^* + K_M^*)/V_M^*$. Thus
-$\mathbf{f}:\mathbb{R}^5 \rightarrow \mathbb{R}^{10}$ maps our five
+$f:\mathbb{R}^5 \rightarrow \mathbb{R}^{10}$ maps our five
 parameter values to ten points along $P$'s trajectory. Setting
 reference parameter values at
 $(K_M^*,V_M^*,S_T^*,\epsilon^*,\kappa) = (1,1,1,10^{-3},10)$, we
 investigate the system in a manner similar to that previously
 presented.  First we sample parameter settings lying within a fixed
 distance $\delta=0.05$ of
-$\mathbf{f}^* = \mathbf{f}(K_M^*, V_M^*, S_T^*, \epsilon^*,
+$f^* = f(K_M^*, V_M^*, S_T^*, \epsilon^*,
 \kappa^*)$, and then we apply the modified DMAPS algorithm to that
-dataset to uncover significant and sloppy parameter combinations.
-Before delving into DMAPS, however, we first probe the system with a
-simpler, linear PCA analysis.  By applying this technique to the
-Jacobian of the model response
+dataset to uncover significant parameter combinations.  Before delving
+into DMAPS, however, we first probe the system with a simpler, linear
+PCA analysis.  By applying this technique to the Jacobian of the model
+response
 
 \begin{align}
   \mathrm{J} = \begin{bmatrix} \frac{\partial f_1}{\partial K_M} &
@@ -518,15 +524,15 @@ $\mathrm{V}$ where $\mathrm{J} = \mathrm{U \Sigma V^T}$, we will
 uncover, in a local, linear sense, a basis for parameter space which
 better captures the directions which do and do not affect model
 output. This can be observed from the fact that
-$\| \mathbf{f(p + \Delta p) - f(p)} \| \approx \| \mathrm{J}
-\mathbf{\Delta p} \| = \| \mathrm{U \Sigma V^T} \mathbf{\Delta p}
-\|$. When $\mathbf{\Delta p}$ aligns with a principal component whose
+$\| f(\theta + \Delta \theta) - f(\theta) \| \approx \| \mathrm{J}
+\Delta \theta \| = \| \mathrm{U \Sigma V^T} \Delta \theta
+\|$. When $\Delta \theta$ aligns with a principal component whose
 corresponding singular value is large, it will point in a direction of
 significant model response variation. Conversely, a
-$\mathbf{\Delta p}$ which aligns with a principal component whose
+$\Delta \theta$ which aligns with a principal component whose
 singular value is small will point in a sloppy direction along which
 model response changes minimally. Examining the SVD of the Jacobian
-evaluated at $\mathbf{p}^*$ we find for the principal components (with
+evaluated at $\theta^*$ we find for the principal components (with
 entries less than $10^{-1}$ rounded to zero and singular values
 rounded to the nearest order of magnitude for clarity)
 
@@ -558,7 +564,7 @@ one cannot precisely determine both $K_M$ and $V_M$, but only their
 ratio. To do so we turn to the Lineweaver-Burk plot, a graphical
 procedure allowing one to determine $K_M$ and $V_M$ from experimental
 data of the reaction rate and substrate concentration evolution over
-time \ref{LB}. By generating many noisy realizations of the product
+time \cite{lineweaver_determination_1934}. By generating many noisy realizations of the product
 concentration profiles as one might collect experimentally in the lab
 and then fitting each with the Lineweaver-Burk method, we can observe
 the range of predicted $K_M$, $V_M$ pairs. These results are plotted
@@ -577,63 +583,54 @@ determine precise values of both $K_M$ and $V_M$.
 \begin{figure}
   \centering
   \includegraphics[width=1.0\linewidth]{k-v-lb}
-  \caption{Best fit $K_M$ and $V_M$ values for many noisy
+  \caption[Lineweaver-Burk fitting results]{Best fit $K_M$ and $V_M$ values for many noisy
     concentration trajectories (blue dots). Sloppiness is evident in
     the spread of the data along the line $K_M/V_M = 1$ (plotted in
     red for reference). \label{fig:lb} }
 \end{figure}
 
 Next, we examine the system using DMAPS. We use the five-dimensional
-dataset obtained by asampling parameter space around $\mathbf{p}^*$
-and keeping those points for which
-$\|\mathbf{f(p) - f(p^*)} || < 5 \cdot 10^{-2}$, and apply the
-modified DMAPS given in \eqref{eq:dmaps-w-mod} with an $\epsilon$ and
-$\lambda$ value of $10^{2}$ and $10^{-1}$ respectively.
+dataset obtained by sampling parameter space around $\theta^*$ and
+keeping those points for which
+$\|f(\theta) - f(\theta^*) || < 5 \cdot 10^{-2}$, and apply DMAPS
+with an $\epsilon$ value of $10^{-1}$.
 
 Having computed our DMAP eigenvectors, it remains to determine which
 of them correspond to independent directions in parameter space, as
 certain eigenvectors may parameterize the same directions (see
-\ref{carmeline} for details). Using the algorithm developed in
-\ref{carmeline}, we compute a residual for each eigenvector which,
-roughly speaking, assesses how much new information it contains. The
-results shown in Fig~\ref{fig:resids} suggest that eigenvectors
-$\phi_1$, $\phi_2$, $\phi_6$ and $\phi_7$ all parameterize independent
-directions. By design, \eqref{eq:dmaps-w-mod} will return eigenvectors
-tracking important parameter directions first, with sloppy directions
-following. Our previous analysis would then suggest that $\phi_1$ and
-$\phi_2$ correspond to important parameter directions, while $\phi_6$
-and $\phi_8$ correspond to sloppy directions. $\phi_5$, lying in the
-middle, may contain components of both sloppy and important
-directions. Therefore, we would expect $\phi_1$ and $\phi_2$ to
-provide a good set of coordinates on our model manifold, while
-$\phi_6$ and $\phi_8$ would not correspond to meaningful directions in
-model space.
+\cite{dsilva_parsimonious_2015} for details). Using the algorithm
+developed in \cite{dsilva_parsimonious_2015}, we compute a residual
+for each eigenvector which, roughly speaking, assesses how much new
+information it contains. The results shown in Fig~\ref{fig:resids}
+suggest that eigenvectors $\phi_1$ and $\phi_2$ parameterize
+independent directions. Our previous analysis would then suggest that
+$\phi_1$ and $\phi_2$ correspond to important parameter directions,
+and would provide a good set of coordinates on our model manifold.
 
 We can test this hypothesis by projecting the model manifold onto two
 axes, here $f_1$ and $f_{10}$, and coloring the result by our
 eigenvectors. If the colors vary smoothly over the points, we have
-uncovered an eigenvector that parameterizes the manifold. Otherwise,
-the eigenvector will correspond to a sloppy direction. These colorings
-are provided in Fig.~\ref{fig:mm-dmaps}. Based on these figures, we
-can conclude that indeed $\phi_1$ and $\phi_2$ provide coordinates
-along the model manifold. The sloppiness in $K_M/V_M$ was discussed in
-the previous paragraph, but it remains to show why we would lose two
-more parameters. In fact, as $\epsilon \rightarrow 0$, the set of
-differential equations given in \eqref{eq:MM} become singularly
-perturbed. In this limit, the leading order dynamics are not
-influenced by $\kappa$, as shown in \cite{segel_quasi-steady-state_1989}. Thus,
-for small enough $\epsilon$, we will lose our ability to determine
-both $\epsilon$ and $\kappa$. This is precisely what is reflected in
-our DMAPS results.
+uncovered an eigenvector that parameterizes the manifold. These
+colorings are provided in Fig.~\ref{fig:mm-dmaps}. Based on these
+figures, we can conclude that indeed $\phi_1$ and $\phi_2$ provide
+coordinates along the model manifold. The sloppiness in $K_M/V_M$ was
+discussed in the previous paragraph, but it remains to show why we
+would lose two more parameters. In fact, as $\epsilon \rightarrow 0$,
+the set of differential equations given in \eqref{eq:MM} become
+singularly perturbed. In this limit, the leading order dynamics are
+not influenced by $\kappa$, as shown in
+\cite{segel_quasi-steady-state_1989}. Thus, for small enough
+$\epsilon$, we will lose our ability to determine both $\epsilon$ and
+$\kappa$. This is precisely what is reflected in our DMAPS results.
 
 \begin{figure}[!htp]
   \centering
   \begin{tabular}{cc}
-    \includegraphics[height=0.3\textheight]{f10-f1-phi1} &
-    \includegraphics[height=0.3\textheight]{f10-f1-phi2}\\
+    \includegraphics[width=0.5\textwidth]{f10-f1-phi1} &
+    \includegraphics[width=0.5\textwidth]{f10-f1-phi2}\\
     (a) & (b) \\
   \end{tabular}
-  \caption{Projection of the model manifold onto $f_1$ and $f_{10}$
+  \caption[DMAPS results for Michaelis-Menten system I]{Projection of the model manifold onto $f_1$ and $f_{10}$
     colored by different DMAP eigenvectors. As $\phi_1$ and $\phi_2$
     vary smoothly over the surface and parameterize independent
     directions, these eigenvectors offer a good pair of coordinates on
@@ -644,7 +641,7 @@ our DMAPS results.
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=\textwidth]{vm-st-km-all}
-  \caption{(left) Scatter-plot of points in parameter space such that
+  \caption[DMAPS results for Michaelis-Menten system II]{(left) Scatter-plot of points in parameter space such that
     $\|f(\theta) - f^*\| < \delta$. This reveals a sloppy direction
     corresponding to the long, curved axis, and two significant
     directions orthogonal to it. (right) Two-dimensional cross section
@@ -655,8 +652,8 @@ our DMAPS results.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.0\linewidth]{residuals}
-  \caption{Residuals computed as described in previous section. High
+  \includegraphics[width=0.6\linewidth]{residuals}
+  \caption[DMAPS residuals from Michaelis-Menten system]{Residuals computed as described in previous section. High
     residuals for a given eigenvector suggest that it is not a
     function of previous eigenvectors, and thus contains new
     information. This plot suggests five significant eigenvectors, the
@@ -670,7 +667,7 @@ our DMAPS results.
 The examples presented throughout this chapter show that DMAPS
 consistently provides a good parameterization of the model of
 interest. This parameterization is often more useful than the natural
-parameter combinations originally used to formulate the system as
+parameter combinations originally used to formulate the system, as
 DMAPS automatically accounts for regions of singular- and
 regular-perturbation, in addition to detecting hidden effective
 parameters. This opens the door to a number of applications, while
@@ -685,24 +682,23 @@ constant. Thus, an obvious use of our technique would be to accelerate
 these fitting procedures. The idea would be to take steps in the
 DMAPS-embedding space instead of along the natural parameters. This
 would require an ability to sample patches of the model manifold on
-demand, and to perform extrapolation in this DMAPS-embedding
-space. Thankfully, results along these directions have already been
-established, and these could likely be adapted to this particular
-setting \cite{chiavazzo_intrinsic_2017}. We would also need the
-ability to map DMAPS coordinates back to points on the model
-manifold. This is related to the problem of ``lifting'' in the
-Equation Free framework, again an area where existing work could
-hopefully be quickly incorporated
+demand, and to perform extrapolation in DMAPS space. Thankfully,
+results along these directions have already been established, and
+these could likely be adapted to this particular setting
+\cite{chiavazzo_intrinsic_2017}. We would also need the ability to map
+DMAPS coordinates back to points on the model manifold. This is
+related to the problem of ``lifting'' in the Equation Free framework,
+again an area where existing work may be quickly incorporated
 \cite{rajendran_data_2016,laing_equation-free_2015,laing_coarse-grained_2007}.
 
-Another avenue would be in nonlinear sensitivity analysis. The
+Another avenue would be nonlinear sensitivity analysis. The
 simplest and most common methods simply vary individual parameters
 while observing changes in model output
 \cite{murphy_quantification_2004}. The shortcomings of such studies
-are well known \cite{How to avoid a perfunctory sensitivity analysis},
+are well known \cite{saltelli_how_2010},
 but even more sophisticated methods designed for nonlinear models
 assume that each parameter can be treated independently of the
-others. \cite{cukier_nonlinear_1978}. It would clearly be useful to
+others \cite{cukier_nonlinear_1978}. It would clearly be useful to
 adapt this technique to the task. A simple start would be to assess
 how many significant parameters a system has based on the dimension of
 the DMAPS embedding \cite{dsilva_parsimonious_2015}.
@@ -711,7 +707,7 @@ Finally, further work is needed to accelerate sampling on the model
 manifold. The current approach, approximate Bayesian computation, is
 simple to implement but scales poorly with the dimension of parameter
 space, $k$ \cite{turner_tutorial_2012}. One possibility would be to
-calculate the convex hull or alpha-shape of small sample, and then
+calculate the convex hull or alpha-shape of a small sample, and then
 interpolate among these points
 \cite{barber_quickhull_1996,edelsbrunner_three-dimensional_1994}. Overall,
 this chapter presents a novel, data-driven method to parameterize
