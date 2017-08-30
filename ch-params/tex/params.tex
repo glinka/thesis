@@ -1,4 +1,4 @@
-\chapter{Identifying significant parameters combinations in complex
+\chapter{Identifying significant parameter combinations in complex
   models \label{ch:params}}
 
 
@@ -670,9 +670,28 @@ interest. This parameterization is often more useful than the natural
 parameter combinations originally used to formulate the system, as
 DMAPS automatically accounts for regions of singular- and
 regular-perturbation, in addition to detecting hidden effective
-parameters. This opens the door to a number of applications, while
-also inviting further research to improve certain aspects of the
-method.
+parameters. Even when the dimensionality of the model manifold changes
+as we enter different regions of parameter space, DMAPS provides a
+globally relevant parameterization that matches these shifts. This
+opens the door to a number of applications, while also inviting
+further research to improve certain aspects of the method.
+
+
+Note, though, that the DMAPS embedding does not immediately provide an
+explicit formula for the dimensionless groups or effective parameters
+in terms of the base, input parameters. DMAPS will reveal the total
+number of effective parameters or dimensionless groups, but as
+discussed in Section~\ref{sec:ml}, uncovering the exact relation
+between input parameters and DMAPS output requires hypothesis
+testing. However, in many applications this is not an issue. If, for
+example, one is trying to fit a model to data, it important only that
+the optimization algorithm be directed to change the effective
+parameter, while ignoring sloppy directions. The actual identity of
+the effective and sloppy parameters is, from an algorithmic
+perspective, superfluous. Therefore, this method both identifies the
+total number of effective parameters, and provides a platform on which
+other algorithms can be improved.
+
 
 As we discussed in the introduction, one of the hallmarks of
 sloppiness is slow convergence of model-fitting routines
@@ -712,8 +731,10 @@ interpolate among these points
 \cite{barber_quickhull_1996,edelsbrunner_three-dimensional_1994}. Overall,
 this chapter presents a novel, data-driven method to parameterize
 complex models that will hopefully form the foundation for future,
-practical applications.
+practical applications. \\
 
+\textit{This work is being prepared for submission, and was performed
+  in collaboration with Antonios Zagaris and Mahdi Kooshkbaghi.}
 
 %%% Local Variables: ***
 %%% mode:latex ***

@@ -88,7 +88,8 @@ system description to and from its representative coarse variable
 (see Section \ref{sec:ef} for further details). \par
 
 Here, we apply this framework to a dynamically evolving multigraph
-model.
+model, that is, a network in which multiple connections are allowed
+between each pair of nodes.
 %
 This offers a test of the methodology in the previously unexplored
 context of multigraphs.
@@ -802,7 +803,13 @@ they approach an identical stationary state.
   dimensionality-reduction are quite general, and can in principle be
   applied in a wide range of network settings to probe hidden
   low-dimensional structure. Chapter~\ref{ch:sis} will cover an
-  application in the setting of labeled nodes.
+  application in the setting of labeled nodes. It should be noted that
+  this approach of embedding collections of networks simultaneously is
+  quite novel, as existing work focuses on embedding single graphs at
+  a time, mapping the graph's nodes to vectors
+  \cite{tenenbaum_global_2000,belkin_laplacian_2003,tang_line:_2015}. Here
+  we directly embed the entire network structure into a single vector
+  enabling direct comparison between each pair of networks.
 
   However, an open area of investigation is the interpretation of the
   output from the PCA and DMAPS techniques.
@@ -831,9 +838,12 @@ they approach an identical stationary state.
   networks. There, not only does the network structure evolve with time,
   but the properties of the nodes themselves are also subject to
   change. We will see that this poses special challenges when defining
-  distances between networks.
+  distances between networks. \\
   
-
+  \textit{This work was performed in collaboration with Bal\'{a}zs R
+    \'{a}th and led to a publication titled ``Equation-free analysis
+    of a dynamically evolving multigraph'', see
+    \cite{holiday_equation-free_2016}.}
 
 %%% Local Variables: ***
 %%% mode:latex ***

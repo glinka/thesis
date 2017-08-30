@@ -371,7 +371,7 @@ edges have been considered once, with no duplicate edges allowed. The
 resulting graph is considered the output of the model. The networks
 produced by this model exhibit various qualitatively different
 properties as its “generating parameters” vary. For $r=1$ the model
-reduces to generating an Erdős–Rényi random graph $G(n,p)$: a graph of
+reduces to generating an Erd\H{o}s-R\'{e}nyi random graph $G(n,p)$: a graph of
 size $n$ for which the probability that any two vertices are connected
 is $p$. On the other hand, for $r=0$ the graph remains a regular
 lattice, with no random changes in its topology. Lastly, for
@@ -415,7 +415,7 @@ construction parameters $(r, p)$ that here were a priori known.
 \caption[Variations of Watts-Strogatz model]{The Watts-Strogatz model and its construction parameters:
   The value of $r$ denotes the probability of long-distance rewiring
   with $r = 0$ denoting a regular lattice, $r < 1$ a small-world graph,
-  and $r = 1$ an Erdős–Rényi random graph. The value of $p$ quantifies how
+  and $r = 1$ an Erd\H{o}s-R\'{e}nyi random graph. The value of $p$ quantifies how
   interconnected the initial lattice is, being the number of
   neighboring nodes each node connects to. \label{fig:sis6a}}
 \end{figure}
@@ -638,8 +638,13 @@ We have now seen two unique applications of DMAPS to network
 systems. The next chapter will again employ this nonlinear manifold
 learning technique, but in a different application. We will see how
 DMAPS can be used to uncover important parameter combinations in
-systems of differential equations.
+systems of differential equations. \\
 
+
+\textit{This work was performed in collaboration with Assimakis Kattis
+  and Ana-Andreea Stoica, and led to a publication titled ``Modeling
+  epidemics on adaptively evolving networks: A data-mining
+  perspective'', see \cite{kattis_modeling_2016}.}
 
 
 %%% Local Variables: ***
